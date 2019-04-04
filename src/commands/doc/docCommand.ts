@@ -1,11 +1,12 @@
-const docCommand = (program) => {
+import { CommanderStatic } from "commander";
+const docCommand = (program: CommanderStatic) => {
     program
-    .command('help')
-    .alias('h')
-    .description('kintone Node CLI help')
-    .action((cmd) => {
-        console.log(123)
-    });
+        .command('help')
+        .alias('h')
+        .description('kintone Node CLI help')
+        .action((cmd) => {
+            console.log(123)
+        });
 }
 
 export default docCommand
