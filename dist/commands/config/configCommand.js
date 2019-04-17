@@ -5,7 +5,7 @@ const fs = require("fs");
 const configCommand = (program) => {
     program
         .command('config')
-        .description('kintone Node CLI help')
+        .description('kintone Node CLI config')
         .option('--domain <domain>', 'Set domain')
         .option('--username <username>', 'Set username')
         .option('--password <password>', 'Set password')
