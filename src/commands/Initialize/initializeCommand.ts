@@ -7,8 +7,8 @@ const initializeCommand = (program: CommanderStatic) => {
         .command('init')
         .description('Init kintone project')
         .action(async (cmd)=>{
-            console.log(123)
-            spawn('npm',['init']);
+            console.log(chalk.yellow('Init project using npm init...'))
+            spawn('npm',['init'], {stdio: [process.stdin, process.stdout, process.stderr]});
         })
 }
 
