@@ -4,6 +4,9 @@ import docCommand from './commands/doc/docCommand'
 import configCommand from './commands/config/configCommand'
 import dataCommand from './commands/data/dataCommand';
 import initializeCommand from './commands/Initialize/initializeCommand'
+import * as path from 'path';
+global['cliRoot'] = path.resolve(path.dirname(require.main.filename) + "/../");
+global['currentDir'] = process.cwd();
 
 program
     .version('0.1.0')
