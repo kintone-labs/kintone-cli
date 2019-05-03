@@ -33,8 +33,5 @@
   "bugs": {
     "url": "https://github.com/phongnhat19/kintone-node-cli/issues"
   },
-  "homepage": "https://github.com/phongnhat19/kintone-node-cli#readme",
-  "files": [
-    "project_templates"
-  ]
+  "homepage": "https://github.com/phongnhat19/kintone-node-cli#readme"
 }
