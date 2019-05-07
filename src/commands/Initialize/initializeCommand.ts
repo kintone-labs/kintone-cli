@@ -178,6 +178,17 @@ const initializeCommand = (program: CommanderStatic) => {
                         ])
                         cmd.appID = answerAppID['appID']
                     }
+                    if (!cmd.scope) {
+                        let answerScope = await prompt([
+                            {
+                                type : 'list',
+                                name : 'scope',
+                                message : 'What is the scope of customization ?',
+                                choices: ['ALL','ADMIN','NONE']
+                            }
+                        ])
+                        cmd.scope = answerScope['scope']
+                    }
                 }
 
                 let appSetting = {
