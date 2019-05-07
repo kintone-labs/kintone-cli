@@ -1,9 +1,9 @@
 import {writeFileSync, readFileSync} from 'jsonfile'
 import {mkdirSync, existsSync, writeFileSync as writeFileSyncFS} from 'fs'
-import {buildWebpackReactTemplate, WebpackParams} from './webpackTemplate'
+import {buildWebpackReactTemplate} from './webpackTemplate'
+import {WebpackParams} from '../../dto/app'
 import {spawnSync} from 'child_process'
 import {AppOption} from '../../dto/app'
-
 
 const generateAppFolder = (option: AppOption): string | boolean => {
     if (!existsSync('package.json')) {
@@ -84,7 +84,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
 
         let webpackTemplate = buildWebpackReactTemplate(option as WebpackParams)
         writeFileSyncFS(`${option['appName']}/webpack.config.js`, webpackTemplate)
-        spawnSync('npx',['prettier', '--write', `${option['appName']}/webpack.config.js`], {stdio: 'inherit'})
+        spawnSync('npx',['prettier', '--write', `${option['appName']}/webpack.config.js`], {stdio: 'inherit', windowsHide: true})
 
         manifestJSON['uploadConfig'] = {
             desktop: {
