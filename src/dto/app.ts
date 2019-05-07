@@ -20,7 +20,13 @@ type WebpackParams = {
     appName: string
 }
 
+type EslintRcParams = {
+    useTypescript: boolean
+    useReact: boolean
+}
+
 export {
     AppOption,
-    WebpackParams
+    WebpackParams,
+    EslintRcParams
 }

@@ -1,7 +1,5 @@
-type EslintRcParams = {
-    useTypescript: boolean
-    useReact: boolean
-}
+import {EslintRcParams} from '../../dto/app'
+
 const buildEslintRcTemplate = ({useTypescript, useReact}:EslintRcParams):string => {
     const eslintRules = ["@cybozu/eslint-config/lib/kintone.js", "@cybozu/eslint-config/globals/kintone.js"];
     if(useTypescript && useReact) {
@@ -21,7 +19,6 @@ const buildEslintRcTemplate = ({useTypescript, useReact}:EslintRcParams):string 
 export default {
     buildEslintRcTemplate
 }
-
 export {
     buildEslintRcTemplate,
     EslintRcParams

@@ -1,10 +1,9 @@
 import {writeFileSync, readFileSync} from 'jsonfile'
 import {mkdirSync, existsSync, writeFileSync as writeFileSyncFS} from 'fs'
 import {buildWebpackReactTemplate} from './webpackTemplate'
-import {WebpackParams} from '../../dto/app'
 import {spawnSync} from 'child_process'
-import {AppOption} from '../../dto/app'
-import {buildEslintRcTemplate, EslintRcParams} from './eslintRcTemplate'
+import {AppOption, EslintRcParams, WebpackParams} from '../../dto/app'
+import {buildEslintRcTemplate} from './eslintRcTemplate'
 
 const generateAppFolder = (option: AppOption): string | boolean => {
     if (!existsSync('package.json')) {
@@ -162,7 +161,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (!packageJSON.dependencies) {
             packageJSON.dependencies = {}
         }
-        packageJSON.dependencies['eslint'] = '^4.19.1'
+        packageJSON.dependencies['eslint'] = '^5.16.0'
         packageJSON.dependencies['@cybozu/eslint-config'] = '^4.0.1'
         writeFileSync(`package.json`,packageJSON,{spaces:2, EOL: "\r\n"})
 
