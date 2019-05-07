@@ -2,21 +2,8 @@ import {writeFileSync, readFileSync} from 'jsonfile'
 import {mkdirSync, existsSync, writeFileSync as writeFileSyncFS} from 'fs'
 import {buildWebpackReactTemplate, WebpackParams} from './webpackTemplate'
 import {spawnSync} from 'child_process'
+import {AppOption} from '../../dto/app'
 
-type AppOption = {
-    setAuth: boolean,
-    useTypescript: boolean,
-    useWebpack: boolean,
-    entry: string,
-    useReact: boolean,
-    appName: string,
-    domain: string,
-    username: string,
-    password: string,
-    type: 'Plugin' | 'Customization',
-    appID: number,
-    pluginName: string
-}
 
 const generateAppFolder = (option: AppOption): string | boolean => {
     if (!existsSync('package.json')) {
@@ -49,7 +36,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             domain: option['domain']
         }
 
-        writeFileSync(`${option['appName']}/auth.json`,authJSON,{spaces:2, EOL: "\r\n"})
+        writeFileSync(`${option['appName']}/auth.json`,authJSON,{spaces: 4, EOL: "\r\n"})
     }
 
     if (option['useWebpack']) {
@@ -60,7 +47,12 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             ]
         }
 
-        writeFileSync(`${option['appName']}/.babelrc`,babelJSON,{spaces:2, EOL: "\r\n"})
+        writeFileSync(`${option['appName']}/.babelrc`,babelJSON,{spaces: 4, EOL: "\r\n"})
+
+        if (!packageJSON.dependencies) {
+            packageJSON.dependencies = {}
+        }
+        packageJSON.dependencies['@kintone/customize-uploader'] = "^1.5.3"
 
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {}
@@ -88,11 +80,36 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         }
         packageJSON.scripts[`build-${option['appName']}`] = `webpack --config ${option['appName']}/webpack.config.js`
 
-        writeFileSync(`package.json`,packageJSON,{spaces:2, EOL: "\r\n"})
+        writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
 
         let webpackTemplate = buildWebpackReactTemplate(option as WebpackParams)
         writeFileSyncFS(`${option['appName']}/webpack.config.js`, webpackTemplate)
         spawnSync('npx',['prettier', '--write', `${option['appName']}/webpack.config.js`], {stdio: 'inherit'})
+
+        manifestJSON['uploadConfig'] = {
+            desktop: {
+                js: [
+                    `${manifestJSON['appName']}/dist/${manifestJSON['appName']}.min.js`
+                ],
+                css:[]
+            },
+            mobile: {
+                js: [
+                    `${manifestJSON['appName']}/dist/${manifestJSON['appName']}.min.js`
+                ]
+            }
+        }
+    }
+    else {
+        manifestJSON['uploadConfig'] = {
+            desktop: {
+                js: [],
+                css:[]
+            },
+            mobile: {
+                js: []
+            }
+        }
     }
 
     if (option['useTypescript']) {
@@ -101,7 +118,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         }
         packageJSON.devDependencies.typescript = "^2.3.3"
         packageJSON.devDependencies.tsc = "^1.20150623.0"
-        writeFileSync(`package.json`,packageJSON,{spaces:2, EOL: "\r\n"})
+        writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
     }
 
     if (option['useReact']) {
@@ -110,15 +127,17 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         }
         packageJSON.dependencies.react = "^16.8.6"
         packageJSON.dependencies['react-dom'] = "^16.7.0"
-        writeFileSync(`package.json`,packageJSON,{spaces:2, EOL: "\r\n"})
+        writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
     }
 
     mkdirSync(`${option['appName']}/source`)
     mkdirSync(`${option['appName']}/source/js`)
     mkdirSync(`${option['appName']}/source/css`)
     mkdirSync(`${option['appName']}/dist`)
-    writeFileSync(`${option['appName']}/appConfig.json`,manifestJSON,{spaces:2, EOL: "\r\n"})
-    writeFileSyncFS(`${option['appName']}/source/${option['entry']}`, '')
+    writeFileSync(`${option['appName']}/config.json`,manifestJSON,{spaces: 4, EOL: "\r\n"})
+    if (option['entry']) {
+        writeFileSyncFS(`${option['appName']}/source/${option['entry']}`, '')
+    }
 
     return false
 }
