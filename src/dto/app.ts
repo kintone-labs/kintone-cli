@@ -13,6 +13,14 @@ type AppOption = {
     pluginName: string
 }
 
+type WebpackParams = {
+    entry: string
+    useTypescript: boolean
+    useReact: boolean
+    appName: string
+}
+
 export {
-    AppOption
+    AppOption,
+    WebpackParams
 }

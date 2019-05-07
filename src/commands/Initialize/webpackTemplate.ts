@@ -1,9 +1,4 @@
-type WebpackParams = {
-    entry: string
-    useTypescript: boolean
-    useReact: boolean
-    appName: string
-}
+import {WebpackParams} from '../../dto/app'
 const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName}:WebpackParams):string => {
     let jsRules: string
     if (useTypescript) {
@@ -81,6 +76,5 @@ export default {
 }
 
 export {
-    buildWebpackReactTemplate,
-    WebpackParams
+    buildWebpackReactTemplate
 }
