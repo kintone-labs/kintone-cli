@@ -6,7 +6,7 @@ const lintCommand = (program: CommanderStatic) => {
     program
         .command('lint')
         .option('--fix', 'Auto fix eslint errors')
-        .option('--folder', 'Name of template folder to run eslint')
+        .option('--folder <folder>', 'Name of template folder to run eslint')
         .action(async (cmd)=>{
           console.log(chalk.yellow('Checking syntax...'));
           if(cmd.folder) {

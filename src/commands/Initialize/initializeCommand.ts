@@ -63,6 +63,7 @@ const initializeCommand = (program: CommanderStatic) => {
         .option('--use-webpack', 'Use webpack or not')
         .option('--type <type>', 'Set app type')
         .option('--domain <domain>', 'Set kintone domain')
+        .option('--use-cybozu-lint', 'Use cybozu eslint rules')
         .action(async (cmd)=>{
             let error = validator.appValidator(cmd)
             if (error && typeof error === 'string') {
@@ -149,7 +150,6 @@ const initializeCommand = (program: CommanderStatic) => {
                     cmd.useReact = answerUsingWebpack['useReact']
                     cmd.entry = answerUsingWebpack['entry']
                 }
-
                 if (!cmd.appName) {
                     let answerAppName = await prompt([
                         {
@@ -159,6 +159,16 @@ const initializeCommand = (program: CommanderStatic) => {
                         }
                     ])
                     cmd.appName = answerAppName['appName']
+                }
+                if(!cmd.useCybozuLint) {
+                    let answerUseCybozuLint = await prompt([
+                        {
+                            type: 'confirm',
+                            name: 'useCybozuLint',
+                            message : 'Do you want to use @cybozu/eslint-config for syntax checking ?'
+                        }
+                    ])
+                    cmd.useCybozuLint = answerUseCybozuLint['useCybozuLint']
                 }
 
                 // Config for appConfig.json
@@ -192,7 +202,8 @@ const initializeCommand = (program: CommanderStatic) => {
                     password: cmd.password,
                     type: cmd.type,
                     appID: cmd.appID,
-                    pluginName: cmd.pluginName
+                    pluginName: cmd.pluginName,
+                    useCybozuLint: cmd.useCybozuLint
                 }
 
                 console.log(chalk.yellow('Creating app...'))
@@ -202,7 +213,10 @@ const initializeCommand = (program: CommanderStatic) => {
                     return
                 }
                 console.log(chalk.yellow('Installing dependencies...'))
-                spawnSync('npm',['install'],{stdio: 'inherit'})
+                spawnSync('npm',['install'], {stdio: 'inherit'})
+                if(cmd.useCybozuLint) {
+                    spawnSync('npm',['install', '--save-dev', 'eslint', '@cybozu/eslint-config'], {stdio: 'inherit'})
+                }
             } catch (error) {
                 console.log(error)
             }
