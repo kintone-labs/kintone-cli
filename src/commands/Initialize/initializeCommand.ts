@@ -260,6 +260,14 @@ const initializeCommand = (program: CommanderStatic) => {
             mkdirSync(projectFolder);
 
             // write project info object to package.json
+            if(!packageInfo['devDependencies']) {
+                packageInfo['devDependencies'] = {}
+            }
+            packageInfo['devDependencies']['local-web-server'] = '^2.6.1'
+            if(!packageInfo['scripts']) {
+                packageInfo['scripts'] = {}
+            }
+            packageInfo['scripts']['dev'] = 'ws'
             const packageJsonPath = projectFolder + '/package.json'
             writeFileSync(packageJsonPath, packageInfo, { spaces: 2, EOL: '\r\n' });
             
