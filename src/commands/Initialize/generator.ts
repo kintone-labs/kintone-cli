@@ -118,7 +118,14 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         }
         packageJSON.devDependencies.typescript = "^2.3.3"
         packageJSON.devDependencies.tsc = "^1.20150623.0"
+
+        if (option['useReact']) {
+            packageJSON.devDependencies['@types/react'] = "^16.8.16"
+            packageJSON.devDependencies["@types/react-dom"] = "^16.8.4"
+        }
+
         writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
+        writeFileSyncFS(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any')
     }
 
     if (option['useReact']) {
