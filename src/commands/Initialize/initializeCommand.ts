@@ -63,6 +63,9 @@ const initializeCommand = (program: CommanderStatic) => {
         .option('--use-webpack', 'Use webpack or not')
         .option('--type <type>', 'Set app type')
         .option('--domain <domain>', 'Set kintone domain')
+        .option('--username <username>', 'Set username')
+        .option('--password <password>', 'Set password')
+        .option('--appID <appID>', 'Set app ID for customization')
         .option('--use-cybozu-lint', 'Use cybozu eslint rules')
         .action(async (cmd)=>{
             let error = validator.appValidator(cmd)
@@ -172,12 +175,7 @@ const initializeCommand = (program: CommanderStatic) => {
                 }
 
                 // Config for appConfig.json
-                if (cmd.type === 'Plugin') {
-                    cmd.pluginName = {
-                        en: cmd.appName
-                    }
-                }
-                else if (cmd.type === 'Customization') {
+                if (cmd.type === 'Customization') {
                     if (!cmd.appID) {
                         let answerAppID = await prompt([
                             {
@@ -224,9 +222,9 @@ const initializeCommand = (program: CommanderStatic) => {
                     return
                 }
                 console.log(chalk.yellow('Installing dependencies...'))
-                spawnSync('npm',['install'], {stdio: 'inherit'})
+                spawnSync('npm',['install'], {stdio: 'inherit', windowsHide: true})
                 if(cmd.useCybozuLint) {
-                    spawnSync('npm',['install', '--save-dev', 'eslint', '@cybozu/eslint-config'], {stdio: 'inherit'})
+                    spawnSync('npm',['install', '--save-dev', 'eslint', '@cybozu/eslint-config'], {stdio: 'inherit', windowsHide: true})
                 }
             } catch (error) {
                 console.log(error)
@@ -244,9 +242,14 @@ const initializeCommand = (program: CommanderStatic) => {
             // ask info about project
             const packageInfo = await prompt(questions)
             if(packageInfo['dependencies']['@kintone/kintone-ui-component'])
-            packageInfo['dependencies']['@kintone/kintone-ui-component'] = latestUIComponentVersion;
+                packageInfo['dependencies']['@kintone/kintone-ui-component'] = latestUIComponentVersion;
+            else 
+                delete packageInfo['dependencies']['@kintone/kintone-ui-component']
+                
             if(packageInfo['dependencies']['@kintone/kintone-js-sdk'])
-            packageInfo['dependencies']['@kintone/kintone-js-sdk'] = latestJsSdkVersion;
+                packageInfo['dependencies']['@kintone/kintone-js-sdk'] = latestJsSdkVersion;
+            else
+                delete packageInfo['dependencies']['@kintone/kintone-js-sdk']
 
             // create project folder 
             const projectFolder = global['currentDir'] + '/' + packageInfo['name'];
@@ -264,7 +267,7 @@ const initializeCommand = (program: CommanderStatic) => {
             if(cmd.install) {
                 process.chdir(projectFolder);
                 console.log(chalk.yellow('Installing dependencies...'));
-                spawnSync('npm', ['i'], {stdio: "inherit"})
+                spawnSync('npm', ['i'], {stdio: "inherit", windowsHide: true})
             }
             console.log(chalk.yellow('You are all set! Happy kintone customizing!'));
         })
