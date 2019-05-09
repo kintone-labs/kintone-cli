@@ -28,6 +28,10 @@ const deployCustomization = (option: object) => {
         paramArr.push('--basic-auth-password')
         paramArr.push(authJSON.password)
     }
+    if(authJSON.proxy) {
+        paramArr.push('--proxy')
+        paramArr.push(authJSON.proxy)
+    }
 
     writeFileSync(`${option['appName']}/dist/customize-manifest.json`,customizeManifestJSON, { spaces: 2, EOL: '\r\n' })
     spawnSync(
