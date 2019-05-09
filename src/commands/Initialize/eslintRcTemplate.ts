@@ -8,13 +8,15 @@ const buildEslintRcTemplate = ({useTypescript, useReact}:EslintRcParams):string 
         eslintRules.push('@cybozu/eslint-config/presets/typescript')
     } else if(useReact) {
         eslintRules.push('@cybozu/eslint-config/presets/react')
-    } else {
-        eslintRules.push("@cybozu/eslint-config/lib/es5.js");
     }
+
     let eslintRulesToString = '["' + eslintRules.join('", "') + '"]';
     return `module.exports = {
-                extends: ${eslintRulesToString},
-            }`
+        env: {
+            es6: true
+        },
+            extends: ${eslintRulesToString},
+        }`
 }
 export default {
     buildEslintRcTemplate

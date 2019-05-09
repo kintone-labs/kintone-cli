@@ -22,6 +22,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
 
     manifestJSON['appName'] = option['appName']
     manifestJSON['type'] = option['type']
+    manifestJSON['scope'] = option['scope']
 
     if (existsSync(option['appName'])) {
         return 'App folder existed'
@@ -35,7 +36,9 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             password: option['password'],
             domain: option['domain']
         }
-
+        if(option['proxy']) {
+            authJSON['proxy'] = option['proxy']
+        }
         writeFileSync(`${option['appName']}/auth.json`,authJSON,{spaces: 4, EOL: "\r\n"})
     }
 

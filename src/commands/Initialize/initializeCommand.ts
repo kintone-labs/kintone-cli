@@ -111,11 +111,25 @@ const initializeCommand = (program: CommanderStatic) => {
                             type : 'input',
                             name : 'password',
                             message : 'What is your kintone password ?'
+                        },
+                        {
+                            type : 'confirm',
+                            name : 'useProxy',
+                            message : 'Do you use proxy ?'
+                        },
+                        {
+                            type : 'input',
+                            name : 'proxy',
+                            message : 'Specify your proxy full URL, including port number:',
+                            when: (answers:any) => {
+                                return !!answers.useProxy;
+                            }
                         }
                     ])
                     cmd.domain = answerCredentials['domain']
                     cmd.username = answerCredentials['username']
                     cmd.password = answerCredentials['password']
+                    cmd.proxy = answerCredentials['proxy']
                 }
                 if (!cmd.useTypescript) {
                     let answerTypescript = await prompt([
@@ -212,7 +226,9 @@ const initializeCommand = (program: CommanderStatic) => {
                     type: cmd.type,
                     appID: cmd.appID,
                     pluginName: cmd.pluginName,
-                    useCybozuLint: cmd.useCybozuLint
+                    useCybozuLint: cmd.useCybozuLint,
+                    scope: cmd.scope,
+                    proxy: cmd.proxy
                 }
 
                 console.log(chalk.yellow('Creating app...'))
