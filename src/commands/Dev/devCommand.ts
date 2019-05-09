@@ -4,10 +4,21 @@ import {readFileSync} from 'jsonfile'
 import { spawnSync, spawn, ChildProcessWithoutNullStreams } from "child_process"
 import {deployCustomization} from '../Deploy/deployer'
 import stripAnsi from 'strip-ansi'
+import { existsSync } from "fs";
 
 const cleanExit = (ws:ChildProcessWithoutNullStreams) => {
     ws.kill()
     process.exit()
+}
+
+const isURL = (str: string) => {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(str);
 }
 
 const devCommand = (program: CommanderStatic) => {
@@ -31,21 +42,33 @@ const devCommand = (program: CommanderStatic) => {
                 let webserverInfo = data.toString().replace('Serving at', '')
                 webserverInfo = webserverInfo.split(',')
                 const serverAddr = stripAnsi(webserverInfo[0].trim())
-                const distFileLink = `${serverAddr}/${cmd.appName}/dist/${cmd.appName}.min.js`
+
+                let config = readFileSync(`${cmd['appName']}/config.json`)
+
+                const distFileLinkArr = []
+
+                config.uploadConfig.desktop.js.forEach((item)=>{
+                    if (isURL(item)) {
+                        distFileLinkArr.push(item)
+                    }
+                    else {
+                        distFileLinkArr.push(`${serverAddr}/${item}`)
+                    }
+                })
 
                 // (IN FUTURE) check if there is no webpack.config.js upload file links according to config
 
                 // build the first time and upload link to kintone
-                console.log(chalk.yellow('Building distributed file...'))
-                spawnSync('npm', ['run',`build-${cmd.appName}`], {stdio:['ignore', 'ignore', process.stderr]})
+                if (existsSync(`${cmd.appName}/webpack.config.js`)) {
+                    console.log(chalk.yellow('Building distributed file...'))
+                    spawnSync('npm', ['run',`build-${cmd.appName}`], {stdio:['ignore', 'ignore', process.stderr]})
+                }
 
                 // Attaching links to kintone
                 console.log(chalk.yellow('Attaching links to kintone...'))
                 try {
-                    let config = readFileSync(`${cmd['appName']}/config.json`)
-                    config.uploadConfig.desktop.js = [distFileLink]
+                    config.uploadConfig.desktop.js = distFileLinkArr
                     config.uploadConfig.mobile.js = []
-                    console.log(config.uploadConfig.desktop.js[0])
                     if (config.type === 'Customization') {
                         deployCustomization(config)
                     }
@@ -60,8 +83,10 @@ const devCommand = (program: CommanderStatic) => {
                 } else if(!watching) {
                     // watch for changes
                     watching = true
-                    console.log(chalk.yellow('Watching for changes...'))
-                    spawnSync('npm', ['run',`build-${cmd.appName}`, '--', '--watch'], {stdio:'inherit'})
+                    if (existsSync(`${cmd.appName}/webpack.config.js`)) {
+                        console.log(chalk.yellow('Watching for changes...'))
+                        spawnSync('npm', ['run',`build-${cmd.appName}`, '--', '--watch'], {stdio:'inherit'})
+                    }
                 }
             })
         })

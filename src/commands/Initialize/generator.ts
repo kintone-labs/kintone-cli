@@ -127,8 +127,18 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             packageJSON.devDependencies["@types/react-dom"] = "^16.8.4"
         }
 
-        writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
+        const tsConfigJSON = {
+            "compilerOptions": {
+                "typeRoots": ["./source","../node_modules/@types"]
+            },
+            "include": [
+                "source/**/*.ts"
+            ]
+        }
+
+        writeFileSync(`package.json`,packageJSON, {spaces: 4, EOL: "\r\n"})
         writeFileSyncFS(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any')
+        writeFileSync(`${option['appName']}/tsconfig.json`, tsConfigJSON, {spaces: 4, EOL: "\r\n"})
     }
 
     if (option['useReact']) {
