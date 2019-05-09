@@ -6,11 +6,11 @@ const lintCommand = (program: CommanderStatic) => {
     program
         .command('lint')
         .option('--fix', 'Auto fix eslint errors')
-        .option('--folder <folder>', 'Name of template folder to run eslint')
+        .option('--appName <appName>', 'Name of template folder to run eslint')
         .action(async (cmd)=>{
           console.log(chalk.yellow('Checking syntax...'));
-          if(cmd.folder) {
-            spawnSync('npm', ['run', `lint-${cmd.folder}${cmd.fix?'-fix':''}`], {stdio: 'inherit'});
+          if(cmd.appName) {
+            spawnSync('npm', ['run', `lint-${cmd.appName}${cmd.fix?'-fix':''}`], {stdio: 'inherit'});
           }
           else {
             spawnSync('npm', ['run', `lint-all${cmd.fix?'-fix':''}`], {stdio: 'inherit'});

@@ -1,8 +1,14 @@
 import { CommanderStatic } from "commander"
 import chalk from 'chalk'
 import {readFileSync} from 'jsonfile'
-import {existsSync} from 'fs'
-import { spawnSync, spawn } from "child_process"
+import { spawnSync, spawn, ChildProcessWithoutNullStreams } from "child_process"
+import {deployCustomization} from '../Deploy/deployer'
+import stripAnsi from 'strip-ansi'
+
+const cleanExit = (ws:ChildProcessWithoutNullStreams) => {
+    ws.kill()
+    process.exit()
+}
 
 const devCommand = (program: CommanderStatic) => {
     program
@@ -24,7 +30,7 @@ const devCommand = (program: CommanderStatic) => {
                 console.log(data.toString())
                 let webserverInfo = data.toString().replace('Serving at', '')
                 webserverInfo = webserverInfo.split(',')
-                const serverAddr = webserverInfo[0].trim()
+                const serverAddr = stripAnsi(webserverInfo[0].trim())
                 const distFileLink = `${serverAddr}/${cmd.appName}/dist/${cmd.appName}.min.js`
 
                 // (IN FUTURE) check if there is no webpack.config.js upload file links according to config
@@ -35,16 +41,28 @@ const devCommand = (program: CommanderStatic) => {
 
                 // Attaching links to kintone
                 console.log(chalk.yellow('Attaching links to kintone...'))
-                
-                // watch for changes
-                if(cmd.watch && !watching) {
+                try {
+                    let config = readFileSync(`${cmd['appName']}/config.json`)
+                    config.uploadConfig.desktop.js = [distFileLink]
+                    config.uploadConfig.mobile.js = []
+                    console.log(config.uploadConfig.desktop.js[0])
+                    if (config.type === 'Customization') {
+                        deployCustomization(config)
+                    }
+                } catch (error) {
+                    console.log(chalk.red(error))
+                    cleanExit(ws)
+                }
+
+                if(!cmd.watch) {
+                    console.log(chalk.yellow('All done. Happy customizing!'))
+                    console.log(chalk.yellow('Press Ctrl + C to stop local web server.'))
+                } else if(!watching) {
+                    // watch for changes
                     watching = true
                     console.log(chalk.yellow('Watching for changes...'))
                     spawnSync('npm', ['run',`build-${cmd.appName}`, '--', '--watch'], {stdio:'inherit'})
                 }
-                console.log(chalk.yellow('All done. Happy customizing!'))
-                ws.kill()
-                process.exit()
             })
         })
 }
