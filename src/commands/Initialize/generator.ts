@@ -87,7 +87,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
 
         let webpackTemplate = buildWebpackReactTemplate(option as WebpackParams)
         writeFileSyncFS(`${option['appName']}/webpack.config.js`, webpackTemplate)
-        spawnSync('npx',['prettier', '--write', `${option['appName']}/webpack.config.js`], {stdio: 'inherit', windowsHide: true})
+        spawnSync('npx',['prettier', '--write', `${option['appName']}/webpack.config.js`, '--single-quote'], {stdio: 'inherit', windowsHide: true})
 
         manifestJSON['uploadConfig'] = {
             desktop: {

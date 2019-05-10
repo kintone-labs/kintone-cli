@@ -6,9 +6,9 @@ const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName}:Web
                 test: /\.ts?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env', "@babel/preset-typescript"]
+                        presets: ['@babel/preset-env', '@babel/preset-typescript']
                     }
                 }
             },`
@@ -17,9 +17,9 @@ const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName}:Web
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env', '@babel/react', "@babel/preset-typescript"]
+                        presets: ['@babel/preset-env', '@babel/react', '@babel/preset-typescript']
                     }
                 }
             },`
@@ -30,7 +30,7 @@ const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName}:Web
                 test: /\.js?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
                         presets: ['@babel/preset-env']
                     }
@@ -41,7 +41,7 @@ const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName}:Web
                     test: /\.jsx?$/,
                     exclude: /node_modules/,
                     use: {
-                        loader: "babel-loader",
+                        loader: 'babel-loader',
                         options: {
                             presets: ['@babel/preset-env', '@babel/react']
                         }
