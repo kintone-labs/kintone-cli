@@ -2,14 +2,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const program = require("commander");
-const docCommand_1 = require("./commands/doc/docCommand");
-const configCommand_1 = require("./commands/config/configCommand");
-const dataCommand_1 = require("./commands/data/dataCommand");
+const initializeCommand_1 = require("./commands/Initialize/initializeCommand");
+const buildCommand_1 = require("./commands/Build/buildCommand");
+const deployCommand_1 = require("./commands/Deploy/deployCommand");
+const lintCommand_1 = require("./commands/Lint/lintCommand");
+const devCommand_1 = require("./commands/Dev/devCommand");
+const path = require("path");
+global['cliRoot'] = path.resolve(path.dirname(require.main.filename) + "/../");
+global['currentDir'] = process.cwd();
 program
     .version('0.1.0')
     .description('kintone Node CLI');
-docCommand_1.default(program);
-configCommand_1.default(program);
-dataCommand_1.default(program);
+initializeCommand_1.default(program);
+buildCommand_1.default(program);
+deployCommand_1.default(program);
+lintCommand_1.default(program);
+devCommand_1.default(program);
 program.parse(process.argv);
-//# sourceMappingURL=index.js.map
