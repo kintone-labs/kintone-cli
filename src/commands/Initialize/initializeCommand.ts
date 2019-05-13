@@ -74,161 +74,144 @@ const initializeCommand = (program: CommanderStatic) => {
                 return
             }
             try {
-                if (!cmd.type) {
-                    let answerType = await prompt([
-                        {
-                            type : 'list',
-                            name : 'type',
-                            message : 'What type of app you want to create ?',
-                            choices: ['Customization','Plugin']
+                let answer = await prompt([
+                    {
+                        type : 'list',
+                        name : 'type',
+                        message : 'What type of app you want to create ?',
+                        choices: ['Customization','Plugin'],
+                        when: !cmd.type
+                    },
+                    {
+                        type : 'confirm',
+                        name : 'setAuth',
+                        message : 'Do you want to set authentication credentials ?',
+                        when: !cmd.setAuth
+                    },
+                    {
+                        type : 'input',
+                        name : 'domain',
+                        message : 'What is your kintone domain ?',
+                        when: (curAnswers:object) => {
+                            return cmd.setAuth || curAnswers['setAuth']
                         }
-                    ])
-                    cmd.type = answerType['type']
-                }
-                if (!cmd.setAuth) {
-                    let answerAuth = await prompt([
-                        {
-                            type : 'confirm',
-                            name : 'setAuth',
-                            message : 'Do you want to set authentication credentials ?'
+                    },
+                    {
+                        type : 'input',
+                        name : 'username',
+                        message : 'What is your kintone username ?',
+                        when: (curAnswers:object) => {
+                            return cmd.setAuth || curAnswers['setAuth']
                         }
-                    ])
-                    cmd.setAuth = answerAuth['setAuth'] 
-                }
-                if (cmd.setAuth) {
-                    let answerCredentials = await prompt([
-                        {
-                            type : 'input',
-                            name : 'domain',
-                            message : 'What is your kintone domain ?'
-                        },
-                        {
-                            type : 'input',
-                            name : 'username',
-                            message : 'What is your kintone username ?'
-                        },
-                        {
-                            type : 'input',
-                            name : 'password',
-                            message : 'What is your kintone password ?'
-                        },
-                        {
-                            type : 'confirm',
-                            name : 'useProxy',
-                            message : 'Do you use proxy ?'
-                        },
-                        {
-                            type : 'input',
-                            name : 'proxy',
-                            message : 'Specify your proxy full URL, including port number:',
-                            when: (answers:any) => {
-                                return !!answers.useProxy;
-                            }
+                    },
+                    {
+                        type : 'input',
+                        name : 'password',
+                        message : 'What is your kintone password ?',
+                        when: (curAnswers:object) => {
+                            return cmd.setAuth || curAnswers['setAuth']
                         }
-                    ])
-                    cmd.domain = answerCredentials['domain']
-                    cmd.username = answerCredentials['username']
-                    cmd.password = answerCredentials['password']
-                    cmd.proxy = answerCredentials['proxy']
-                }
-                if (!cmd.useTypescript) {
-                    let answerTypescript = await prompt([
-                        {
-                            type: 'confirm',
-                            name: 'useTypescript',
-                            message : 'Do you want to use Typescript ?'
+                    },
+                    {
+                        type : 'confirm',
+                        name : 'useProxy',
+                        message : 'Do you use proxy ?',
+                        when: (curAnswers:object) => {
+                            return cmd.setAuth || curAnswers['setAuth']
                         }
-                    ])
-                    cmd.useTypescript = answerTypescript['useTypescript']
-                }
-                if (!cmd.useWebpack) {
-                    let answerWebpack = await prompt([
-                        {
-                            type: 'confirm',
-                            name: 'useWebpack',
-                            message : 'Do you want to use Webpack ?'
+                    },
+                    {
+                        type : 'input',
+                        name : 'proxy',
+                        message : 'Specify your proxy full URL, including port number:',
+                        when: (curAnswers:object) => {
+                            return cmd.useProxy || curAnswers['useProxy']
                         }
-                    ])
-                    cmd.useWebpack = answerWebpack['useWebpack']
-                }
-                if (cmd.useWebpack) {
-                    let answerUsingWebpack = await prompt([
-                        {
-                            type: 'confirm',
-                            name: 'useReact',
-                            message : 'Do you want to use React ?'
-                        },
-                        {
-                            type: 'input',
-                            name: 'entry',
-                            message : 'What is the entry for Webpack ?'
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'useTypescript',
+                        message : 'Do you want to use Typescript ?',
+                        when: !cmd.useTypescript
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'useWebpack',
+                        message : 'Do you want to use Webpack ?',
+                        when: !cmd.useWebpack
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'useReact',
+                        message : 'Do you want to use React ?',
+                        when: (curAnswers:object) => {
+                            return cmd.useWebpack || curAnswers['useWebpack']
                         }
-                    ])
-                    cmd.useReact = answerUsingWebpack['useReact']
-                    cmd.entry = answerUsingWebpack['entry']
-                }
-                if (!cmd.appName) {
-                    let answerAppName = await prompt([
-                        {
-                            type: 'input',
-                            name: 'appName',
-                            message : 'What is the app name ?'
+                    },
+                    {
+                        type: 'input',
+                        name: 'entry',
+                        message : 'What is the entry for Webpack ?',
+                        when: (curAnswers:object) => {
+                            return cmd.useWebpack || curAnswers['useWebpack']
                         }
-                    ])
-                    cmd.appName = answerAppName['appName']
-                }
-                if(!cmd.useCybozuLint) {
-                    let answerUseCybozuLint = await prompt([
-                        {
-                            type: 'confirm',
-                            name: 'useCybozuLint',
-                            message : 'Do you want to use @cybozu/eslint-config for syntax checking ?'
+                    },
+                    {
+                        type: 'input',
+                        name: 'appName',
+                        message : 'What is the app name ?',
+                        when: !cmd.appName
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'useCybozuLint',
+                        message : 'Do you want to use @cybozu/eslint-config for syntax checking ?',
+                        when: !cmd.useCybozuLint
+                    },
+                    {
+                        type: 'number',
+                        name: 'appID',
+                        message : 'What is the app ID for customization ?',
+                        when: (curAnswers:object) => {
+                            return(
+                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization') 
+                                && 
+                                (!cmd.appID)
+                            )
                         }
-                    ])
-                    cmd.useCybozuLint = answerUseCybozuLint['useCybozuLint']
-                }
+                    },
+                    {
+                        type : 'list',
+                        name : 'scope',
+                        message : 'What is the scope of customization ?',
+                        choices: ['ALL','ADMIN','NONE'],
+                        when: (curAnswers:object) => {
+                            return(
+                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization') 
+                                && 
+                                (!cmd.scope)
+                            )
+                        }
+                    }
+                ])
 
                 // Config for appConfig.json
-                if (cmd.type === 'Customization') {
-                    if (!cmd.appID) {
-                        let answerAppID = await prompt([
-                            {
-                                type: 'number',
-                                name: 'appID',
-                                message : 'What is the app ID for customization ?'
-                            }
-                        ])
-                        cmd.appID = answerAppID['appID']
-                    }
-                    if (!cmd.scope) {
-                        let answerScope = await prompt([
-                            {
-                                type : 'list',
-                                name : 'scope',
-                                message : 'What is the scope of customization ?',
-                                choices: ['ALL','ADMIN','NONE']
-                            }
-                        ])
-                        cmd.scope = answerScope['scope']
-                    }
-                }
-
                 let appSetting = {
-                    setAuth: cmd.setAuth,
-                    useTypescript: cmd.useTypescript,
-                    useWebpack: cmd.useWebpack,
-                    entry: cmd.entry,
-                    useReact: cmd.useReact,
-                    appName: cmd.appName.replace(" ","-"),
-                    domain: cmd.domain,
-                    username: cmd.username,
-                    password: cmd.password,
-                    type: cmd.type,
-                    appID: cmd.appID,
-                    pluginName: cmd.pluginName,
-                    useCybozuLint: cmd.useCybozuLint,
-                    scope: cmd.scope,
-                    proxy: cmd.proxy
+                    setAuth: cmd.setAuth || answer['setAuth'],
+                    useTypescript: cmd.useTypescript || answer['useTypescript'],
+                    useWebpack: cmd.useWebpack || answer['useWebpack'],
+                    entry: cmd.entry || answer['entry'],
+                    useReact: cmd.useReact || answer['useReact'],
+                    appName: (cmd.appName || answer['appName']).replace(" ","-"),
+                    domain: cmd.domain || answer['domain'],
+                    username: cmd.username || answer['username'],
+                    password: cmd.password || answer['password'],
+                    type: cmd.type || answer['type'],
+                    appID: cmd.appID || answer['appID'],
+                    pluginName: cmd.pluginName || answer['pluginName'],
+                    useCybozuLint: cmd.useCybozuLint || answer['useCybozuLint'],
+                    scope: cmd.scope || answer['scope'],
+                    proxy: cmd.proxy || answer['proxy']
                 }
 
                 console.log(chalk.yellow('Creating app...'))
