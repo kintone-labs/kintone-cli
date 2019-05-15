@@ -42,3 +42,4 @@ const buildCommand = (program) => {
     }));
 };
 exports.default = buildCommand;
+//# sourceMappingURL=buildCommand.js.map

@@ -24,6 +24,10 @@ const generateAppFolder = (option) => {
         return 'App folder existed';
     }
     fs_1.mkdirSync(option['appName']);
+    fs_1.mkdirSync(`${option['appName']}/source`);
+    fs_1.mkdirSync(`${option['appName']}/source/js`);
+    fs_1.mkdirSync(`${option['appName']}/source/css`);
+    fs_1.mkdirSync(`${option['appName']}/dist`);
     if (option['setAuth']) {
         let authJSON = {
             username: option['username'],
@@ -168,10 +172,6 @@ const generateAppFolder = (option) => {
         fs_1.writeFileSync(`${option['appName']}/.eslintrc.js`, eslintRcTemplete);
         child_process_1.spawnSync('npx', ['prettier', '--write', `${option['appName']}/.eslintrc.js`], { stdio: 'inherit' });
     }
-    fs_1.mkdirSync(`${option['appName']}/source`);
-    fs_1.mkdirSync(`${option['appName']}/source/js`);
-    fs_1.mkdirSync(`${option['appName']}/source/css`);
-    fs_1.mkdirSync(`${option['appName']}/dist`);
     jsonfile_1.writeFileSync(`${option['appName']}/config.json`, manifestJSON, { spaces: 4, EOL: "\r\n" });
     if (option['entry']) {
         fs_1.writeFileSync(`${option['appName']}/source/${option['entry']}`, '');
@@ -182,3 +182,4 @@ exports.generateAppFolder = generateAppFolder;
 exports.default = {
     generateAppFolder
 };
+//# sourceMappingURL=generator.js.map

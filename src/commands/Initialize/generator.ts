@@ -29,6 +29,10 @@ const generateAppFolder = (option: AppOption): string | boolean => {
     }
 
     mkdirSync(option['appName']);
+    mkdirSync(`${option['appName']}/source`)
+    mkdirSync(`${option['appName']}/source/js`)
+    mkdirSync(`${option['appName']}/source/css`)
+    mkdirSync(`${option['appName']}/dist`)
 
     if (option['setAuth']) {
         let authJSON = {
@@ -191,10 +195,6 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         spawnSync('npx',['prettier', '--write', `${option['appName']}/.eslintrc.js`], {stdio: 'inherit'})
     }
 
-    mkdirSync(`${option['appName']}/source`)
-    mkdirSync(`${option['appName']}/source/js`)
-    mkdirSync(`${option['appName']}/source/css`)
-    mkdirSync(`${option['appName']}/dist`)
     writeFileSync(`${option['appName']}/config.json`,manifestJSON,{spaces: 4, EOL: "\r\n"})
     if (option['entry']) {
         writeFileSyncFS(`${option['appName']}/source/${option['entry']}`, '')

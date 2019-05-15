@@ -93,3 +93,4 @@ const devCommand = (program) => {
     }));
 };
 exports.default = devCommand;
+//# sourceMappingURL=devCommand.js.map
