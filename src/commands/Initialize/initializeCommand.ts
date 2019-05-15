@@ -58,15 +58,18 @@ const initializeCommand = (program: CommanderStatic) => {
     
     program
         .command('create-template')
-        .option('--set-auth', 'Set authentication credentials')
-        .option('--use-typescript', 'Use typescript or not')
-        .option('--use-webpack', 'Use webpack or not')
-        .option('--type <type>', 'Set app type')
-        .option('--domain <domain>', 'Set kintone domain')
-        .option('--username <username>', 'Set username')
-        .option('--password <password>', 'Set password')
-        .option('--appID <appID>', 'Set app ID for customization')
-        .option('--use-cybozu-lint', 'Use cybozu eslint rules')
+        .option('-q, --quick', 'Use default template')
+        .option('-a, --set-auth', 'Set authentication credentials')
+        .option('-n, --app-name <appName>', 'Set app name')
+        .option('-s, --use-typescript', 'Use typescript or not')
+        .option('-w, --use-webpack', 'Use webpack or not')
+        .option('-t, --type <type>', 'Set app type')
+        .option('-d, --domain <domain>', 'Set kintone domain')
+        .option('-u, --username <username>', 'Set username')
+        .option('-p, --password <password>', 'Set password')
+        .option('-i, --appID <appID>', 'Set app ID for customization')
+        .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
+        .option('--preset <preset>', 'Preset for generating template')
         .action(async (cmd)=>{
             let error = validator.appValidator(cmd)
             if (error && typeof error === 'string') {
@@ -74,6 +77,16 @@ const initializeCommand = (program: CommanderStatic) => {
                 return
             }
             try {
+                if (cmd.quick) {
+                    cmd.setAuth = false
+                    cmd.useProxy = false
+                    cmd.useTypescript = false
+                    cmd.useWebpack = false
+                    cmd.useCybozuLint = false
+                    cmd.type = 'Customization'
+                    cmd.appName = `kintone-customization-${Date.now()}`
+                    cmd.scope = 'ALL'
+                }
                 let answer = await prompt([
                     {
                         type : 'list',
@@ -86,7 +99,7 @@ const initializeCommand = (program: CommanderStatic) => {
                         type : 'confirm',
                         name : 'setAuth',
                         message : 'Do you want to set authentication credentials ?',
-                        when: !cmd.setAuth
+                        when: !cmd.setAuth && cmd.setAuth !== false
                     },
                     {
                         type : 'input',
@@ -132,13 +145,13 @@ const initializeCommand = (program: CommanderStatic) => {
                         type: 'confirm',
                         name: 'useTypescript',
                         message : 'Do you want to use Typescript ?',
-                        when: !cmd.useTypescript
+                        when: !cmd.useTypescript && cmd.useTypescript !== false
                     },
                     {
                         type: 'confirm',
                         name: 'useWebpack',
                         message : 'Do you want to use Webpack ?',
-                        when: !cmd.useWebpack
+                        when: !cmd.useWebpack && cmd.useWebpack !== false
                     },
                     {
                         type: 'confirm',
@@ -166,15 +179,15 @@ const initializeCommand = (program: CommanderStatic) => {
                         type: 'confirm',
                         name: 'useCybozuLint',
                         message : 'Do you want to use @cybozu/eslint-config for syntax checking ?',
-                        when: !cmd.useCybozuLint
+                        when: !cmd.useCybozuLint && cmd.useCybozuLint !== false
                     },
                     {
                         type: 'number',
                         name: 'appID',
-                        message : 'What is the app ID for customization ?',
+                        message : 'What is the app ID ?',
                         when: (curAnswers:object) => {
                             return(
-                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization') 
+                                (cmd.setAuth || curAnswers['setAuth']) 
                                 && 
                                 (!cmd.appID)
                             )
@@ -194,6 +207,25 @@ const initializeCommand = (program: CommanderStatic) => {
                         }
                     }
                 ])
+
+                if (cmd.preset) {
+                    switch (cmd.preset) {
+                        case 'React':
+                            cmd.useTypescript = false
+                            cmd.useWebpack = true
+                            cmd.useReact = true
+                            cmd.entry = 'app.jsx'
+                            break;
+                        case 'ReactTS':
+                            cmd.useTypescript = true
+                            cmd.useWebpack = true
+                            cmd.useReact = true
+                            cmd.entry = 'app.tsx'
+                            break;
+                        default:
+                            break;
+                    }
+                }
 
                 // Config for appConfig.json
                 let appSetting = {
@@ -222,7 +254,7 @@ const initializeCommand = (program: CommanderStatic) => {
                 }
                 console.log(chalk.yellow('Installing dependencies...'))
                 spawnSync('npm',['install'], {stdio: 'inherit', windowsHide: true})
-                if(cmd.useCybozuLint) {
+                if(appSetting.useCybozuLint) {
                     spawnSync('npm',['install', '--save-dev', 'eslint', '@cybozu/eslint-config'], {stdio: 'inherit', windowsHide: true})
                 }
             } catch (error) {

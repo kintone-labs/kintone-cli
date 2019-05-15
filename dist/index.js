@@ -19,3 +19,4 @@ deployCommand_1.default(program);
 lintCommand_1.default(program);
 devCommand_1.default(program);
 program.parse(process.argv);
+//# sourceMappingURL=index.js.map

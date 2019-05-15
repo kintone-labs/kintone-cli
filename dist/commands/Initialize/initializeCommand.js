@@ -64,15 +64,18 @@ const initializeCommand = (program) => {
     ];
     program
         .command('create-template')
-        .option('--set-auth', 'Set authentication credentials')
-        .option('--use-typescript', 'Use typescript or not')
-        .option('--use-webpack', 'Use webpack or not')
-        .option('--type <type>', 'Set app type')
-        .option('--domain <domain>', 'Set kintone domain')
-        .option('--username <username>', 'Set username')
-        .option('--password <password>', 'Set password')
-        .option('--appID <appID>', 'Set app ID for customization')
-        .option('--use-cybozu-lint', 'Use cybozu eslint rules')
+        .option('-q, --quick', 'Use default template')
+        .option('-a, --set-auth', 'Set authentication credentials')
+        .option('-n, --app-name <appName>', 'Set app name')
+        .option('-s, --use-typescript', 'Use typescript or not')
+        .option('-w, --use-webpack', 'Use webpack or not')
+        .option('-t, --type <type>', 'Set app type')
+        .option('-d, --domain <domain>', 'Set kintone domain')
+        .option('-u, --username <username>', 'Set username')
+        .option('-p, --password <password>', 'Set password')
+        .option('-i, --appID <appID>', 'Set app ID for customization')
+        .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
+        .option('--preset <preset>', 'Preset for generating template')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let error = validator_1.default.appValidator(cmd);
         if (error && typeof error === 'string') {
@@ -80,159 +83,167 @@ const initializeCommand = (program) => {
             return;
         }
         try {
-            if (!cmd.type) {
-                let answerType = yield inquirer_1.prompt([
-                    {
-                        type: 'list',
-                        name: 'type',
-                        message: 'What type of app you want to create ?',
-                        choices: ['Customization', 'Plugin']
-                    }
-                ]);
-                cmd.type = answerType['type'];
+            if (cmd.quick) {
+                cmd.setAuth = false;
+                cmd.useProxy = false;
+                cmd.useTypescript = false;
+                cmd.useWebpack = false;
+                cmd.useCybozuLint = false;
+                cmd.type = 'Customization';
+                cmd.appName = `kintone-customization-${Date.now()}`;
+                cmd.scope = 'ALL';
             }
-            if (!cmd.setAuth) {
-                let answerAuth = yield inquirer_1.prompt([
-                    {
-                        type: 'confirm',
-                        name: 'setAuth',
-                        message: 'Do you want to set authentication credentials ?'
+            let answer = yield inquirer_1.prompt([
+                {
+                    type: 'list',
+                    name: 'type',
+                    message: 'What type of app you want to create ?',
+                    choices: ['Customization', 'Plugin'],
+                    when: !cmd.type
+                },
+                {
+                    type: 'confirm',
+                    name: 'setAuth',
+                    message: 'Do you want to set authentication credentials ?',
+                    when: !cmd.setAuth && cmd.setAuth !== false
+                },
+                {
+                    type: 'input',
+                    name: 'domain',
+                    message: 'What is your kintone domain ?',
+                    when: (curAnswers) => {
+                        return cmd.setAuth || curAnswers['setAuth'];
                     }
-                ]);
-                cmd.setAuth = answerAuth['setAuth'];
-            }
-            if (cmd.setAuth) {
-                let answerCredentials = yield inquirer_1.prompt([
-                    {
-                        type: 'input',
-                        name: 'domain',
-                        message: 'What is your kintone domain ?'
-                    },
-                    {
-                        type: 'input',
-                        name: 'username',
-                        message: 'What is your kintone username ?'
-                    },
-                    {
-                        type: 'input',
-                        name: 'password',
-                        message: 'What is your kintone password ?'
-                    },
-                    {
-                        type: 'confirm',
-                        name: 'useProxy',
-                        message: 'Do you use proxy ?'
-                    },
-                    {
-                        type: 'input',
-                        name: 'proxy',
-                        message: 'Specify your proxy full URL, including port number:',
-                        when: (answers) => {
-                            return !!answers.useProxy;
-                        }
+                },
+                {
+                    type: 'input',
+                    name: 'username',
+                    message: 'What is your kintone username ?',
+                    when: (curAnswers) => {
+                        return cmd.setAuth || curAnswers['setAuth'];
                     }
-                ]);
-                cmd.domain = answerCredentials['domain'];
-                cmd.username = answerCredentials['username'];
-                cmd.password = answerCredentials['password'];
-                cmd.proxy = answerCredentials['proxy'];
-            }
-            if (!cmd.useTypescript) {
-                let answerTypescript = yield inquirer_1.prompt([
-                    {
-                        type: 'confirm',
-                        name: 'useTypescript',
-                        message: 'Do you want to use Typescript ?'
+                },
+                {
+                    type: 'input',
+                    name: 'password',
+                    message: 'What is your kintone password ?',
+                    when: (curAnswers) => {
+                        return cmd.setAuth || curAnswers['setAuth'];
                     }
-                ]);
-                cmd.useTypescript = answerTypescript['useTypescript'];
-            }
-            if (!cmd.useWebpack) {
-                let answerWebpack = yield inquirer_1.prompt([
-                    {
-                        type: 'confirm',
-                        name: 'useWebpack',
-                        message: 'Do you want to use Webpack ?'
+                },
+                {
+                    type: 'confirm',
+                    name: 'useProxy',
+                    message: 'Do you use proxy ?',
+                    when: (curAnswers) => {
+                        return cmd.setAuth || curAnswers['setAuth'];
                     }
-                ]);
-                cmd.useWebpack = answerWebpack['useWebpack'];
-            }
-            if (cmd.useWebpack) {
-                let answerUsingWebpack = yield inquirer_1.prompt([
-                    {
-                        type: 'confirm',
-                        name: 'useReact',
-                        message: 'Do you want to use React ?'
-                    },
-                    {
-                        type: 'input',
-                        name: 'entry',
-                        message: 'What is the entry for Webpack ?'
+                },
+                {
+                    type: 'input',
+                    name: 'proxy',
+                    message: 'Specify your proxy full URL, including port number:',
+                    when: (curAnswers) => {
+                        return cmd.useProxy || curAnswers['useProxy'];
                     }
-                ]);
-                cmd.useReact = answerUsingWebpack['useReact'];
-                cmd.entry = answerUsingWebpack['entry'];
-            }
-            if (!cmd.appName) {
-                let answerAppName = yield inquirer_1.prompt([
-                    {
-                        type: 'input',
-                        name: 'appName',
-                        message: 'What is the app name ?'
+                },
+                {
+                    type: 'confirm',
+                    name: 'useTypescript',
+                    message: 'Do you want to use Typescript ?',
+                    when: !cmd.useTypescript && cmd.useTypescript !== false
+                },
+                {
+                    type: 'confirm',
+                    name: 'useWebpack',
+                    message: 'Do you want to use Webpack ?',
+                    when: !cmd.useWebpack && cmd.useWebpack !== false
+                },
+                {
+                    type: 'confirm',
+                    name: 'useReact',
+                    message: 'Do you want to use React ?',
+                    when: (curAnswers) => {
+                        return cmd.useWebpack || curAnswers['useWebpack'];
                     }
-                ]);
-                cmd.appName = answerAppName['appName'];
-            }
-            if (!cmd.useCybozuLint) {
-                let answerUseCybozuLint = yield inquirer_1.prompt([
-                    {
-                        type: 'confirm',
-                        name: 'useCybozuLint',
-                        message: 'Do you want to use @cybozu/eslint-config for syntax checking ?'
+                },
+                {
+                    type: 'input',
+                    name: 'entry',
+                    message: 'What is the entry for Webpack ?',
+                    when: (curAnswers) => {
+                        return cmd.useWebpack || curAnswers['useWebpack'];
                     }
-                ]);
-                cmd.useCybozuLint = answerUseCybozuLint['useCybozuLint'];
+                },
+                {
+                    type: 'input',
+                    name: 'appName',
+                    message: 'What is the app name ?',
+                    when: !cmd.appName
+                },
+                {
+                    type: 'confirm',
+                    name: 'useCybozuLint',
+                    message: 'Do you want to use @cybozu/eslint-config for syntax checking ?',
+                    when: !cmd.useCybozuLint && cmd.useCybozuLint !== false
+                },
+                {
+                    type: 'number',
+                    name: 'appID',
+                    message: 'What is the app ID ?',
+                    when: (curAnswers) => {
+                        return ((cmd.setAuth || curAnswers['setAuth'])
+                            &&
+                                (!cmd.appID));
+                    }
+                },
+                {
+                    type: 'list',
+                    name: 'scope',
+                    message: 'What is the scope of customization ?',
+                    choices: ['ALL', 'ADMIN', 'NONE'],
+                    when: (curAnswers) => {
+                        return ((cmd.type === 'Customization' || curAnswers['type'] === 'Customization')
+                            &&
+                                (!cmd.scope));
+                    }
+                }
+            ]);
+            if (cmd.preset) {
+                switch (cmd.preset) {
+                    case 'React':
+                        cmd.useTypescript = false;
+                        cmd.useWebpack = true;
+                        cmd.useReact = true;
+                        cmd.entry = 'app.jsx';
+                        break;
+                    case 'ReactTS':
+                        cmd.useTypescript = true;
+                        cmd.useWebpack = true;
+                        cmd.useReact = true;
+                        cmd.entry = 'app.tsx';
+                        break;
+                    default:
+                        break;
+                }
             }
             // Config for appConfig.json
-            if (cmd.type === 'Customization') {
-                if (!cmd.appID) {
-                    let answerAppID = yield inquirer_1.prompt([
-                        {
-                            type: 'number',
-                            name: 'appID',
-                            message: 'What is the app ID for customization ?'
-                        }
-                    ]);
-                    cmd.appID = answerAppID['appID'];
-                }
-                if (!cmd.scope) {
-                    let answerScope = yield inquirer_1.prompt([
-                        {
-                            type: 'list',
-                            name: 'scope',
-                            message: 'What is the scope of customization ?',
-                            choices: ['ALL', 'ADMIN', 'NONE']
-                        }
-                    ]);
-                    cmd.scope = answerScope['scope'];
-                }
-            }
             let appSetting = {
-                setAuth: cmd.setAuth,
-                useTypescript: cmd.useTypescript,
-                useWebpack: cmd.useWebpack,
-                entry: cmd.entry,
-                useReact: cmd.useReact,
-                appName: cmd.appName.replace(" ", "-"),
-                domain: cmd.domain,
-                username: cmd.username,
-                password: cmd.password,
-                type: cmd.type,
-                appID: cmd.appID,
-                pluginName: cmd.pluginName,
-                useCybozuLint: cmd.useCybozuLint,
-                scope: cmd.scope,
-                proxy: cmd.proxy
+                setAuth: cmd.setAuth || answer['setAuth'],
+                useTypescript: cmd.useTypescript || answer['useTypescript'],
+                useWebpack: cmd.useWebpack || answer['useWebpack'],
+                entry: cmd.entry || answer['entry'],
+                useReact: cmd.useReact || answer['useReact'],
+                appName: (cmd.appName || answer['appName']).replace(" ", "-"),
+                domain: cmd.domain || answer['domain'],
+                username: cmd.username || answer['username'],
+                password: cmd.password || answer['password'],
+                type: cmd.type || answer['type'],
+                appID: cmd.appID || answer['appID'],
+                pluginName: cmd.pluginName || answer['pluginName'],
+                useCybozuLint: cmd.useCybozuLint || answer['useCybozuLint'],
+                scope: cmd.scope || answer['scope'],
+                proxy: cmd.proxy || answer['proxy']
             };
             console.log(chalk_1.default.yellow('Creating app...'));
             let err = generator_1.generateAppFolder(appSetting);
@@ -242,7 +253,7 @@ const initializeCommand = (program) => {
             }
             console.log(chalk_1.default.yellow('Installing dependencies...'));
             child_process_1.spawnSync('npm', ['install'], { stdio: 'inherit', windowsHide: true });
-            if (cmd.useCybozuLint) {
+            if (appSetting.useCybozuLint) {
                 child_process_1.spawnSync('npm', ['install', '--save-dev', 'eslint', '@cybozu/eslint-config'], { stdio: 'inherit', windowsHide: true });
             }
         }
@@ -295,3 +306,4 @@ const initializeCommand = (program) => {
     }));
 };
 exports.default = initializeCommand;
+//# sourceMappingURL=initializeCommand.js.map

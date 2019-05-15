@@ -26,3 +26,4 @@ const lintCommand = (program) => {
     }));
 };
 exports.default = lintCommand;
+//# sourceMappingURL=lintCommand.js.map

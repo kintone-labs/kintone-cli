@@ -76,3 +76,4 @@ exports.buildWebpackReactTemplate = buildWebpackReactTemplate;
 exports.default = {
     buildWebpackReactTemplate
 };
+//# sourceMappingURL=webpackTemplate.js.map
