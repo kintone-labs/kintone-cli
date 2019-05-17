@@ -27,7 +27,6 @@ const generateAppFolder = (option) => {
     fs_1.mkdirSync(`${option['appName']}/source`);
     fs_1.mkdirSync(`${option['appName']}/source/js`);
     fs_1.mkdirSync(`${option['appName']}/source/css`);
-    fs_1.mkdirSync(`${option['appName']}/dist`);
     if (option['setAuth']) {
         let authJSON = {
             username: option['username'],
@@ -38,6 +37,9 @@ const generateAppFolder = (option) => {
             authJSON['proxy'] = option['proxy'];
         }
         jsonfile_1.writeFileSync(`${option['appName']}/auth.json`, authJSON, { spaces: 4, EOL: "\r\n" });
+    }
+    if (option['useWebpack'] || option['type'] === 'Plugin') {
+        fs_1.mkdirSync(`${option['appName']}/dist`);
     }
     if (option['useWebpack']) {
         let babelJSON = {
@@ -92,13 +94,22 @@ const generateAppFolder = (option) => {
         };
     }
     else {
+        fs_1.writeFileSync(`${option['appName']}/source/js/script.js`, '');
+        fs_1.writeFileSync(`${option['appName']}/source/css/style.css`, '');
         manifestJSON['uploadConfig'] = {
             desktop: {
-                js: [],
-                css: []
+                js: [
+                    `${option['appName']}/source/js/script.js`
+                ],
+                css: [
+                    `${option['appName']}/source/css/style.css`
+                ]
             },
             mobile: {
                 js: []
+            },
+            config: {
+                html: `${option['appName']}/config.html`
             }
         };
     }
@@ -123,6 +134,15 @@ const generateAppFolder = (option) => {
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         fs_1.writeFileSync(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any');
         jsonfile_1.writeFileSync(`${option['appName']}/tsconfig.json`, tsConfigJSON, { spaces: 4, EOL: "\r\n" });
+    }
+    if (option['type'] === 'Plugin') {
+        if (!packageJSON.devDependencies) {
+            packageJSON.devDependencies = {};
+        }
+        packageJSON.devDependencies['@kintone/plugin-packer'] = "^1.0.8";
+        packageJSON.devDependencies['@kintone/plugin-uploader'] = "^2.4.8";
+        jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
+        fs_1.writeFileSync(`${option['appName']}/config.html`, '');
     }
     if (option['useReact']) {
         if (!packageJSON.dependencies) {

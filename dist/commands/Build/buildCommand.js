@@ -35,6 +35,9 @@ const buildCommand = (program) => {
                 }
                 builder_1.buildVanillaJS(config);
             }
+            if (config['type'] === 'Plugin') {
+                builder_1.buildPlugin(config);
+            }
         }
         catch (error) {
             console.log(error);

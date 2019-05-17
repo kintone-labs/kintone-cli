@@ -89,9 +89,9 @@ const initializeCommand = (program) => {
                 cmd.useTypescript = false;
                 cmd.useWebpack = false;
                 cmd.useCybozuLint = false;
-                cmd.type = 'Customization';
-                cmd.appName = `kintone-customization-${Date.now()}`;
-                cmd.scope = 'ALL';
+                cmd.type = cmd.type || 'Customization';
+                cmd.appName = cmd.appName || `kintone-${Date.now()}`;
+                cmd.scope = cmd.scope || 'ALL';
             }
             let answer = yield inquirer_1.prompt([
                 {
@@ -258,7 +258,7 @@ const initializeCommand = (program) => {
             }
         }
         catch (error) {
-            console.log(error);
+            console.log(chalk_1.default.red(error));
         }
     }));
     program
