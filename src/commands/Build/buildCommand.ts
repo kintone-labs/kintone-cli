@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import validator from './validator'
 import {readFileSync} from 'jsonfile'
 import { existsSync } from "fs";
-import {buildUsingWebpack, buildVanillaJS} from './builder'
+import {buildUsingWebpack, buildVanillaJS, buildPlugin} from './builder'
 
 const buildCommand = (program: CommanderStatic) => {
     program
@@ -27,6 +27,9 @@ const buildCommand = (program: CommanderStatic) => {
                         return
                     }
                     buildVanillaJS(config)
+                }
+                if (config['type'] === 'Plugin') {
+                    buildPlugin(config)
                 }
 
             } catch (error) {

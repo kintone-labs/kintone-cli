@@ -83,9 +83,9 @@ const initializeCommand = (program: CommanderStatic) => {
                     cmd.useTypescript = false
                     cmd.useWebpack = false
                     cmd.useCybozuLint = false
-                    cmd.type = 'Customization'
-                    cmd.appName = `kintone-customization-${Date.now()}`
-                    cmd.scope = 'ALL'
+                    cmd.type = cmd.type || 'Customization'
+                    cmd.appName = cmd.appName || `kintone-${Date.now()}`
+                    cmd.scope = cmd.scope || 'ALL'
                 }
                 let answer = await prompt([
                     {
@@ -258,7 +258,7 @@ const initializeCommand = (program: CommanderStatic) => {
                     spawnSync('npm',['install', '--save-dev', 'eslint', '@cybozu/eslint-config'], {stdio: 'inherit', windowsHide: true})
                 }
             } catch (error) {
-                console.log(error)
+                console.log(chalk.red(error))
             }
         })
 
