@@ -182,3 +182,4 @@ exports.generateAppFolder = generateAppFolder;
 exports.default = {
     generateAppFolder
 };
+//# sourceMappingURL=generator.js.map

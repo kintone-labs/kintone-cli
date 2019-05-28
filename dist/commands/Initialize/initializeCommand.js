@@ -295,3 +295,4 @@ const initializeCommand = (program) => {
     }));
 };
 exports.default = initializeCommand;
+//# sourceMappingURL=initializeCommand.js.map
