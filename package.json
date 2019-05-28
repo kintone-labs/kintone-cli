@@ -11,6 +11,7 @@
     "kintone-node-cli": "./dist/index.js"
   },
   "dependencies": {
+    "@kintone/customize-uploader": "^1.5.3",
     "axios": "^0.18.0",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
