@@ -37,6 +37,10 @@ const deployCustomization = (option: object) => {
         mkdirSync(`${option['appName']}/dist`)
     }
 
+    if (existsSync(`${option['appName']}/webpack.config.js`)) {
+        spawnSync('npm', ['run',`build-${option['appName']}`, '--', '--mode', 'production'], {stdio:['ignore', 'ignore', process.stderr]})
+    }
+
     writeFileSync(`${option['appName']}/dist/customize-manifest.json`,customizeManifestJSON, { spaces: 2, EOL: '\r\n' })
     spawnSync(
         './node_modules/.bin/kintone-customize-uploader',

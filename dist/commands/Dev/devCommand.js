@@ -44,10 +44,9 @@ const devCommand = (program) => {
         console.log(chalk_1.default.yellow('Starting local webserver...'));
         const ws = child_process_1.spawn('npm', ['run', 'dev', '--', '--https']);
         ws.stderr.on('data', (data) => {
-            console.log(data.toString());
             let webserverInfo = data.toString().replace('Serving at', '');
             webserverInfo = webserverInfo.split(',');
-            const serverAddr = strip_ansi_1.default(webserverInfo[0].trim());
+            const serverAddr = strip_ansi_1.default(webserverInfo[1].trim());
             let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
             const distFileLinkArr = [];
             config.uploadConfig.desktop.js.forEach((item) => {
@@ -62,7 +61,7 @@ const devCommand = (program) => {
             // build the first time and upload link to kintone
             if (fs_1.existsSync(`${cmd.appName}/webpack.config.js`)) {
                 console.log(chalk_1.default.yellow('Building distributed file...'));
-                child_process_1.spawnSync('npm', ['run', `build-${cmd.appName}`], { stdio: ['ignore', 'ignore', process.stderr] });
+                child_process_1.spawnSync('npm', ['run', `build-${cmd.appName}`, '--', '--mode', 'development'], { stdio: ['ignore', 'ignore', process.stderr] });
             }
             // Attaching links to kintone
             console.log(chalk_1.default.yellow('Attaching links to kintone...'));

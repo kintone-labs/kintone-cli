@@ -52,7 +52,6 @@ const generateAppFolder = (option) => {
         if (!packageJSON.dependencies) {
             packageJSON.dependencies = {};
         }
-        packageJSON.dependencies['@kintone/customize-uploader'] = "^1.5.3";
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {};
         }
@@ -143,6 +142,10 @@ const generateAppFolder = (option) => {
         packageJSON.devDependencies['@kintone/plugin-uploader'] = "^2.4.8";
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         fs_1.writeFileSync(`${option['appName']}/config.html`, '');
+    }
+    else {
+        packageJSON.devDependencies["@kintone/customize-uploader"] = "^1.5.3";
+        jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
     }
     if (option['useReact']) {
         if (!packageJSON.dependencies) {

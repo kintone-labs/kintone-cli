@@ -32,6 +32,12 @@ const deployCustomization = (option) => {
         paramArr.push('--proxy');
         paramArr.push(authJSON.proxy);
     }
+    if (!fs_1.existsSync(`${option['appName']}/dist`)) {
+        fs_1.mkdirSync(`${option['appName']}/dist`);
+    }
+    if (fs_1.existsSync(`${option['appName']}/webpack.config.js`)) {
+        child_process_1.spawnSync('npm', ['run', `build-${option['appName']}`, '--', '--mode', 'production'], { stdio: ['ignore', 'ignore', process.stderr] });
+    }
     jsonfile_1.writeFileSync(`${option['appName']}/dist/customize-manifest.json`, customizeManifestJSON, { spaces: 2, EOL: '\r\n' });
     child_process_1.spawnSync('./node_modules/.bin/kintone-customize-uploader', paramArr, {
         stdio: 'inherit'

@@ -51,8 +51,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName }) 
         }
     }
     return `const path = require('path');
-
-        module.exports = {
+        const config = {
             entry: path.resolve('${appName}/source/${entry}'),
             resolve: {
                 extensions: ['.ts', '.tsx', '.js']
@@ -70,7 +69,20 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName }) 
                     }
                 ]
             }
-        }`;
+        }
+
+        module.exports = (env, argv) => {
+
+            if (argv.mode === 'development') {
+                config.devtool = 'source-map';
+            }
+          
+            if (argv.mode === 'production') {
+              //...
+            }
+          
+            return config;
+        };`;
 };
 exports.buildWebpackReactTemplate = buildWebpackReactTemplate;
 exports.default = {

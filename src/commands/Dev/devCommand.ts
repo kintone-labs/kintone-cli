@@ -41,7 +41,7 @@ const devCommand = (program: CommanderStatic) => {
                 
                 let webserverInfo = data.toString().replace('Serving at', '')
                 webserverInfo = webserverInfo.split(',')
-                const serverAddr = stripAnsi(webserverInfo[0].trim())
+                const serverAddr = stripAnsi(webserverInfo[1].trim())
 
                 let config = readFileSync(`${cmd['appName']}/config.json`)
 
@@ -61,7 +61,7 @@ const devCommand = (program: CommanderStatic) => {
                 // build the first time and upload link to kintone
                 if (existsSync(`${cmd.appName}/webpack.config.js`)) {
                     console.log(chalk.yellow('Building distributed file...'))
-                    spawnSync('npm', ['run',`build-${cmd.appName}`], {stdio:['ignore', 'ignore', process.stderr]})
+                    spawnSync('npm', ['run',`build-${cmd.appName}`, '--', '--mode', 'development'], {stdio:['ignore', 'ignore', process.stderr]})
                 }
 
                 // Attaching links to kintone
