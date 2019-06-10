@@ -38,7 +38,7 @@ const devCommand = (program: CommanderStatic) => {
             console.log(chalk.yellow('Starting local webserver...'))
             const ws = spawn('npm', ['run','dev', '--', '--https'])
             ws.stderr.on('data', (data) => {
-                console.log(data.toString())
+                
                 let webserverInfo = data.toString().replace('Serving at', '')
                 webserverInfo = webserverInfo.split(',')
                 const serverAddr = stripAnsi(webserverInfo[0].trim())
