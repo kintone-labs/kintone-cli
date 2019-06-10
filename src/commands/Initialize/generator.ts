@@ -62,7 +62,6 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (!packageJSON.dependencies) {
             packageJSON.dependencies = {}
         }
-        packageJSON.dependencies['@kintone/customize-uploader'] = "^1.5.3"
 
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {}

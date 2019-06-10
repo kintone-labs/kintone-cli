@@ -1,5 +1,5 @@
 import {writeFileSync, readFileSync} from 'jsonfile'
-import { unlinkSync } from 'fs';
+import { unlinkSync, existsSync, mkdirSync } from 'fs';
 import {spawnSync} from 'child_process'
 
 const deployCustomization = (option: object) => {
@@ -31,6 +31,10 @@ const deployCustomization = (option: object) => {
     if(authJSON.proxy) {
         paramArr.push('--proxy')
         paramArr.push(authJSON.proxy)
+    }
+
+    if (!existsSync(`${option['appName']}/dist`)) {
+        mkdirSync(`${option['appName']}/dist`)
     }
 
     writeFileSync(`${option['appName']}/dist/customize-manifest.json`,customizeManifestJSON, { spaces: 2, EOL: '\r\n' })
