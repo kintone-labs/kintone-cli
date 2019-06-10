@@ -152,7 +152,13 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         }
 
         writeFileSync(`package.json`,packageJSON, {spaces: 4, EOL: "\r\n"})
-        writeFileSyncFS(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any')
+        if (option['useReact']) {
+            writeFileSyncFS(`${option['appName']}/source/global.d.tsx`, 'declare let kintone: any')
+        }
+        else {
+            writeFileSyncFS(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any')
+        }
+        
         writeFileSync(`${option['appName']}/tsconfig.json`, tsConfigJSON, {spaces: 4, EOL: "\r\n"})
     }
 

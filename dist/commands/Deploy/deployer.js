@@ -46,6 +46,15 @@ const deployCustomization = (option) => {
 };
 exports.deployCustomization = deployCustomization;
 const deployPlugin = (option) => {
+    let authJSON = jsonfile_1.readFileSync(`${option['appName']}/auth.json`);
+    child_process_1.spawnSync('./node_modules/.bin/kintone-plugin-uploader', [
+        '--domain', authJSON['domain'],
+        '--username', authJSON['username'],
+        '--password', authJSON['password'],
+        `${option['appName']}/dist/plugin.zip`
+    ], {
+        stdio: 'inherit'
+    });
 };
 exports.deployPlugin = deployPlugin;
 //# sourceMappingURL=deployer.js.map
