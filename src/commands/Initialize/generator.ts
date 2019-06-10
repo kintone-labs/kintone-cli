@@ -165,6 +165,10 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
         writeFileSyncFS(`${option['appName']}/config.html`, '')
     }
+    else {
+        packageJSON.devDependencies["@kintone/customize-uploader"] = "^1.5.3"
+        writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
+    }
 
     if (option['useReact']) {
         if (!packageJSON.dependencies) {
