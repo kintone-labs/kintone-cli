@@ -1,15 +1,11 @@
 import { CommanderStatic } from "commander"
 import chalk from 'chalk'
 import {readFileSync} from 'jsonfile'
-import { spawnSync, spawn, ChildProcessWithoutNullStreams } from "child_process"
-import {deployCustomization} from '../Deploy/deployer'
+import { spawnSync, spawn } from "child_process"
 import stripAnsi from 'strip-ansi'
 import { existsSync } from "fs";
-
-const cleanExit = (ws:ChildProcessWithoutNullStreams) => {
-    ws.kill()
-    process.exit()
-}
+import {devCustomize, devPlugin} from './devGenerator'
+import validator from './validator'
 
 const isURL = (str: string) => {
     var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -27,21 +23,29 @@ const devCommand = (program: CommanderStatic) => {
         .option('--watch','Watch for changes in source code')
         .option('--appName <appName>','Watch for changes in source code')
         .action(async (cmd) => {
-            if(!cmd.appName) {
-                console.log(chalk.red('Please, specify app name!'))
-                process.exit(-1)
+            let error = validator.devValidator(cmd)
+            if (error && typeof error === 'string') {
+                console.log(chalk.red(error))
+                return
             }
             process.on('SIGINT', () => {
                 process.exit()
             })
             let watching = false
+            
+            // build the first time and upload link to kintone
+            if (existsSync(`${cmd.appName}/webpack.config.js`)) {
+                console.log(chalk.yellow('Building distributed file...'))
+                spawnSync('npm', ['run',`build-${cmd.appName}`, '--', '--mode', 'development'], {stdio:['ignore', 'ignore', process.stderr]})
+            }
+
             console.log(chalk.yellow('Starting local webserver...'))
             const ws = spawn('npm', ['run','dev', '--', '--https'])
-            ws.stderr.on('data', (data) => {
-                
+
+            ws.stderr.on('data', (data) => {   
                 let webserverInfo = data.toString().replace('Serving at', '')
                 webserverInfo = webserverInfo.split(',')
-                const serverAddr = stripAnsi(webserverInfo[1].trim())
+                const serverAddr = stripAnsi(webserverInfo[0].trim())
 
                 let config = readFileSync(`${cmd['appName']}/config.json`)
 
@@ -56,38 +60,18 @@ const devCommand = (program: CommanderStatic) => {
                     }
                 })
 
-                // (IN FUTURE) check if there is no webpack.config.js upload file links according to config
+                config.watch = cmd.watch
 
-                // build the first time and upload link to kintone
-                if (existsSync(`${cmd.appName}/webpack.config.js`)) {
-                    console.log(chalk.yellow('Building distributed file...'))
-                    spawnSync('npm', ['run',`build-${cmd.appName}`, '--', '--mode', 'development'], {stdio:['ignore', 'ignore', process.stderr]})
-                }
-
-                // Attaching links to kintone
-                console.log(chalk.yellow('Attaching links to kintone...'))
-                try {
-                    config.uploadConfig.desktop.js = distFileLinkArr
-                    config.uploadConfig.mobile.js = []
-                    if (config.type === 'Customization') {
-                        deployCustomization(config)
-                    }
-                } catch (error) {
-                    console.log(chalk.red(error))
-                    cleanExit(ws)
-                }
-
-                if(!cmd.watch) {
-                    console.log(chalk.yellow('All done. Happy customizing!'))
-                    console.log(chalk.yellow('Press Ctrl + C to stop local web server.'))
-                } else if(!watching) {
-                    // watch for changes
+                if (!watching) {
                     watching = true
-                    if (existsSync(`${cmd.appName}/webpack.config.js`)) {
-                        console.log(chalk.yellow('Watching for changes...'))
-                        spawnSync('npm', ['run',`build-${cmd.appName}`, '--', '--watch'], {stdio:'inherit'})
+                    if (config.type === 'Customization') {
+                        devCustomize(ws, config, distFileLinkArr)
+                    }
+                    else if (config.type === 'Plugin') {
+                        devPlugin(ws, config, distFileLinkArr)
                     }
                 }
+
             })
         })
 }

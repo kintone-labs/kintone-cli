@@ -147,7 +147,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
                 "typeRoots": ["./source","../node_modules/@types"]
             },
             "include": [
-                "source/**/*.ts"
+                "source/**/*.ts", "source/**/*.tsx"
             ]
         }
 

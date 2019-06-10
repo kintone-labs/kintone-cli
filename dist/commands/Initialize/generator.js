@@ -127,7 +127,7 @@ const generateAppFolder = (option) => {
                 "typeRoots": ["./source", "../node_modules/@types"]
             },
             "include": [
-                "source/**/*.ts"
+                "source/**/*.ts", "source/**/*.tsx"
             ]
         };
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });

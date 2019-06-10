@@ -11,13 +11,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = require("chalk");
 const jsonfile_1 = require("jsonfile");
 const child_process_1 = require("child_process");
-const deployer_1 = require("../Deploy/deployer");
 const strip_ansi_1 = require("strip-ansi");
 const fs_1 = require("fs");
-const cleanExit = (ws) => {
-    ws.kill();
-    process.exit();
-};
+const devGenerator_1 = require("./devGenerator");
+const validator_1 = require("./validator");
 const isURL = (str) => {
     var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -33,20 +30,26 @@ const devCommand = (program) => {
         .option('--watch', 'Watch for changes in source code')
         .option('--appName <appName>', 'Watch for changes in source code')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
-        if (!cmd.appName) {
-            console.log(chalk_1.default.red('Please, specify app name!'));
-            process.exit(-1);
+        let error = validator_1.default.devValidator(cmd);
+        if (error && typeof error === 'string') {
+            console.log(chalk_1.default.red(error));
+            return;
         }
         process.on('SIGINT', () => {
             process.exit();
         });
         let watching = false;
+        // build the first time and upload link to kintone
+        if (fs_1.existsSync(`${cmd.appName}/webpack.config.js`)) {
+            console.log(chalk_1.default.yellow('Building distributed file...'));
+            child_process_1.spawnSync('npm', ['run', `build-${cmd.appName}`, '--', '--mode', 'development'], { stdio: ['ignore', 'ignore', process.stderr] });
+        }
         console.log(chalk_1.default.yellow('Starting local webserver...'));
         const ws = child_process_1.spawn('npm', ['run', 'dev', '--', '--https']);
         ws.stderr.on('data', (data) => {
             let webserverInfo = data.toString().replace('Serving at', '');
             webserverInfo = webserverInfo.split(',');
-            const serverAddr = strip_ansi_1.default(webserverInfo[1].trim());
+            const serverAddr = strip_ansi_1.default(webserverInfo[0].trim());
             let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
             const distFileLinkArr = [];
             config.uploadConfig.desktop.js.forEach((item) => {
@@ -57,35 +60,14 @@ const devCommand = (program) => {
                     distFileLinkArr.push(`${serverAddr}/${item}`);
                 }
             });
-            // (IN FUTURE) check if there is no webpack.config.js upload file links according to config
-            // build the first time and upload link to kintone
-            if (fs_1.existsSync(`${cmd.appName}/webpack.config.js`)) {
-                console.log(chalk_1.default.yellow('Building distributed file...'));
-                child_process_1.spawnSync('npm', ['run', `build-${cmd.appName}`, '--', '--mode', 'development'], { stdio: ['ignore', 'ignore', process.stderr] });
-            }
-            // Attaching links to kintone
-            console.log(chalk_1.default.yellow('Attaching links to kintone...'));
-            try {
-                config.uploadConfig.desktop.js = distFileLinkArr;
-                config.uploadConfig.mobile.js = [];
-                if (config.type === 'Customization') {
-                    deployer_1.deployCustomization(config);
-                }
-            }
-            catch (error) {
-                console.log(chalk_1.default.red(error));
-                cleanExit(ws);
-            }
-            if (!cmd.watch) {
-                console.log(chalk_1.default.yellow('All done. Happy customizing!'));
-                console.log(chalk_1.default.yellow('Press Ctrl + C to stop local web server.'));
-            }
-            else if (!watching) {
-                // watch for changes
+            config.watch = cmd.watch;
+            if (!watching) {
                 watching = true;
-                if (fs_1.existsSync(`${cmd.appName}/webpack.config.js`)) {
-                    console.log(chalk_1.default.yellow('Watching for changes...'));
-                    child_process_1.spawnSync('npm', ['run', `build-${cmd.appName}`, '--', '--watch'], { stdio: 'inherit' });
+                if (config.type === 'Customization') {
+                    devGenerator_1.devCustomize(ws, config, distFileLinkArr);
+                }
+                else if (config.type === 'Plugin') {
+                    devGenerator_1.devPlugin(ws, config, distFileLinkArr);
                 }
             }
         });
