@@ -9,12 +9,10 @@ const cleanExit = (ws) => {
     ws.kill();
     process.exit();
 };
-const devCustomize = (ws, config, distFileLinkArr) => {
+const devCustomize = (ws, config) => {
     // Attaching links to kintone
     console.log(chalk_1.default.yellow('Attaching links to kintone...'));
     try {
-        config.uploadConfig.desktop.js = distFileLinkArr;
-        config.uploadConfig.mobile.js = [];
         deployer_1.deployCustomization(config);
     }
     catch (error) {
@@ -34,11 +32,9 @@ const devCustomize = (ws, config, distFileLinkArr) => {
     }
 };
 exports.devCustomize = devCustomize;
-const devPlugin = (ws, config, distFileLinkArr) => {
+const devPlugin = (ws, config) => {
     console.log(chalk_1.default.yellow('Building plugin...'));
     try {
-        config.uploadConfig.desktop.js = distFileLinkArr;
-        config.uploadConfig.mobile.js = [];
         builder_1.buildPlugin(config);
         deployer_1.deployPlugin(config);
     }

@@ -51,23 +51,29 @@ const devCommand = (program) => {
             webserverInfo = webserverInfo.split(',');
             const serverAddr = strip_ansi_1.default(webserverInfo[0].trim());
             let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
-            const distFileLinkArr = [];
-            config.uploadConfig.desktop.js.forEach((item) => {
-                if (isURL(item)) {
-                    distFileLinkArr.push(item);
-                }
-                else {
-                    distFileLinkArr.push(`${serverAddr}/${item}`);
-                }
+            config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item) => {
+                if (!isURL(item))
+                    return `${serverAddr}/${item}`;
+                return item;
+            });
+            config.uploadConfig.mobile.js = config.uploadConfig.mobile.js.map((item) => {
+                if (!isURL(item))
+                    return `${serverAddr}/${item}`;
+                return item;
+            });
+            config.uploadConfig.desktop.css = config.uploadConfig.desktop.css.map((item) => {
+                if (!isURL(item))
+                    return `${serverAddr}/${item}`;
+                return item;
             });
             config.watch = cmd.watch;
             if (!watching) {
                 watching = true;
                 if (config.type === 'Customization') {
-                    devGenerator_1.devCustomize(ws, config, distFileLinkArr);
+                    devGenerator_1.devCustomize(ws, config);
                 }
                 else if (config.type === 'Plugin') {
-                    devGenerator_1.devPlugin(ws, config, distFileLinkArr);
+                    devGenerator_1.devPlugin(ws, config);
                 }
             }
         });

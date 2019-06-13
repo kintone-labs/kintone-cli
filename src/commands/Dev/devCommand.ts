@@ -49,15 +49,19 @@ const devCommand = (program: CommanderStatic) => {
 
                 let config = readFileSync(`${cmd['appName']}/config.json`)
 
-                const distFileLinkArr = []
+                config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item: string)=>{
+                    if (!isURL(item)) return `${serverAddr}/${item}`
+                    return item
+                })
 
-                config.uploadConfig.desktop.js.forEach((item)=>{
-                    if (isURL(item)) {
-                        distFileLinkArr.push(item)
-                    }
-                    else {
-                        distFileLinkArr.push(`${serverAddr}/${item}`)
-                    }
+                config.uploadConfig.mobile.js = config.uploadConfig.mobile.js.map((item: string)=>{
+                    if (!isURL(item)) return `${serverAddr}/${item}`
+                    return item
+                })
+
+                config.uploadConfig.desktop.css = config.uploadConfig.desktop.css.map((item: string)=>{
+                    if (!isURL(item)) return `${serverAddr}/${item}`
+                    return item
                 })
 
                 config.watch = cmd.watch
@@ -65,10 +69,10 @@ const devCommand = (program: CommanderStatic) => {
                 if (!watching) {
                     watching = true
                     if (config.type === 'Customization') {
-                        devCustomize(ws, config, distFileLinkArr)
+                        devCustomize(ws, config)
                     }
                     else if (config.type === 'Plugin') {
-                        devPlugin(ws, config, distFileLinkArr)
+                        devPlugin(ws, config)
                     }
                 }
 

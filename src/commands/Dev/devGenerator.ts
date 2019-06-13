@@ -7,13 +7,11 @@ const cleanExit = (ws:ChildProcessWithoutNullStreams) => {
     ws.kill()
     process.exit()
 }
-const devCustomize = (ws, config: any, distFileLinkArr: Array<string>) => {
+const devCustomize = (ws, config: any) => {
 
     // Attaching links to kintone
     console.log(chalk.yellow('Attaching links to kintone...'))
     try {
-        config.uploadConfig.desktop.js = distFileLinkArr
-        config.uploadConfig.mobile.js = []
         deployCustomization(config)
     } catch (error) {
         console.log(chalk.red(error))
@@ -32,11 +30,9 @@ const devCustomize = (ws, config: any, distFileLinkArr: Array<string>) => {
     }
 }
 
-const devPlugin = (ws, config: any, distFileLinkArr: Array<string>) => {
+const devPlugin = (ws, config: any) => {
     console.log(chalk.yellow('Building plugin...'))
     try {
-        config.uploadConfig.desktop.js = distFileLinkArr
-        config.uploadConfig.mobile.js = []
         buildPlugin(config)
         deployPlugin(config)
     } catch (error) {
