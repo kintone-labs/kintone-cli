@@ -254,9 +254,7 @@ const initializeCommand = (program: CommanderStatic) => {
                 }
                 console.log(chalk.yellow('Installing dependencies...'))
                 spawnSync('npm',['install'], {stdio: 'inherit', windowsHide: true})
-                if(appSetting.useCybozuLint) {
-                    spawnSync('npm',['install', '--save-dev', 'eslint', '@cybozu/eslint-config'], {stdio: 'inherit', windowsHide: true})
-                }
+                
             } catch (error) {
                 console.log(chalk.red(error))
             }

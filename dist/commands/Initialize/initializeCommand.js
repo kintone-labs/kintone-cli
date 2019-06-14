@@ -253,9 +253,6 @@ const initializeCommand = (program) => {
             }
             console.log(chalk_1.default.yellow('Installing dependencies...'));
             child_process_1.spawnSync('npm', ['install'], { stdio: 'inherit', windowsHide: true });
-            if (appSetting.useCybozuLint) {
-                child_process_1.spawnSync('npm', ['install', '--save-dev', 'eslint', '@cybozu/eslint-config'], { stdio: 'inherit', windowsHide: true });
-            }
         }
         catch (error) {
             console.log(chalk_1.default.red(error));

@@ -212,12 +212,12 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         packageJSON.scripts[`lint-${option['appName']}`] = `eslint ${option['appName']}/ --ext ${lintedExtension}`
         packageJSON.scripts[`lint-${option['appName']}-fix`] = `eslint ${option['appName']}/ --ext ${lintedExtension} --fix`
 
-        // add eslint and @cybozu/eslint-config to dependencies
-        if (!packageJSON.dependencies) {
-            packageJSON.dependencies = {}
+        // add eslint and @cybozu/eslint-config to devDependencies
+        if (!packageJSON.devDependencies) {
+            packageJSON.devDependencies = {}
         }
-        packageJSON.dependencies['eslint'] = '^5.16.0'
-        packageJSON.dependencies['@cybozu/eslint-config'] = '^4.0.1'
+        packageJSON.devDependencies['eslint'] = '^5.16.0'
+        packageJSON.devDependencies['@cybozu/eslint-config'] = '>=5.0.1'
         writeFileSync(`package.json`,packageJSON,{spaces:2, EOL: "\r\n"})
 
         // create .eslintrc.js file according to customization structure
