@@ -2,7 +2,7 @@
 A tool to quickly start developing with kintone
 ## Installation
 ``
-npm install -g git://github.dev.cybozu.co.jp/SC/kintone-node-cli.git
+npm install -g git://github.dev.cybozu.co.jp/SC/kintone-cli.git
 ``
 ## Usage
 When working with kintone, developers usually follow this flow:
