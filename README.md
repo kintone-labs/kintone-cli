@@ -33,7 +33,7 @@ After all the above info is inputted, cli will initialize the following folder s
 If --install flag is specified, Kintone CLI will run npm install after initializing folder structure
 Ask if user wants to create-template after finishing init project.
 ### 2. Create customization / plugin template
-``
+```
 kintone-cli create-template
     [--quick]
     [--preset React|ReactTS]
@@ -45,7 +45,7 @@ kintone-cli create-template
     [--use-typescript]
     [--use-react]
     [--appID <App ID (for Customization) >]
-``
+```
 
 Create a JS customization|plugin folder structure in project folder.
 
