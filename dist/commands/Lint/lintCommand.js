@@ -10,12 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = require("chalk");
 const child_process_1 = require("child_process");
+const validator_1 = require("./validator");
 const lintCommand = (program) => {
     program
         .command('lint')
         .option('--fix', 'Auto fix eslint errors')
         .option('--appName <appName>', 'Name of template folder to run eslint')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
+        let error = validator_1.default.lintValidator(cmd);
+        if (error && typeof error === 'string') {
+            console.log(chalk_1.default.red(error));
+            return;
+        }
+        process.on('SIGINT', () => {
+            process.exit();
+        });
         console.log(chalk_1.default.yellow('Checking syntax...'));
         if (cmd.appName) {
             child_process_1.spawnSync('npm', ['run', `lint-${cmd.appName}${cmd.fix ? '-fix' : ''}`], { stdio: 'inherit' });
