@@ -73,7 +73,6 @@ CLI will require following input information. If any piece of info is skipped de
 - If using React, ask if using Webpack (y/n)
 - If using Webpack, config webpack:
     - Entry
-    - Using React (y/n)
 - Use ESLint (y/n)
 
 After the above information is inputted, the following folder structure will be created:
