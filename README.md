@@ -27,7 +27,7 @@ Kintone CLI will require following input information. If any piece of info is sk
     -   @kintone/kintone-ui-component (y/n)
 
 After all the above info is inputted, cli will initialize the following folder structure:
-- <Project Name>
+- Project-Name
     - package.json
 
 If --install flag is specified, Kintone CLI will run npm install after initializing folder structure
