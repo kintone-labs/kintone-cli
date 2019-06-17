@@ -1,5 +1,5 @@
 {
-  "name": "kintone-node-cli",
+  "name": "kintone-cli",
   "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
@@ -8,7 +8,7 @@
   },
   "preferGlobal": true,
   "bin": {
-    "kintone-node-cli": "./dist/index.js"
+    "kintone-cli": "./dist/index.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
