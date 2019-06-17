@@ -51,8 +51,14 @@ Create a JS customization|plugin folder structure in project folder.
 
 If the flag --quick existed, CLI will use all default variable for other flags. You can override some by setting its flag like:
 ``
-kintone-node-cli create-template --quick -- type Plugin
+kintone-node-cli create-template --quick --type Plugin
 ``
+
+If value is set for flag --preset, CLI will use preset variable to create folder. If both flag --preset and --quick is set, the config will be merge from both --quick config and --preset config. 
+
+Current supported preset:
+- React
+- ReactTS
 
 CLI will require following input information. If any piece of info is skipped default value will be auto assigned:
 - Type: customization or plugin
