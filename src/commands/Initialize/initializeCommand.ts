@@ -77,137 +77,18 @@ const initializeCommand = (program: CommanderStatic) => {
                 return
             }
             try {
+                let answer = {}
                 if (cmd.quick) {
                     cmd.setAuth = false
                     cmd.useProxy = false
                     cmd.useTypescript = false
                     cmd.useWebpack = false
                     cmd.useCybozuLint = false
+                    cmd.useReact = false
                     cmd.type = cmd.type || 'Customization'
                     cmd.appName = cmd.appName || `kintone-${Date.now()}`
                     cmd.scope = cmd.scope || 'ALL'
                 }
-                let answer = await prompt([
-                    {
-                        type : 'list',
-                        name : 'type',
-                        message : 'What type of app you want to create ?',
-                        choices: ['Customization','Plugin'],
-                        when: !cmd.type
-                    },
-                    {
-                        type : 'confirm',
-                        name : 'setAuth',
-                        message : 'Do you want to set authentication credentials ?',
-                        when: !cmd.setAuth && cmd.setAuth !== false
-                    },
-                    {
-                        type : 'input',
-                        name : 'domain',
-                        message : 'What is your kintone domain ?',
-                        when: (curAnswers:object) => {
-                            return cmd.setAuth || curAnswers['setAuth']
-                        }
-                    },
-                    {
-                        type : 'input',
-                        name : 'username',
-                        message : 'What is your kintone username ?',
-                        when: (curAnswers:object) => {
-                            return cmd.setAuth || curAnswers['setAuth']
-                        }
-                    },
-                    {
-                        type : 'input',
-                        name : 'password',
-                        message : 'What is your kintone password ?',
-                        when: (curAnswers:object) => {
-                            return cmd.setAuth || curAnswers['setAuth']
-                        }
-                    },
-                    {
-                        type : 'confirm',
-                        name : 'useProxy',
-                        message : 'Do you use proxy ?',
-                        when: (curAnswers:object) => {
-                            return cmd.setAuth || curAnswers['setAuth']
-                        }
-                    },
-                    {
-                        type : 'input',
-                        name : 'proxy',
-                        message : 'Specify your proxy full URL, including port number:',
-                        when: (curAnswers:object) => {
-                            return cmd.useProxy || curAnswers['useProxy']
-                        }
-                    },
-                    {
-                        type: 'confirm',
-                        name: 'useTypescript',
-                        message : 'Do you want to use Typescript ?',
-                        when: !cmd.useTypescript && cmd.useTypescript !== false
-                    },
-                    {
-                        type: 'confirm',
-                        name: 'useWebpack',
-                        message : 'Do you want to use Webpack ?',
-                        when: !cmd.useWebpack && cmd.useWebpack !== false
-                    },
-                    {
-                        type: 'confirm',
-                        name: 'useReact',
-                        message : 'Do you want to use React ?',
-                        when: (curAnswers:object) => {
-                            return cmd.useWebpack || curAnswers['useWebpack']
-                        }
-                    },
-                    {
-                        type: 'input',
-                        name: 'entry',
-                        message : 'What is the entry for Webpack ?',
-                        when: (curAnswers:object) => {
-                            return cmd.useWebpack || curAnswers['useWebpack']
-                        }
-                    },
-                    {
-                        type: 'input',
-                        name: 'appName',
-                        message : 'What is the app name ?',
-                        when: !cmd.appName
-                    },
-                    {
-                        type: 'confirm',
-                        name: 'useCybozuLint',
-                        message : 'Do you want to use @cybozu/eslint-config for syntax checking ?',
-                        when: !cmd.useCybozuLint && cmd.useCybozuLint !== false
-                    },
-                    {
-                        type: 'number',
-                        name: 'appID',
-                        message : 'What is the app ID ?',
-                        when: (curAnswers:object) => {
-                            return(
-                                (cmd.setAuth || curAnswers['setAuth']) 
-                                && 
-                                (!cmd.appID)
-                            )
-                        }
-                    },
-                    {
-                        type : 'list',
-                        name : 'scope',
-                        message : 'What is the scope of customization ?',
-                        choices: ['ALL','ADMIN','NONE'],
-                        when: (curAnswers:object) => {
-                            return(
-                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization') 
-                                && 
-                                (!cmd.scope)
-                            )
-                        }
-                    }
-                ])
-
                 if (cmd.preset) {
                     switch (cmd.preset) {
                         case 'React':
@@ -226,7 +107,126 @@ const initializeCommand = (program: CommanderStatic) => {
                             break;
                     }
                 }
-
+                answer = await prompt([
+                        {
+                            type : 'list',
+                            name : 'type',
+                            message : 'What type of app you want to create ?',
+                            choices: ['Customization','Plugin'],
+                            when: cmd.type === undefined
+                        },
+                        {
+                            type : 'confirm',
+                            name : 'setAuth',
+                            message : 'Do you want to set authentication credentials ?',
+                            when: cmd.setAuth === undefined
+                        },
+                        {
+                            type : 'input',
+                            name : 'domain',
+                            message : 'What is your kintone domain ?',
+                            when: (curAnswers:object) => {
+                                return cmd.setAuth || curAnswers['setAuth']
+                            }
+                        },
+                        {
+                            type : 'input',
+                            name : 'username',
+                            message : 'What is your kintone username ?',
+                            when: (curAnswers:object) => {
+                                return cmd.setAuth || curAnswers['setAuth']
+                            }
+                        },
+                        {
+                            type : 'password',
+                            name : 'password',
+                            message : 'What is your kintone password ?',
+                            when: (curAnswers:object) => {
+                                return cmd.setAuth || curAnswers['setAuth']
+                            }
+                        },
+                        {
+                            type : 'confirm',
+                            name : 'useProxy',
+                            message : 'Do you use proxy ?',
+                            when: (curAnswers:object) => {
+                                return cmd.setAuth || curAnswers['setAuth']
+                            }
+                        },
+                        {
+                            type : 'input',
+                            name : 'proxy',
+                            message : 'Specify your proxy full URL, including port number:',
+                            when: (curAnswers:object) => {
+                                return cmd.useProxy || curAnswers['useProxy']
+                            }
+                        },
+                        {
+                            type: 'confirm',
+                            name: 'useReact',
+                            message : 'Do you want to use React ?',
+                            when: cmd.useReact === undefined
+                        },
+                        {
+                            type: 'confirm',
+                            name: 'useTypescript',
+                            message : 'Do you want to use Typescript ?',
+                            when: cmd.useTypescript === undefined
+                        },
+                        {
+                            type: 'confirm',
+                            name: 'useWebpack',
+                            message : 'Do you want to use Webpack ?',
+                            when: cmd.useWebpack === undefined && cmd.useReact
+                        },
+                        {
+                            type: 'input',
+                            name: 'entry',
+                            message : 'What is the entry for Webpack ?',
+                            when: (curAnswers:object) => {
+                                return cmd.useWebpack || curAnswers['useWebpack']
+                            }
+                        },
+                        {
+                            type: 'input',
+                            name: 'appName',
+                            message : 'What is the app name ?',
+                            when: cmd.appName === undefined
+                        },
+                        {
+                            type: 'confirm',
+                            name: 'useCybozuLint',
+                            message : 'Do you want to use @cybozu/eslint-config for syntax checking ?',
+                            when: cmd.useCybozuLint === undefined
+                        },
+                        {
+                            type: 'number',
+                            name: 'appID',
+                            message : 'What is the app ID ?',
+                            when: (curAnswers:object) => {
+                                return(
+                                    (cmd.setAuth || curAnswers['setAuth']) 
+                                    && 
+                                    (!cmd.appID)
+                                )
+                            }
+                        },
+                        {
+                            type : 'list',
+                            name : 'scope',
+                            message : 'What is the scope of customization ?',
+                            choices: ['ALL','ADMIN','NONE'],
+                            when: (curAnswers:object) => {
+                                return(
+                                    (cmd.type === 'Customization' || curAnswers['type'] === 'Customization') 
+                                    && 
+                                    (!cmd.scope)
+                                )
+                            }
+                        }
+                    ])    
+                
+                
                 // Config for appConfig.json
                 let appSetting = {
                     setAuth: cmd.setAuth || answer['setAuth'],

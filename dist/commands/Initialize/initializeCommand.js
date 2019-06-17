@@ -83,29 +83,49 @@ const initializeCommand = (program) => {
             return;
         }
         try {
+            let answer = {};
             if (cmd.quick) {
                 cmd.setAuth = false;
                 cmd.useProxy = false;
                 cmd.useTypescript = false;
                 cmd.useWebpack = false;
                 cmd.useCybozuLint = false;
+                cmd.useReact = false;
                 cmd.type = cmd.type || 'Customization';
                 cmd.appName = cmd.appName || `kintone-${Date.now()}`;
                 cmd.scope = cmd.scope || 'ALL';
             }
-            let answer = yield inquirer_1.prompt([
+            if (cmd.preset) {
+                switch (cmd.preset) {
+                    case 'React':
+                        cmd.useTypescript = false;
+                        cmd.useWebpack = true;
+                        cmd.useReact = true;
+                        cmd.entry = 'app.jsx';
+                        break;
+                    case 'ReactTS':
+                        cmd.useTypescript = true;
+                        cmd.useWebpack = true;
+                        cmd.useReact = true;
+                        cmd.entry = 'app.tsx';
+                        break;
+                    default:
+                        break;
+                }
+            }
+            answer = yield inquirer_1.prompt([
                 {
                     type: 'list',
                     name: 'type',
                     message: 'What type of app you want to create ?',
                     choices: ['Customization', 'Plugin'],
-                    when: !cmd.type
+                    when: cmd.type === undefined
                 },
                 {
                     type: 'confirm',
                     name: 'setAuth',
                     message: 'Do you want to set authentication credentials ?',
-                    when: !cmd.setAuth && cmd.setAuth !== false
+                    when: cmd.setAuth === undefined
                 },
                 {
                     type: 'input',
@@ -124,7 +144,7 @@ const initializeCommand = (program) => {
                     }
                 },
                 {
-                    type: 'input',
+                    type: 'password',
                     name: 'password',
                     message: 'What is your kintone password ?',
                     when: (curAnswers) => {
@@ -149,23 +169,21 @@ const initializeCommand = (program) => {
                 },
                 {
                     type: 'confirm',
+                    name: 'useReact',
+                    message: 'Do you want to use React ?',
+                    when: cmd.useReact === undefined
+                },
+                {
+                    type: 'confirm',
                     name: 'useTypescript',
                     message: 'Do you want to use Typescript ?',
-                    when: !cmd.useTypescript && cmd.useTypescript !== false
+                    when: cmd.useTypescript === undefined
                 },
                 {
                     type: 'confirm',
                     name: 'useWebpack',
                     message: 'Do you want to use Webpack ?',
-                    when: !cmd.useWebpack && cmd.useWebpack !== false
-                },
-                {
-                    type: 'confirm',
-                    name: 'useReact',
-                    message: 'Do you want to use React ?',
-                    when: (curAnswers) => {
-                        return cmd.useWebpack || curAnswers['useWebpack'];
-                    }
+                    when: cmd.useWebpack === undefined && cmd.useReact
                 },
                 {
                     type: 'input',
@@ -179,13 +197,13 @@ const initializeCommand = (program) => {
                     type: 'input',
                     name: 'appName',
                     message: 'What is the app name ?',
-                    when: !cmd.appName
+                    when: cmd.appName === undefined
                 },
                 {
                     type: 'confirm',
                     name: 'useCybozuLint',
                     message: 'Do you want to use @cybozu/eslint-config for syntax checking ?',
-                    when: !cmd.useCybozuLint && cmd.useCybozuLint !== false
+                    when: cmd.useCybozuLint === undefined
                 },
                 {
                     type: 'number',
@@ -209,24 +227,6 @@ const initializeCommand = (program) => {
                     }
                 }
             ]);
-            if (cmd.preset) {
-                switch (cmd.preset) {
-                    case 'React':
-                        cmd.useTypescript = false;
-                        cmd.useWebpack = true;
-                        cmd.useReact = true;
-                        cmd.entry = 'app.jsx';
-                        break;
-                    case 'ReactTS':
-                        cmd.useTypescript = true;
-                        cmd.useWebpack = true;
-                        cmd.useReact = true;
-                        cmd.entry = 'app.tsx';
-                        break;
-                    default:
-                        break;
-                }
-            }
             // Config for appConfig.json
             let appSetting = {
                 setAuth: cmd.setAuth || answer['setAuth'],
