@@ -1,8 +1,8 @@
-# kintone-node-cli
+# Kintone CLI
 A tool to quickly start developing with kintone
 ## Installation
 ``
-npm install -g git://github.dev.cybozu.co.jp/SC/kintone-cli.git
+npm install -g git://github.dev.cybozu.co.jp/SC/kintone-node-cli.git
 ``
 ## Usage
 When working with kintone, developers usually follow this flow:
@@ -14,7 +14,7 @@ When working with kintone, developers usually follow this flow:
 
 ### 1. Initialize Project
 ``
-kintone-node-cli init [--install]
+kintone-cli init [--install]
 ``
 Kintone CLI will require following input information. If any piece of info is skipped default value will be auto assigned:
 - Project name
@@ -51,7 +51,7 @@ Create a JS customization|plugin folder structure in project folder.
 
 If the flag --quick existed, CLI will use all default variable for other flags. You can override some by setting its flag like:
 ``
-kintone-node-cli create-template --quick --type Plugin
+kintone-cli create-template --quick --type Plugin
 ``
 
 If value is set for flag --preset, CLI will use preset variable to create folder. If both flag --preset and --quick is set, the config will be merge from both --quick config and --preset config. 
@@ -88,7 +88,7 @@ After the above information is inputted, the following folder structure will be 
 
 ### 3. Start dev locally
 ``
-kintone-node-cli dev --appName <appName> [--watch]
+kintone-cli dev --appName <appName> [--watch]
 ``
 
 Deploy customization files|plugin in <appName> to test domains for debugging.
@@ -98,7 +98,7 @@ If --watch flag is specified and customization|plugin uses webpack, each time a 
 
 ### 4. Build source code
 ``
-kintone-node-cli build [--appName <App Name>]
+kintone-cli build [--appName <App Name>]
 ``
 
 If a customization|plugin folder contains a webpack.config.js, cli will build by using their webpack.config.js file first.
@@ -107,7 +107,7 @@ If a folder is also a plugin folder, CLI will generate manifest.json based on co
 
 ### 5. Deploy to kintone
 ``
-kintone-node-cli deploy [--appName <App Name>]
+kintone-cli deploy [--appName <App Name>]
 ``
 
 Customizations|plugins will be deployed using their config.json and auth.json file.
@@ -116,7 +116,7 @@ Customizations|plugins will be deployed using their config.json and auth.json fi
 ### 1. Lint code
 Check/fix code (using ＠cybozu/eslint-config)
 ``
-kintone-node-cli lint [--appName <appName>] [--fix]
+kintone-cli lint [--appName <appName>] [--fix]
 ``
 
 Result: 
