@@ -85,7 +85,7 @@ After the above information is inputted, the following folder structure will be 
     - auth.json
     - webpack.config.js (if using webpack)
 
-### 3. Start dev locally
+### 3. Start dev
 ``
 kintone-cli dev --appName <appName> [--watch]
 ``
