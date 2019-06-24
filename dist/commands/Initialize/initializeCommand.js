@@ -9,12 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = require("chalk");
-const child_process_1 = require("child_process");
+const spawn = require("cross-spawn");
 const inquirer_1 = require("inquirer");
 const validator_1 = require("./validator");
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const generator_1 = require("./generator");
+const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
     const latestUIComponentVersion = '^0.2.0';
     const latestJsSdkVersion = '^0.2.0';
@@ -252,7 +253,7 @@ const initializeCommand = (program) => {
                 return;
             }
             console.log(chalk_1.default.yellow('Installing dependencies...'));
-            child_process_1.spawnSync('npm', ['install'], { stdio: 'inherit', windowsHide: true });
+            spawnSync('npm', ['install'], { stdio: 'inherit', windowsHide: true });
         }
         catch (error) {
             console.log(chalk_1.default.red(error));
@@ -297,7 +298,7 @@ const initializeCommand = (program) => {
         if (cmd.install) {
             process.chdir(projectFolder);
             console.log(chalk_1.default.yellow('Installing dependencies...'));
-            child_process_1.spawnSync('npm', ['i'], { stdio: "inherit", windowsHide: true });
+            spawnSync('npm', ['i'], { stdio: "inherit", windowsHide: true });
         }
         console.log(chalk_1.default.yellow('You are all set! Happy kintone customizing!'));
     }));

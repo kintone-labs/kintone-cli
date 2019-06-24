@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const child_process_1 = require("child_process");
+const spawn = require("cross-spawn");
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
+const spawnSync = spawn.sync;
 const buildUsingWebpack = (option) => {
-    child_process_1.spawnSync('npm', ['run', `build-${option['appName']}`], { stdio: 'inherit' });
+    spawnSync('npm', ['run', `build-${option['appName']}`], { stdio: 'inherit' });
 };
 exports.buildUsingWebpack = buildUsingWebpack;
 const buildVanillaJS = (option) => {
@@ -30,7 +31,7 @@ const buildPlugin = (option) => {
         paramArr.push('--ppk');
         paramArr.push(`${option['appName']}/dist/private.ppk`);
     }
-    child_process_1.spawnSync('./node_modules/.bin/kintone-plugin-packer', paramArr, {
+    spawnSync('./node_modules/.bin/kintone-plugin-packer', paramArr, {
         stdio: 'inherit'
     });
     if (!fs_1.existsSync(`${option['appName']}/dist/private.ppk`)) {

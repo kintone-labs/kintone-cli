@@ -1,6 +1,8 @@
-import {spawnSync} from 'child_process'
+import * as spawn from "cross-spawn"
 import {writeFileSync, readFileSync} from 'jsonfile'
 import { unlinkSync, existsSync, readdirSync, renameSync } from 'fs';
+
+const spawnSync = spawn.sync
 
 const buildUsingWebpack = (option: object) => {
     spawnSync('npm',['run', `build-${option['appName']}`],{stdio: 'inherit'})

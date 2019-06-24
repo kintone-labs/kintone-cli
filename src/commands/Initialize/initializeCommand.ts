@@ -1,12 +1,14 @@
 import { CommanderStatic } from "commander";
 import chalk from 'chalk'
-import {spawnSync} from 'child_process'
+import * as spawn from "cross-spawn"
 import {prompt} from 'inquirer'
 import validator from './validator'
 import {writeFileSync} from 'jsonfile'
 import {mkdirSync, existsSync} from 'fs'
 
 import {generateAppFolder} from './generator'
+
+const spawnSync = spawn.sync
 
 const initializeCommand = (program: CommanderStatic) => {
     const latestUIComponentVersion = '^0.2.0';

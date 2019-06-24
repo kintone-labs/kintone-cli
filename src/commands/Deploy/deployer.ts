@@ -1,6 +1,8 @@
+import * as spawn from "cross-spawn"
 import {writeFileSync, readFileSync} from 'jsonfile'
 import { unlinkSync, existsSync, mkdirSync } from 'fs';
-import {spawnSync} from 'child_process'
+
+const spawnSync = spawn.sync
 
 const deployCustomization = (option: object) => {
     let customizeManifestJSON = {

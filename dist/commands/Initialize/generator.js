@@ -3,8 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const webpackTemplate_1 = require("./webpackTemplate");
-const child_process_1 = require("child_process");
+const spawn = require("cross-spawn");
 const eslintRcTemplate_1 = require("./eslintRcTemplate");
+const spawnSync = spawn.sync;
 const generateAppFolder = (option) => {
     if (!fs_1.existsSync('package.json')) {
         return 'Project not initialized';
@@ -77,7 +78,7 @@ const generateAppFolder = (option) => {
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         let webpackTemplate = webpackTemplate_1.buildWebpackReactTemplate(option);
         fs_1.writeFileSync(`${option['appName']}/webpack.config.js`, webpackTemplate);
-        child_process_1.spawnSync('npx', ['prettier', '--write', `${option['appName']}/webpack.config.js`, '--single-quote'], { stdio: 'inherit', windowsHide: true });
+        spawnSync('npx', ['prettier', '--write', `${option['appName']}/webpack.config.js`, '--single-quote'], { stdio: 'inherit', windowsHide: true });
         manifestJSON['uploadConfig'] = {
             desktop: {
                 js: [
@@ -124,12 +125,16 @@ const generateAppFolder = (option) => {
         }
         const tsConfigJSON = {
             "compilerOptions": {
-                "typeRoots": ["./source", "../node_modules/@types"]
+                "typeRoots": ["./source", "../node_modules/@types"],
+                "noImplicitAny": false
             },
             "include": [
                 "source/**/*.ts", "source/**/*.tsx"
             ]
         };
+        if (option['useReact']) {
+            tsConfigJSON['compilerOptions']['jsx'] = 'react';
+        }
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         if (option['useReact']) {
             fs_1.writeFileSync(`${option['appName']}/source/global.d.tsx`, 'declare let kintone: any');
@@ -198,7 +203,7 @@ const generateAppFolder = (option) => {
         // create .eslintrc.js file according to customization structure
         let eslintRcTemplete = eslintRcTemplate_1.buildEslintRcTemplate(option);
         fs_1.writeFileSync(`${option['appName']}/.eslintrc.js`, eslintRcTemplete);
-        child_process_1.spawnSync('npx', ['prettier', '--write', `${option['appName']}/.eslintrc.js`], { stdio: 'inherit' });
+        spawnSync('npx', ['prettier', '--write', `${option['appName']}/.eslintrc.js`], { stdio: 'inherit' });
     }
     jsonfile_1.writeFileSync(`${option['appName']}/config.json`, manifestJSON, { spaces: 4, EOL: "\r\n" });
     if (option['entry']) {

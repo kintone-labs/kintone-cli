@@ -1,7 +1,9 @@
 import { CommanderStatic } from "commander"
 import chalk from 'chalk'
-import {spawnSync} from 'child_process'
+import * as spawn from "cross-spawn"
 import validator from './validator'
+
+const spawnSync = spawn.sync
 
 const lintCommand = (program: CommanderStatic) => {
     program

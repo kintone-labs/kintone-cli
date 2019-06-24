@@ -1,11 +1,13 @@
 import { CommanderStatic } from "commander"
 import chalk from 'chalk'
 import {readFileSync} from 'jsonfile'
-import { spawnSync, spawn } from "child_process"
+import * as spawn from "cross-spawn"
 import stripAnsi from 'strip-ansi'
 import { existsSync } from "fs";
 import {devCustomize, devPlugin} from './devGenerator'
 import validator from './validator'
+
+const spawnSync = spawn.sync
 
 const isURL = (str: string) => {
     var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol

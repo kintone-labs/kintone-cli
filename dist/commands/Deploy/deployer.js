@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const spawn = require("cross-spawn");
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
-const child_process_1 = require("child_process");
+const spawnSync = spawn.sync;
 const deployCustomization = (option) => {
     let customizeManifestJSON = {
         app: option['appID'],
@@ -36,10 +37,10 @@ const deployCustomization = (option) => {
         fs_1.mkdirSync(`${option['appName']}/dist`);
     }
     if (fs_1.existsSync(`${option['appName']}/webpack.config.js`)) {
-        child_process_1.spawnSync('npm', ['run', `build-${option['appName']}`, '--', '--mode', 'production'], { stdio: ['ignore', 'ignore', process.stderr] });
+        spawnSync('npm', ['run', `build-${option['appName']}`, '--', '--mode', 'production'], { stdio: ['ignore', 'ignore', process.stderr] });
     }
     jsonfile_1.writeFileSync(`${option['appName']}/dist/customize-manifest.json`, customizeManifestJSON, { spaces: 2, EOL: '\r\n' });
-    child_process_1.spawnSync('./node_modules/.bin/kintone-customize-uploader', paramArr, {
+    spawnSync('./node_modules/.bin/kintone-customize-uploader', paramArr, {
         stdio: 'inherit'
     });
     fs_1.unlinkSync(`${option['appName']}/dist/customize-manifest.json`);
@@ -47,7 +48,7 @@ const deployCustomization = (option) => {
 exports.deployCustomization = deployCustomization;
 const deployPlugin = (option) => {
     let authJSON = jsonfile_1.readFileSync(`${option['appName']}/auth.json`);
-    child_process_1.spawnSync('./node_modules/.bin/kintone-plugin-uploader', [
+    spawnSync('./node_modules/.bin/kintone-plugin-uploader', [
         '--domain', authJSON['domain'],
         '--username', authJSON['username'],
         '--password', authJSON['password'],

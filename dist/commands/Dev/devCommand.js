@@ -10,11 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = require("chalk");
 const jsonfile_1 = require("jsonfile");
-const child_process_1 = require("child_process");
+const spawn = require("cross-spawn");
 const strip_ansi_1 = require("strip-ansi");
 const fs_1 = require("fs");
 const devGenerator_1 = require("./devGenerator");
 const validator_1 = require("./validator");
+const spawnSync = spawn.sync;
 const isURL = (str) => {
     var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -42,10 +43,10 @@ const devCommand = (program) => {
         // build the first time and upload link to kintone
         if (fs_1.existsSync(`${cmd.appName}/webpack.config.js`)) {
             console.log(chalk_1.default.yellow('Building distributed file...'));
-            child_process_1.spawnSync('npm', ['run', `build-${cmd.appName}`, '--', '--mode', 'development'], { stdio: ['ignore', 'ignore', process.stderr] });
+            spawnSync('npm', ['run', `build-${cmd.appName}`, '--', '--mode', 'development'], { stdio: ['ignore', 'ignore', process.stderr] });
         }
         console.log(chalk_1.default.yellow('Starting local webserver...'));
-        const ws = child_process_1.spawn('npm', ['run', 'dev', '--', '--https']);
+        const ws = spawn('npm', ['run', 'dev', '--', '--https']);
         ws.stderr.on('data', (data) => {
             let webserverInfo = data.toString().replace('Serving at', '');
             webserverInfo = webserverInfo.split(',');

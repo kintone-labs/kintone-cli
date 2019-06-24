@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = require("chalk");
-const child_process_1 = require("child_process");
+const spawn = require("cross-spawn");
 const validator_1 = require("./validator");
+const spawnSync = spawn.sync;
 const lintCommand = (program) => {
     program
         .command('lint')
@@ -27,10 +28,10 @@ const lintCommand = (program) => {
         });
         console.log(chalk_1.default.yellow('Checking syntax...'));
         if (cmd.appName) {
-            child_process_1.spawnSync('npm', ['run', `lint-${cmd.appName}${cmd.fix ? '-fix' : ''}`], { stdio: 'inherit' });
+            spawnSync('npm', ['run', `lint-${cmd.appName}${cmd.fix ? '-fix' : ''}`], { stdio: 'inherit' });
         }
         else {
-            child_process_1.spawnSync('npm', ['run', `lint-all${cmd.fix ? '-fix' : ''}`], { stdio: 'inherit' });
+            spawnSync('npm', ['run', `lint-all${cmd.fix ? '-fix' : ''}`], { stdio: 'inherit' });
         }
     }));
 };

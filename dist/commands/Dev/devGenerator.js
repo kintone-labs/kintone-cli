@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const deployer_1 = require("../Deploy/deployer");
 const fs_1 = require("fs");
-const child_process_1 = require("child_process");
+const spawn = require("cross-spawn");
 const chalk_1 = require("chalk");
 const builder_1 = require("../Build/builder");
+const spawnSync = spawn.sync;
 const cleanExit = (ws) => {
     ws.kill();
     process.exit();
@@ -27,7 +28,7 @@ const devCustomize = (ws, config) => {
         // watch for changes
         if (fs_1.existsSync(`${config.appName}/webpack.config.js`)) {
             console.log(chalk_1.default.yellow('Watching for changes...'));
-            child_process_1.spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch'], { stdio: 'inherit' });
+            spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch'], { stdio: 'inherit' });
         }
     }
 };
@@ -50,7 +51,7 @@ const devPlugin = (ws, config) => {
         // watch for changes
         if (fs_1.existsSync(`${config.appName}/webpack.config.js`)) {
             console.log(chalk_1.default.yellow('Watching for changes...'));
-            child_process_1.spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch'], { stdio: 'inherit' });
+            spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch'], { stdio: 'inherit' });
         }
     }
 };

@@ -1,9 +1,11 @@
 import {writeFileSync, readFileSync} from 'jsonfile'
 import {mkdirSync, existsSync, writeFileSync as writeFileSyncFS} from 'fs'
 import {buildWebpackReactTemplate} from './webpackTemplate'
-import {spawnSync} from 'child_process'
+import * as spawn from "cross-spawn"
 import {AppOption, EslintRcParams, WebpackParams} from '../../dto/app'
 import {buildEslintRcTemplate} from './eslintRcTemplate'
+
+const spawnSync = spawn.sync
 
 const generateAppFolder = (option: AppOption): string | boolean => {
     if (!existsSync('package.json')) {
@@ -144,11 +146,16 @@ const generateAppFolder = (option: AppOption): string | boolean => {
 
         const tsConfigJSON = {
             "compilerOptions": {
-                "typeRoots": ["./source","../node_modules/@types"]
+                "typeRoots": ["./source","../node_modules/@types"],
+                "noImplicitAny": false
             },
             "include": [
                 "source/**/*.ts", "source/**/*.tsx"
             ]
+        }
+
+        if (option['useReact']) {
+            tsConfigJSON['compilerOptions']['jsx'] = 'react'
         }
 
         writeFileSync(`package.json`,packageJSON, {spaces: 4, EOL: "\r\n"})
