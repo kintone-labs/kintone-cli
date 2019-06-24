@@ -130,3 +130,9 @@ Result:
 If --fix flag is specified, cli will also attempt to fix all auto-fixable problems in source code
 ### 2. Import / export data (WIP)
 ### 3. Auth (WIP)
+
+## License
+MIT License
+
+## Copyright
+Copyright(c) Cybozu, Inc.
