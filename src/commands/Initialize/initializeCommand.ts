@@ -4,9 +4,10 @@ import * as spawn from "cross-spawn"
 import {prompt} from 'inquirer'
 import validator from './validator'
 import {writeFileSync} from 'jsonfile'
-import {mkdirSync, existsSync} from 'fs'
+import {mkdirSync, existsSync, writeFileSync as writeFileSyncFS} from 'fs'
 
 import {generateAppFolder} from './generator'
+import { isDomain } from "../../utils/string";
 
 const spawnSync = spawn.sync
 
@@ -129,6 +130,12 @@ const initializeCommand = (program: CommanderStatic) => {
                             message : 'What is your kintone domain ?',
                             when: (curAnswers:object) => {
                                 return cmd.setAuth || curAnswers['setAuth']
+                            },
+                            validate: (input: any,curAnswer: object): any => {
+                                if (!isDomain(input)) {
+                                    return 'Please enter a valid domain'
+                                }
+                                return true
                             }
                         },
                         {
@@ -151,6 +158,7 @@ const initializeCommand = (program: CommanderStatic) => {
                             type : 'confirm',
                             name : 'useProxy',
                             message : 'Do you use proxy ?',
+                            default: false,
                             when: (curAnswers:object) => {
                                 return cmd.setAuth || curAnswers['setAuth']
                             }
@@ -172,19 +180,32 @@ const initializeCommand = (program: CommanderStatic) => {
                         {
                             type: 'confirm',
                             name: 'useTypescript',
-                            message : 'Do you want to use Typescript ?',
+                            message : 'Do you want to use TypeScript ?',
                             when: cmd.useTypescript === undefined
                         },
                         {
                             type: 'confirm',
                             name: 'useWebpack',
-                            message : 'Do you want to use Webpack ?',
+                            message : 'Do you want to use webpack ?',
                             when: cmd.useWebpack === undefined && cmd.useReact
                         },
                         {
                             type: 'input',
                             name: 'entry',
-                            message : 'What is the entry for Webpack ?',
+                            message : 'What is the entry for webpack ?',
+                            default: (curAnswers:object) => {
+                                let ext = '.js'
+                                if (curAnswers['useReact'] && curAnswers['useTypescript']) {
+                                    ext = '.tsx'
+                                }
+                                else if (curAnswers['useReact']) {
+                                    ext = '.jsx'
+                                }
+                                else if (curAnswers['useTypescript']) {
+                                    ext = '.ts'
+                                }
+                                return `index${ext}`;
+                            },
                             when: (curAnswers:object) => {
                                 return cmd.useWebpack || curAnswers['useWebpack']
                             }
@@ -302,9 +323,12 @@ const initializeCommand = (program: CommanderStatic) => {
             const packageJsonPath = projectFolder + '/package.json'
             writeFileSync(packageJsonPath, packageInfo, { spaces: 2, EOL: '\r\n' });
             
+            process.chdir(projectFolder);
+            spawnSync('git', ['init'], {stdio: "inherit"})
+            writeFileSyncFS(`${projectFolder}/.gitignore`,'node_modules')
+            
             // if install is specified run npm install
             if(cmd.install) {
-                process.chdir(projectFolder);
                 console.log(chalk.yellow('Installing dependencies...'));
                 spawnSync('npm', ['i'], {stdio: "inherit", windowsHide: true})
             }

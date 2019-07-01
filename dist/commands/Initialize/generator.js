@@ -8,7 +8,7 @@ const eslintRcTemplate_1 = require("./eslintRcTemplate");
 const spawnSync = spawn.sync;
 const generateAppFolder = (option) => {
     if (!fs_1.existsSync('package.json')) {
-        return 'Project not initialized';
+        return 'package.json not found';
     }
     let packageJSON = jsonfile_1.readFileSync('package.json');
     let manifestJSON = {};
@@ -208,6 +208,11 @@ const generateAppFolder = (option) => {
     jsonfile_1.writeFileSync(`${option['appName']}/config.json`, manifestJSON, { spaces: 4, EOL: "\r\n" });
     if (option['entry']) {
         fs_1.writeFileSync(`${option['appName']}/source/${option['entry']}`, '');
+    }
+    if (fs_1.existsSync('.gitignore')) {
+        let gitIgnoreContent = fs_1.readFileSync('.gitignore').toString();
+        gitIgnoreContent += `\n${option['appName']}/auth.json`;
+        fs_1.writeFileSync('.gitignore', gitIgnoreContent);
     }
     return false;
 };

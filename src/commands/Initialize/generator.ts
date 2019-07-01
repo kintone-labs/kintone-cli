@@ -1,5 +1,5 @@
 import {writeFileSync, readFileSync} from 'jsonfile'
-import {mkdirSync, existsSync, writeFileSync as writeFileSyncFS} from 'fs'
+import {mkdirSync, existsSync, writeFileSync as writeFileSyncFS, readFileSync as readFileSyncFS} from 'fs'
 import {buildWebpackReactTemplate} from './webpackTemplate'
 import * as spawn from "cross-spawn"
 import {AppOption, EslintRcParams, WebpackParams} from '../../dto/app'
@@ -9,7 +9,7 @@ const spawnSync = spawn.sync
 
 const generateAppFolder = (option: AppOption): string | boolean => {
     if (!existsSync('package.json')) {
-        return 'Project not initialized'
+        return 'package.json not found'
     }
     let packageJSON = readFileSync('package.json')
     let manifestJSON = {}
@@ -236,6 +236,12 @@ const generateAppFolder = (option: AppOption): string | boolean => {
     writeFileSync(`${option['appName']}/config.json`,manifestJSON,{spaces: 4, EOL: "\r\n"})
     if (option['entry']) {
         writeFileSyncFS(`${option['appName']}/source/${option['entry']}`, '')
+    }
+
+    if (existsSync('.gitignore')) {
+        let gitIgnoreContent = readFileSyncFS('.gitignore').toString()
+        gitIgnoreContent += `\n${option['appName']}/auth.json`
+        writeFileSyncFS('.gitignore', gitIgnoreContent)
     }
 
     return false

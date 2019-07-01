@@ -15,6 +15,7 @@ const validator_1 = require("./validator");
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const generator_1 = require("./generator");
+const string_1 = require("../../utils/string");
 const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
     const latestUIComponentVersion = '^0.2.0';
@@ -134,6 +135,12 @@ const initializeCommand = (program) => {
                     message: 'What is your kintone domain ?',
                     when: (curAnswers) => {
                         return cmd.setAuth || curAnswers['setAuth'];
+                    },
+                    validate: (input, curAnswer) => {
+                        if (!string_1.isDomain(input)) {
+                            return 'Please enter a valid domain';
+                        }
+                        return true;
                     }
                 },
                 {
@@ -156,6 +163,7 @@ const initializeCommand = (program) => {
                     type: 'confirm',
                     name: 'useProxy',
                     message: 'Do you use proxy ?',
+                    default: false,
                     when: (curAnswers) => {
                         return cmd.setAuth || curAnswers['setAuth'];
                     }
@@ -177,19 +185,32 @@ const initializeCommand = (program) => {
                 {
                     type: 'confirm',
                     name: 'useTypescript',
-                    message: 'Do you want to use Typescript ?',
+                    message: 'Do you want to use TypeScript ?',
                     when: cmd.useTypescript === undefined
                 },
                 {
                     type: 'confirm',
                     name: 'useWebpack',
-                    message: 'Do you want to use Webpack ?',
+                    message: 'Do you want to use webpack ?',
                     when: cmd.useWebpack === undefined && cmd.useReact
                 },
                 {
                     type: 'input',
                     name: 'entry',
-                    message: 'What is the entry for Webpack ?',
+                    message: 'What is the entry for webpack ?',
+                    default: (curAnswers) => {
+                        let ext = '.js';
+                        if (curAnswers['useReact'] && curAnswers['useTypescript']) {
+                            ext = '.tsx';
+                        }
+                        else if (curAnswers['useReact']) {
+                            ext = '.jsx';
+                        }
+                        else if (curAnswers['useTypescript']) {
+                            ext = '.ts';
+                        }
+                        return `index${ext}`;
+                    },
                     when: (curAnswers) => {
                         return cmd.useWebpack || curAnswers['useWebpack'];
                     }
@@ -294,9 +315,11 @@ const initializeCommand = (program) => {
         packageInfo['scripts']['dev'] = 'ws';
         const packageJsonPath = projectFolder + '/package.json';
         jsonfile_1.writeFileSync(packageJsonPath, packageInfo, { spaces: 2, EOL: '\r\n' });
+        process.chdir(projectFolder);
+        spawnSync('git', ['init'], { stdio: "inherit" });
+        fs_1.writeFileSync(`${projectFolder}/.gitignore`, 'node_modules');
         // if install is specified run npm install
         if (cmd.install) {
-            process.chdir(projectFolder);
             console.log(chalk_1.default.yellow('Installing dependencies...'));
             spawnSync('npm', ['i'], { stdio: "inherit", windowsHide: true });
         }
