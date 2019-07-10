@@ -14,65 +14,22 @@ const spawnSync = spawn.sync
 const initializeCommand = (program: CommanderStatic) => {
     const latestUIComponentVersion = '^0.2.0';
     const latestJsSdkVersion = '^0.2.0';
-    const questions = [
-        {
-            type: 'input',
-            name: 'name',
-            message: 'Project name',
-            default: 'kintone-customization-project'
-        },
-        {
-            type: 'input',
-            name: 'version',
-            message: 'Version',
-            default: '0.0.1'
-        },
-        {
-            type: 'input',
-            name: 'description',
-            message: 'Description',
-            default: 'kintone customization project'
-        },
-        {
-            type: 'input',
-            name: 'author',
-            message: 'Author',
-            default: ''
-        },
-        {
-            type: 'input',
-            name: 'license',
-            message: 'License',
-            default: 'MIT'
-        },
-        {
-            type: 'confirm',
-            name: 'dependencies.@kintone/kintone-ui-component',
-            message: 'Do you want to use @kintone/kintone-ui-component?',
-            default: true
-        },
-        {
-            type: 'confirm',
-            name: 'dependencies.@kintone/kintone-js-sdk',
-            message: 'Do you want to use @kintone/kintone-js-sdk?',
-            default: true
-        }
-    ]
     
     program
         .command('create-template')
         .option('-q, --quick', 'Use default template')
-        .option('-a, --set-auth', 'Set authentication credentials')
-        .option('-n, --app-name <appName>', 'Set app name')
-        .option('-s, --use-typescript', 'Use typescript or not')
-        .option('-w, --use-webpack', 'Use webpack or not')
+        .option('--yes', 'Use default template')
+        .option('--preset <preset>', 'Preset for generating template')
         .option('-t, --type <type>', 'Set app type')
+        .option('-a, --set-auth', 'Set authentication credentials')
         .option('-d, --domain <domain>', 'Set kintone domain')
         .option('-u, --username <username>', 'Set username')
         .option('-p, --password <password>', 'Set password')
+        .option('-n, --app-name <appName>', 'Set app name')
+        .option('-s, --use-typescript', 'Use typescript or not')
+        .option('-w, --use-webpack', 'Use webpack or not')
         .option('-i, --appID <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
-        .option('--preset <preset>', 'Preset for generating template')
         .action(async (cmd)=>{
             let error = validator.appValidator(cmd)
             if (error && typeof error === 'string') {
@@ -81,7 +38,7 @@ const initializeCommand = (program: CommanderStatic) => {
             }
             try {
                 let answer = {}
-                if (cmd.quick) {
+                if (cmd.quick || cmd.yes) {
                     cmd.setAuth = false
                     cmd.useProxy = false
                     cmd.useTypescript = false
@@ -111,143 +68,143 @@ const initializeCommand = (program: CommanderStatic) => {
                     }
                 }
                 answer = await prompt([
-                        {
-                            type : 'list',
-                            name : 'type',
-                            message : 'What type of app you want to create ?',
-                            choices: ['Customization','Plugin'],
-                            when: cmd.type === undefined
+                    {
+                        type : 'list',
+                        name : 'type',
+                        message : 'What type of app you want to create ?',
+                        choices: ['Customization','Plugin'],
+                        when: cmd.type === undefined
+                    },
+                    {
+                        type : 'confirm',
+                        name : 'setAuth',
+                        message : 'Do you want to set authentication credentials ?',
+                        when: cmd.setAuth === undefined
+                    },
+                    {
+                        type : 'input',
+                        name : 'domain',
+                        message : 'What is your kintone domain ?',
+                        when: (curAnswers:object) => {
+                            return cmd.setAuth || curAnswers['setAuth']
                         },
-                        {
-                            type : 'confirm',
-                            name : 'setAuth',
-                            message : 'Do you want to set authentication credentials ?',
-                            when: cmd.setAuth === undefined
-                        },
-                        {
-                            type : 'input',
-                            name : 'domain',
-                            message : 'What is your kintone domain ?',
-                            when: (curAnswers:object) => {
-                                return cmd.setAuth || curAnswers['setAuth']
-                            },
-                            validate: (input: any,curAnswer: object): any => {
-                                if (!isDomain(input)) {
-                                    return 'Please enter a valid domain'
-                                }
-                                return true
+                        validate: (input: any,curAnswer: object): any => {
+                            if (!isDomain(input)) {
+                                return 'Please enter a valid domain'
                             }
-                        },
-                        {
-                            type : 'input',
-                            name : 'username',
-                            message : 'What is your kintone username ?',
-                            when: (curAnswers:object) => {
-                                return cmd.setAuth || curAnswers['setAuth']
-                            }
-                        },
-                        {
-                            type : 'password',
-                            name : 'password',
-                            message : 'What is your kintone password ?',
-                            when: (curAnswers:object) => {
-                                return cmd.setAuth || curAnswers['setAuth']
-                            }
-                        },
-                        {
-                            type : 'confirm',
-                            name : 'useProxy',
-                            message : 'Do you use proxy ?',
-                            default: false,
-                            when: (curAnswers:object) => {
-                                return cmd.setAuth || curAnswers['setAuth']
-                            }
-                        },
-                        {
-                            type : 'input',
-                            name : 'proxy',
-                            message : 'Specify your proxy full URL, including port number:',
-                            when: (curAnswers:object) => {
-                                return cmd.useProxy || curAnswers['useProxy']
-                            }
-                        },
-                        {
-                            type: 'confirm',
-                            name: 'useReact',
-                            message : 'Do you want to use React ?',
-                            when: cmd.useReact === undefined
-                        },
-                        {
-                            type: 'confirm',
-                            name: 'useTypescript',
-                            message : 'Do you want to use TypeScript ?',
-                            when: cmd.useTypescript === undefined
-                        },
-                        {
-                            type: 'confirm',
-                            name: 'useWebpack',
-                            message : 'Do you want to use webpack ?',
-                            when: cmd.useWebpack === undefined && cmd.useReact
-                        },
-                        {
-                            type: 'input',
-                            name: 'entry',
-                            message : 'What is the entry for webpack ?',
-                            default: (curAnswers:object) => {
-                                let ext = '.js'
-                                if (curAnswers['useReact'] && curAnswers['useTypescript']) {
-                                    ext = '.tsx'
-                                }
-                                else if (curAnswers['useReact']) {
-                                    ext = '.jsx'
-                                }
-                                else if (curAnswers['useTypescript']) {
-                                    ext = '.ts'
-                                }
-                                return `index${ext}`;
-                            },
-                            when: (curAnswers:object) => {
-                                return cmd.useWebpack || curAnswers['useWebpack']
-                            }
-                        },
-                        {
-                            type: 'input',
-                            name: 'appName',
-                            message : 'What is the app name ?',
-                            when: cmd.appName === undefined
-                        },
-                        {
-                            type: 'confirm',
-                            name: 'useCybozuLint',
-                            message : 'Do you want to use @cybozu/eslint-config for syntax checking ?',
-                            when: cmd.useCybozuLint === undefined
-                        },
-                        {
-                            type: 'number',
-                            name: 'appID',
-                            message : 'What is the app ID ?',
-                            when: (curAnswers:object) => {
-                                return(
-                                    (cmd.setAuth || curAnswers['setAuth']) 
-                                    && 
-                                    (!cmd.appID)
-                                )
-                            }
-                        },
-                        {
-                            type : 'list',
-                            name : 'scope',
-                            message : 'What is the scope of customization ?',
-                            choices: ['ALL','ADMIN','NONE'],
-                            when: (curAnswers:object) => {
-                                return(
-                                    (cmd.type === 'Customization' || curAnswers['type'] === 'Customization') 
-                                    && 
-                                    (!cmd.scope)
-                                )
-                            }
+                            return true
                         }
-                    ])    
+                    },
+                    {
+                        type : 'input',
+                        name : 'username',
+                        message : 'What is your kintone username ?',
+                        when: (curAnswers:object) => {
+                            return cmd.setAuth || curAnswers['setAuth']
+                        }
+                    },
+                    {
+                        type : 'password',
+                        name : 'password',
+                        message : 'What is your kintone password ?',
+                        when: (curAnswers:object) => {
+                            return cmd.setAuth || curAnswers['setAuth']
+                        }
+                    },
+                    {
+                        type : 'confirm',
+                        name : 'useProxy',
+                        message : 'Do you use proxy ?',
+                        default: false,
+                        when: (curAnswers:object) => {
+                            return cmd.setAuth || curAnswers['setAuth']
+                        }
+                    },
+                    {
+                        type : 'input',
+                        name : 'proxy',
+                        message : 'Specify your proxy full URL, including port number:',
+                        when: (curAnswers:object) => {
+                            return cmd.useProxy || curAnswers['useProxy']
+                        }
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'useReact',
+                        message : 'Do you want to use React ?',
+                        when: cmd.useReact === undefined
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'useTypescript',
+                        message : 'Do you want to use TypeScript ?',
+                        when: cmd.useTypescript === undefined
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'useWebpack',
+                        message : 'Do you want to use webpack ?',
+                        when: cmd.useWebpack === undefined
+                    },
+                    {
+                        type: 'input',
+                        name: 'entry',
+                        message : 'What is the entry for webpack ?',
+                        default: (curAnswers:object) => {
+                            let ext = '.js'
+                            if (curAnswers['useReact'] && curAnswers['useTypescript']) {
+                                ext = '.tsx'
+                            }
+                            else if (curAnswers['useReact']) {
+                                ext = '.jsx'
+                            }
+                            else if (curAnswers['useTypescript']) {
+                                ext = '.ts'
+                            }
+                            return `index${ext}`;
+                        },
+                        when: (curAnswers:object) => {
+                            return cmd.useWebpack || curAnswers['useWebpack']
+                        }
+                    },
+                    {
+                        type: 'input',
+                        name: 'appName',
+                        message : 'What is the app name ?',
+                        when: cmd.appName === undefined
+                    },
+                    {
+                        type: 'confirm',
+                        name: 'useCybozuLint',
+                        message : 'Do you want to use @cybozu/eslint-config for syntax checking ?',
+                        when: cmd.useCybozuLint === undefined
+                    },
+                    {
+                        type: 'number',
+                        name: 'appID',
+                        message : 'What is the app ID ?',
+                        when: (curAnswers:object) => {
+                            return(
+                                (cmd.setAuth || curAnswers['setAuth']) 
+                                && 
+                                (!cmd.appID)
+                            )
+                        }
+                    },
+                    {
+                        type : 'list',
+                        name : 'scope',
+                        message : 'What is the scope of customization ?',
+                        choices: ['ALL','ADMIN','NONE'],
+                        when: (curAnswers:object) => {
+                            return(
+                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization') 
+                                && 
+                                (!cmd.scope)
+                            )
+                        }
+                    }
+                ])    
                 
                 
                 // Config for appConfig.json
@@ -277,7 +234,19 @@ const initializeCommand = (program: CommanderStatic) => {
                 }
                 console.log(chalk.yellow('Installing dependencies...'))
                 spawnSync('npm',['install'], {stdio: 'inherit', windowsHide: true})
-                
+                console.log('')
+                if (!appSetting.setAuth) {
+                    console.log(chalk.yellow('To set auth info, use:'))
+                    console.log('')
+                    console.log(chalk.greenBright('     kintone-cli auth --app-name <appName>'))
+                    console.log('')
+                }
+                else {
+                    console.log(chalk.yellow('To start developing app, use:'))
+                    console.log('')
+                    console.log(chalk.greenBright(`     kintone-cli dev --app-name ${appSetting.appName} --watch`))
+                    console.log('')
+                }
             } catch (error) {
                 console.log(chalk.red(error))
             }
@@ -286,13 +255,83 @@ const initializeCommand = (program: CommanderStatic) => {
     program
         .command('init')
         .description('Initialize kintone project')
-        .option('--install')
+        .option('--install', 'Install dependencies or not')
+        .option('--quick', 'Quickly create a kintone project')
+        .option('-p, --project-name <projectName>', 'Project name')
         .action(async (cmd)=>{
-            console.log(chalk.yellow('Welcome to kintone-cli!'));
-            console.log(chalk.yellow('Please, input below information so we can get started!'));
+            let packageInfo = {}
+            if (cmd.quick) {
+                packageInfo['projectName'] = 'kintone-customization-project'
+                packageInfo['version'] = '0.0.1'
+                packageInfo['description'] = 'kintone customization project'
+                packageInfo['author'] = ''
+                packageInfo['license'] = 'MIT'
+                packageInfo['dependencies'] = {}
+                packageInfo['dependencies']['@kintone/kintone-ui-component'] = true
+                packageInfo['dependencies']['@kintone/kintone-js-sdk'] = true
+            }
+            else {
+                console.log(chalk.yellow('Welcome to kintone-cli!'));
+                console.log(chalk.yellow('Please, input below information so we can get started!'));
+            }
+
+            if (cmd.projectName) {
+                packageInfo['projectName'] = cmd.projectName
+            }
             
             // ask info about project
-            const packageInfo = await prompt(questions)
+            const answer = await prompt([
+                {
+                    type: 'input',
+                    name: 'name',
+                    message: 'Project name',
+                    default: 'kintone-customization-project',
+                    when: !packageInfo['projectName']
+                },
+                {
+                    type: 'input',
+                    name: 'version',
+                    message: 'Version',
+                    default: '0.0.1',
+                    when: !packageInfo['version']
+                },
+                {
+                    type: 'input',
+                    name: 'description',
+                    message: 'Description',
+                    default: 'kintone customization project',
+                    when: !packageInfo['description']
+                },
+                {
+                    type: 'input',
+                    name: 'author',
+                    message: 'Author',
+                    default: '',
+                    when: packageInfo['author'] === undefined
+                },
+                {
+                    type: 'input',
+                    name: 'license',
+                    message: 'License',
+                    default: 'MIT',
+                    when: !packageInfo['license']
+                },
+                {
+                    type: 'confirm',
+                    name: 'dependencies.@kintone/kintone-ui-component',
+                    message: 'Do you want to use @kintone/kintone-ui-component?',
+                    default: true,
+                    when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/kintone-ui-component'] === undefined
+                },
+                {
+                    type: 'confirm',
+                    name: 'dependencies.@kintone/kintone-js-sdk',
+                    message: 'Do you want to use @kintone/kintone-js-sdk?',
+                    default: true,
+                    when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/kintone-js-sdk'] === undefined
+                }
+            ])
+            packageInfo = {...packageInfo, ...answer}
             if(packageInfo['dependencies']['@kintone/kintone-ui-component'])
                 packageInfo['dependencies']['@kintone/kintone-ui-component'] = latestUIComponentVersion;
             else 
@@ -332,7 +371,12 @@ const initializeCommand = (program: CommanderStatic) => {
                 console.log(chalk.yellow('Installing dependencies...'));
                 spawnSync('npm', ['i'], {stdio: "inherit", windowsHide: true})
             }
-            console.log(chalk.yellow('You are all set! Happy kintone customizing!'));
+            console.log('')
+            console.log(chalk.yellow('Project created!'));
+            console.log(chalk.yellow('To create new app, use:'));
+            console.log('');
+            console.log(chalk.green('   kintone-cli create-template'));
+            console.log('');
         })
 }
 

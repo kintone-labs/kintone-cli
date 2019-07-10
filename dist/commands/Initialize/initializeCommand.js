@@ -20,64 +20,21 @@ const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
     const latestUIComponentVersion = '^0.2.0';
     const latestJsSdkVersion = '^0.2.0';
-    const questions = [
-        {
-            type: 'input',
-            name: 'name',
-            message: 'Project name',
-            default: 'kintone-customization-project'
-        },
-        {
-            type: 'input',
-            name: 'version',
-            message: 'Version',
-            default: '0.0.1'
-        },
-        {
-            type: 'input',
-            name: 'description',
-            message: 'Description',
-            default: 'kintone customization project'
-        },
-        {
-            type: 'input',
-            name: 'author',
-            message: 'Author',
-            default: ''
-        },
-        {
-            type: 'input',
-            name: 'license',
-            message: 'License',
-            default: 'MIT'
-        },
-        {
-            type: 'confirm',
-            name: 'dependencies.@kintone/kintone-ui-component',
-            message: 'Do you want to use @kintone/kintone-ui-component?',
-            default: true
-        },
-        {
-            type: 'confirm',
-            name: 'dependencies.@kintone/kintone-js-sdk',
-            message: 'Do you want to use @kintone/kintone-js-sdk?',
-            default: true
-        }
-    ];
     program
         .command('create-template')
         .option('-q, --quick', 'Use default template')
-        .option('-a, --set-auth', 'Set authentication credentials')
-        .option('-n, --app-name <appName>', 'Set app name')
-        .option('-s, --use-typescript', 'Use typescript or not')
-        .option('-w, --use-webpack', 'Use webpack or not')
+        .option('--yes', 'Use default template')
+        .option('--preset <preset>', 'Preset for generating template')
         .option('-t, --type <type>', 'Set app type')
+        .option('-a, --set-auth', 'Set authentication credentials')
         .option('-d, --domain <domain>', 'Set kintone domain')
         .option('-u, --username <username>', 'Set username')
         .option('-p, --password <password>', 'Set password')
+        .option('-n, --app-name <appName>', 'Set app name')
+        .option('-s, --use-typescript', 'Use typescript or not')
+        .option('-w, --use-webpack', 'Use webpack or not')
         .option('-i, --appID <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
-        .option('--preset <preset>', 'Preset for generating template')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let error = validator_1.default.appValidator(cmd);
         if (error && typeof error === 'string') {
@@ -86,7 +43,7 @@ const initializeCommand = (program) => {
         }
         try {
             let answer = {};
-            if (cmd.quick) {
+            if (cmd.quick || cmd.yes) {
                 cmd.setAuth = false;
                 cmd.useProxy = false;
                 cmd.useTypescript = false;
@@ -192,7 +149,7 @@ const initializeCommand = (program) => {
                     type: 'confirm',
                     name: 'useWebpack',
                     message: 'Do you want to use webpack ?',
-                    when: cmd.useWebpack === undefined && cmd.useReact
+                    when: cmd.useWebpack === undefined
                 },
                 {
                     type: 'input',
@@ -275,6 +232,19 @@ const initializeCommand = (program) => {
             }
             console.log(chalk_1.default.yellow('Installing dependencies...'));
             spawnSync('npm', ['install'], { stdio: 'inherit', windowsHide: true });
+            console.log('');
+            if (!appSetting.setAuth) {
+                console.log(chalk_1.default.yellow('To set auth info, use:'));
+                console.log('');
+                console.log(chalk_1.default.greenBright('     kintone-cli auth --app-name <appName>'));
+                console.log('');
+            }
+            else {
+                console.log(chalk_1.default.yellow('To start developing app, use:'));
+                console.log('');
+                console.log(chalk_1.default.greenBright(`     kintone-cli dev --app-name ${appSetting.appName} --watch`));
+                console.log('');
+            }
         }
         catch (error) {
             console.log(chalk_1.default.red(error));
@@ -283,12 +253,81 @@ const initializeCommand = (program) => {
     program
         .command('init')
         .description('Initialize kintone project')
-        .option('--install')
+        .option('--install', 'Install dependencies or not')
+        .option('--quick', 'Quickly create a kintone project')
+        .option('-p, --project-name <projectName>', 'Project name')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
-        console.log(chalk_1.default.yellow('Welcome to kintone-cli!'));
-        console.log(chalk_1.default.yellow('Please, input below information so we can get started!'));
+        let packageInfo = {};
+        if (cmd.quick) {
+            packageInfo['projectName'] = 'kintone-customization-project';
+            packageInfo['version'] = '0.0.1';
+            packageInfo['description'] = 'kintone customization project';
+            packageInfo['author'] = '';
+            packageInfo['license'] = 'MIT';
+            packageInfo['dependencies'] = {};
+            packageInfo['dependencies']['@kintone/kintone-ui-component'] = true;
+            packageInfo['dependencies']['@kintone/kintone-js-sdk'] = true;
+        }
+        else {
+            console.log(chalk_1.default.yellow('Welcome to kintone-cli!'));
+            console.log(chalk_1.default.yellow('Please, input below information so we can get started!'));
+        }
+        if (cmd.projectName) {
+            packageInfo['projectName'] = cmd.projectName;
+        }
         // ask info about project
-        const packageInfo = yield inquirer_1.prompt(questions);
+        const answer = yield inquirer_1.prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: 'Project name',
+                default: 'kintone-customization-project',
+                when: !packageInfo['projectName']
+            },
+            {
+                type: 'input',
+                name: 'version',
+                message: 'Version',
+                default: '0.0.1',
+                when: !packageInfo['version']
+            },
+            {
+                type: 'input',
+                name: 'description',
+                message: 'Description',
+                default: 'kintone customization project',
+                when: !packageInfo['description']
+            },
+            {
+                type: 'input',
+                name: 'author',
+                message: 'Author',
+                default: '',
+                when: packageInfo['author'] === undefined
+            },
+            {
+                type: 'input',
+                name: 'license',
+                message: 'License',
+                default: 'MIT',
+                when: !packageInfo['license']
+            },
+            {
+                type: 'confirm',
+                name: 'dependencies.@kintone/kintone-ui-component',
+                message: 'Do you want to use @kintone/kintone-ui-component?',
+                default: true,
+                when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/kintone-ui-component'] === undefined
+            },
+            {
+                type: 'confirm',
+                name: 'dependencies.@kintone/kintone-js-sdk',
+                message: 'Do you want to use @kintone/kintone-js-sdk?',
+                default: true,
+                when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/kintone-js-sdk'] === undefined
+            }
+        ]);
+        packageInfo = Object.assign({}, packageInfo, answer);
         if (packageInfo['dependencies']['@kintone/kintone-ui-component'])
             packageInfo['dependencies']['@kintone/kintone-ui-component'] = latestUIComponentVersion;
         else
@@ -323,7 +362,12 @@ const initializeCommand = (program) => {
             console.log(chalk_1.default.yellow('Installing dependencies...'));
             spawnSync('npm', ['i'], { stdio: "inherit", windowsHide: true });
         }
-        console.log(chalk_1.default.yellow('You are all set! Happy kintone customizing!'));
+        console.log('');
+        console.log(chalk_1.default.yellow('Project created!'));
+        console.log(chalk_1.default.yellow('To create new app, use:'));
+        console.log('');
+        console.log(chalk_1.default.green('   kintone-cli create-template'));
+        console.log('');
     }));
 };
 exports.default = initializeCommand;

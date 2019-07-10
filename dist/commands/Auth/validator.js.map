@@ -1,0 +1,1 @@
+{"version":3,"file":"validator.js","sourceRoot":"","sources":["../../../src/commands/Auth/validator.ts"],"names":[],"mappings":";;AAAA,kBAAe;IACX,aAAa,EAAE,CAAC,MAAc,EAAoB,EAAE;QAChD,IAAI,CAAC,MAAM,CAAC,SAAS,CAAC,EAAE;YACpB,OAAO,kBAAkB,CAAA;SAC5B;QACD,OAAO,KAAK,CAAA;IAChB,CAAC;CACJ,CAAA"}

@@ -8,7 +8,7 @@ import {buildUsingWebpack, buildVanillaJS, buildPlugin} from './builder'
 const buildCommand = (program: CommanderStatic) => {
     program
         .command('build')
-        .option('--appName <appName>','App name')
+        .option('--app-name <appName>','App name')
         .action(async (cmd) => {
             let error = validator.buildValidator(cmd)
             if (error && typeof error === 'string') {
@@ -30,6 +30,21 @@ const buildCommand = (program: CommanderStatic) => {
                 }
                 if (config['type'] === 'Plugin') {
                     buildPlugin(config)
+                }
+                console.log('')
+                console.log(chalk.yellow('Build app complete.'))
+
+                if (!existsSync(`${config['appName']}/auth.json`)) {
+                    console.log(chalk.yellow('To set auth info, use:'))
+                    console.log('')
+                    console.log(chalk.greenBright('     kintone-cli auth --app-name <appName>'))
+                    console.log('')
+                }
+                else {
+                    console.log(chalk.yellow('To deploy app, use:'))
+                    console.log('')
+                    console.log(chalk.greenBright('     kintone-cli deploy --app-name <appName>'))
+                    console.log('')
                 }
 
             } catch (error) {

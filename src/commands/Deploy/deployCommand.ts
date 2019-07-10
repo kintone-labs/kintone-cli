@@ -8,7 +8,7 @@ import {existsSync} from 'fs'
 const deployCommand = (program: CommanderStatic) => {
     program
         .command('deploy')
-        .option('--appName <appName>','App name')
+        .option('--app-name <appName>','App name')
         .action(async (cmd) => {
             let error = validator.deployValidator(cmd)
             if (error && typeof error === 'string') {

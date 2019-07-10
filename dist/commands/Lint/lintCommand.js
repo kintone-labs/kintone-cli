@@ -16,7 +16,7 @@ const lintCommand = (program) => {
     program
         .command('lint')
         .option('--fix', 'Auto fix eslint errors')
-        .option('--appName <appName>', 'Name of template folder to run eslint')
+        .option('--app-name <appName>', 'Name of template folder to run eslint')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let error = validator_1.default.lintValidator(cmd);
         if (error && typeof error === 'string') {

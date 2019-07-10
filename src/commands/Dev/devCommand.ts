@@ -23,7 +23,7 @@ const devCommand = (program: CommanderStatic) => {
     program
         .command('dev')
         .option('--watch','Watch for changes in source code')
-        .option('--appName <appName>','Watch for changes in source code')
+        .option('--app-name <appName>','Watch for changes in source code')
         .action(async (cmd) => {
             let error = validator.devValidator(cmd)
             if (error && typeof error === 'string') {

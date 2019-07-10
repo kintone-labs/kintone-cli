@@ -5,6 +5,7 @@ import buildCommand from './commands/Build/buildCommand'
 import deployCommand from './commands/Deploy/deployCommand'
 import lintCommand from './commands/Lint/lintCommand'
 import devCommand from './commands/Dev/devCommand'
+import authCommand from './commands/Auth/authCommand'
 import * as path from 'path';
 global['cliRoot'] = path.resolve(path.dirname(require.main.filename) + "/../");
 global['currentDir'] = process.cwd();
@@ -18,5 +19,6 @@ buildCommand(program)
 deployCommand(program)
 lintCommand(program)
 devCommand(program)
+authCommand(program)
 
 program.parse(process.argv);

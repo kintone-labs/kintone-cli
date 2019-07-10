@@ -16,7 +16,7 @@ const builder_1 = require("./builder");
 const buildCommand = (program) => {
     program
         .command('build')
-        .option('--appName <appName>', 'App name')
+        .option('--app-name <appName>', 'App name')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let error = validator_1.default.buildValidator(cmd);
         if (error && typeof error === 'string') {
@@ -37,6 +37,20 @@ const buildCommand = (program) => {
             }
             if (config['type'] === 'Plugin') {
                 builder_1.buildPlugin(config);
+            }
+            console.log('');
+            console.log(chalk_1.default.yellow('Build app complete.'));
+            if (!fs_1.existsSync(`${config['appName']}/auth.json`)) {
+                console.log(chalk_1.default.yellow('To set auth info, use:'));
+                console.log('');
+                console.log(chalk_1.default.greenBright('     kintone-cli auth --app-name <appName>'));
+                console.log('');
+            }
+            else {
+                console.log(chalk_1.default.yellow('To deploy app, use:'));
+                console.log('');
+                console.log(chalk_1.default.greenBright('     kintone-cli deploy --app-name <appName>'));
+                console.log('');
             }
         }
         catch (error) {

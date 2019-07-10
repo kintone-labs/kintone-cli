@@ -9,7 +9,7 @@ const lintCommand = (program: CommanderStatic) => {
     program
         .command('lint')
         .option('--fix', 'Auto fix eslint errors')
-        .option('--appName <appName>', 'Name of template folder to run eslint')
+        .option('--app-name <appName>', 'Name of template folder to run eslint')
         .action(async (cmd)=>{
           let error = validator.lintValidator(cmd)
           if (error && typeof error === 'string') {
