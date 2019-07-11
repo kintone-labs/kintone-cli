@@ -28,7 +28,7 @@ const initializeCommand = (program: CommanderStatic) => {
         .option('-n, --app-name <appName>', 'Set app name')
         .option('-s, --use-typescript', 'Use typescript or not')
         .option('-w, --use-webpack', 'Use webpack or not')
-        .option('-i, --appID <appID>', 'Set app ID for customization')
+        .option('-i, --app-id <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
         .action(async (cmd)=>{
             let error = validator.appValidator(cmd)
