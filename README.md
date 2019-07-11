@@ -87,17 +87,17 @@ After the above information is inputted, the following folder structure will be 
 
 ### 3. Start dev
 ``
-kintone-cli dev --appName <appName> [--watch]
+kintone-cli dev --app-name <App Name> [--watch]
 ``
 
-Deploy customization files|plugin in <appName> to test domains for debugging.
+Deploy customization files|plugin in <App Name> to test domains for debugging.
 Using local web server to serve js/css files directly from project source files.
 
 If --watch flag is specified and customization|plugin uses webpack, each time a source file is changed it is automatically built.
 
 ### 4. Build source code
 ``
-kintone-cli build [--appName <App Name>]
+kintone-cli build [--app-name <App Name>]
 ``
 
 If a customization|plugin folder contains a webpack.config.js, cli will build by using their webpack.config.js file first.
@@ -106,7 +106,7 @@ If a folder is also a plugin folder, CLI will generate manifest.json based on co
 
 ### 5. Deploy to kintone
 ``
-kintone-cli deploy [--appName <App Name>]
+kintone-cli deploy [--app-name <App Name>]
 ``
 
 Customizations|plugins will be deployed using their config.json and auth.json file.
@@ -115,7 +115,7 @@ Customizations|plugins will be deployed using their config.json and auth.json fi
 ### 1. Lint code
 Check/fix code (using ＠cybozu/eslint-config)
 ``
-kintone-cli lint [--appName <appName>] [--fix]
+kintone-cli lint [--app-name <App Name>] [--fix]
 ``
 
 Result: 
