@@ -68,15 +68,23 @@ const devCommand = (program) => {
                 return item;
             });
             config.watch = cmd.watch;
-            if (!watching) {
-                watching = true;
-                if (config.type === 'Customization') {
-                    devGenerator_1.devCustomize(ws, config);
+            console.log('');
+            console.log(chalk_1.default.yellow(`Please open this link in your browser to trust kintone ${config.type} files:`));
+            console.log('');
+            console.log(`   ${chalk_1.default.green(`${serverAddr}`)}`);
+            console.log('');
+            console.log(chalk_1.default.yellow('Then, press any key to continue:'));
+            process.stdin.on('data', () => {
+                if (!watching) {
+                    watching = true;
+                    if (config.type === 'Customization') {
+                        devGenerator_1.devCustomize(ws, config);
+                    }
+                    else if (config.type === 'Plugin') {
+                        devGenerator_1.devPlugin(ws, config);
+                    }
                 }
-                else if (config.type === 'Plugin') {
-                    devGenerator_1.devPlugin(ws, config);
-                }
-            }
+            });
         });
     }));
 };

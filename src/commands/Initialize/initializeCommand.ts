@@ -238,7 +238,7 @@ const initializeCommand = (program: CommanderStatic) => {
                 if (!appSetting.setAuth) {
                     console.log(chalk.yellow('To set auth info, use:'))
                     console.log('')
-                    console.log(chalk.greenBright('     kintone-cli auth --app-name <appName>'))
+                    console.log(chalk.greenBright(`     kintone-cli auth --app-name ${appSetting.appName}`))
                     console.log('')
                 }
                 else {

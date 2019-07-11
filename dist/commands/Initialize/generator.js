@@ -5,6 +5,7 @@ const fs_1 = require("fs");
 const webpackTemplate_1 = require("./webpackTemplate");
 const spawn = require("cross-spawn");
 const eslintRcTemplate_1 = require("./eslintRcTemplate");
+const sampleCode_1 = require("./sampleCode");
 const spawnSync = spawn.sync;
 const generateAppFolder = (option) => {
     if (!fs_1.existsSync('package.json')) {
@@ -94,7 +95,7 @@ const generateAppFolder = (option) => {
         };
     }
     else {
-        fs_1.writeFileSync(`${option['appName']}/source/js/script.js`, '');
+        fs_1.writeFileSync(`${option['appName']}/source/js/script.js`, sampleCode_1.generateSample(option));
         fs_1.writeFileSync(`${option['appName']}/source/css/style.css`, '');
         manifestJSON['uploadConfig'] = {
             desktop: {
@@ -207,7 +208,7 @@ const generateAppFolder = (option) => {
     }
     jsonfile_1.writeFileSync(`${option['appName']}/config.json`, manifestJSON, { spaces: 4, EOL: "\r\n" });
     if (option['entry']) {
-        fs_1.writeFileSync(`${option['appName']}/source/${option['entry']}`, '');
+        fs_1.writeFileSync(`${option['appName']}/source/${option['entry']}`, sampleCode_1.generateSample(option));
     }
     if (fs_1.existsSync('.gitignore')) {
         let gitIgnoreContent = fs_1.readFileSync('.gitignore').toString();

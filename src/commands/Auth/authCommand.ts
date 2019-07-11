@@ -12,6 +12,7 @@ const authCommand = (program: CommanderStatic) => {
         .option('-d, --domain <domain>', 'Kintone domain')
         .option('-u, --username <username>', 'Kintone username')
         .option('-p, --password <password>', 'Kintone password')
+        .option('-i, --app-id <appID>', 'Kintone app ID')
         .action(async (cmd)=>{
             let error = validator.authValidator(cmd)
             if (error && typeof error === 'string') {
@@ -24,6 +25,8 @@ const authCommand = (program: CommanderStatic) => {
             } catch (error) {
                 authJSON = {}
             }
+
+            let configJSON = readFileSync(`${cmd['appName']}/config.json`)
 
             let answer = await prompt([
                 {
@@ -61,23 +64,37 @@ const authCommand = (program: CommanderStatic) => {
                         }
                         return true
                     }
+                },
+                {
+                    type: 'number',
+                    name: 'appID',
+                    message : 'What is the app ID ?',
+                    when: !cmd.appID,
+                    validate: (input: any): any => {
+                        if (!input) {
+                            return 'App ID can\'t be empty.'
+                        }
+                        return true
+                    }
                 }
             ])
             
             authJSON['domain'] = cmd['domain'] || answer['domain']
             authJSON['username'] = cmd['username'] || answer['username']
             authJSON['password'] = cmd['password'] || answer['password']
-
             writeFileSync(`${cmd['appName']}/auth.json`, authJSON, {spaces: 4, EOL: "\r\n"});
+
+            configJSON['appID'] = cmd['appID'] || answer['appID']
+            writeFileSync(`${cmd['appName']}/config.json`, configJSON, {spaces: 4, EOL: "\r\n"});
 
             console.log(chalk.yellow('Set auth info complete.'))
             console.log(chalk.yellow('To start dev, use:'))
             console.log('')
-            console.log(chalk.greenBright('     kintone-cli dev --app-name <appName>'))
+            console.log(chalk.greenBright(`     kintone-cli dev --app-name ${cmd['appName']}`))
             console.log('')
             console.log(chalk.yellow('To deploy app, use:'))
             console.log('')
-            console.log(chalk.greenBright('     kintone-cli deploy --app-name <appName>'))
+            console.log(chalk.greenBright(`     kintone-cli deploy --app-name ${cmd['appName']}`))
             console.log('')
         })
 }

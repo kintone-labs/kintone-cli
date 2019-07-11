@@ -28,7 +28,7 @@ const devCustomize = (ws, config) => {
         // watch for changes
         if (fs_1.existsSync(`${config.appName}/webpack.config.js`)) {
             console.log(chalk_1.default.yellow('Watching for changes...'));
-            spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch'], { stdio: 'inherit' });
+            spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch', '--mode', 'development'], { stdio: 'inherit' });
         }
     }
 };
@@ -51,7 +51,7 @@ const devPlugin = (ws, config) => {
         // watch for changes
         if (fs_1.existsSync(`${config.appName}/webpack.config.js`)) {
             console.log(chalk_1.default.yellow('Watching for changes...'));
-            spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch'], { stdio: 'inherit' });
+            spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch', '--mode', 'development'], { stdio: 'inherit' });
         }
     }
 };

@@ -68,15 +68,25 @@ const devCommand = (program: CommanderStatic) => {
 
                 config.watch = cmd.watch
 
-                if (!watching) {
-                    watching = true
-                    if (config.type === 'Customization') {
-                        devCustomize(ws, config)
+                console.log('')
+                console.log(chalk.yellow(`Please open this link in your browser to trust kintone ${config.type} files:`))
+                console.log('')
+                console.log(`   ${chalk.green(`${serverAddr}`)}`)
+                console.log('')
+
+                console.log(chalk.yellow('Then, press any key to continue:'));
+
+                process.stdin.on('data', ()=>{
+                    if (!watching) {
+                        watching = true
+                        if (config.type === 'Customization') {
+                            devCustomize(ws, config)
+                        }
+                        else if (config.type === 'Plugin') {
+                            devPlugin(ws, config)
+                        }
                     }
-                    else if (config.type === 'Plugin') {
-                        devPlugin(ws, config)
-                    }
-                }
+                });
 
             })
         })

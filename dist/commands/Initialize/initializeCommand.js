@@ -33,7 +33,7 @@ const initializeCommand = (program) => {
         .option('-n, --app-name <appName>', 'Set app name')
         .option('-s, --use-typescript', 'Use typescript or not')
         .option('-w, --use-webpack', 'Use webpack or not')
-        .option('-i, --appID <appID>', 'Set app ID for customization')
+        .option('-i, --app-id <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let error = validator_1.default.appValidator(cmd);
@@ -236,7 +236,7 @@ const initializeCommand = (program) => {
             if (!appSetting.setAuth) {
                 console.log(chalk_1.default.yellow('To set auth info, use:'));
                 console.log('');
-                console.log(chalk_1.default.greenBright('     kintone-cli auth --app-name <appName>'));
+                console.log(chalk_1.default.greenBright(`     kintone-cli auth --app-name ${appSetting.appName}`));
                 console.log('');
             }
             else {

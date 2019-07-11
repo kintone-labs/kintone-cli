@@ -4,6 +4,7 @@ import {buildWebpackReactTemplate} from './webpackTemplate'
 import * as spawn from "cross-spawn"
 import {AppOption, EslintRcParams, WebpackParams} from '../../dto/app'
 import {buildEslintRcTemplate} from './eslintRcTemplate'
+import {generateSample} from './sampleCode'
 
 const spawnSync = spawn.sync
 
@@ -112,7 +113,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         }
     }
     else {
-        writeFileSyncFS(`${option['appName']}/source/js/script.js`, '')
+        writeFileSyncFS(`${option['appName']}/source/js/script.js`, generateSample(option))
         writeFileSyncFS(`${option['appName']}/source/css/style.css`, '')
         manifestJSON['uploadConfig'] = {
             desktop: {
@@ -235,7 +236,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
 
     writeFileSync(`${option['appName']}/config.json`,manifestJSON,{spaces: 4, EOL: "\r\n"})
     if (option['entry']) {
-        writeFileSyncFS(`${option['appName']}/source/${option['entry']}`, '')
+        writeFileSyncFS(`${option['appName']}/source/${option['entry']}`, generateSample(option) )
     }
 
     if (existsSync('.gitignore')) {
