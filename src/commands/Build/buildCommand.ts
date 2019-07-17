@@ -37,13 +37,13 @@ const buildCommand = (program: CommanderStatic) => {
                 if (!existsSync(`${config['appName']}/auth.json`)) {
                     console.log(chalk.yellow('To set auth info, use:'))
                     console.log('')
-                    console.log(chalk.greenBright('     kintone-cli auth --app-name <appName>'))
+                    console.log(chalk.greenBright(`     kintone-cli auth --app-name ${config['appName']}`))
                     console.log('')
                 }
                 else {
                     console.log(chalk.yellow('To deploy app, use:'))
                     console.log('')
-                    console.log(chalk.greenBright('     kintone-cli deploy --app-name <appName>'))
+                    console.log(chalk.greenBright(`     kintone-cli deploy --app-name ${config['appName']}`))
                     console.log('')
                 }
 

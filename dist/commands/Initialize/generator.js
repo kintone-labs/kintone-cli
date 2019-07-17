@@ -96,6 +96,7 @@ const generateAppFolder = (option) => {
     }
     else {
         fs_1.writeFileSync(`${option['appName']}/source/js/script.js`, sampleCode_1.generateSample(option));
+        spawnSync('npx', ['prettier', '--write', `${option['appName']}/source/js/script.js`, '--single-quote'], { stdio: 'inherit', windowsHide: true });
         fs_1.writeFileSync(`${option['appName']}/source/css/style.css`, '');
         manifestJSON['uploadConfig'] = {
             desktop: {
@@ -209,6 +210,7 @@ const generateAppFolder = (option) => {
     jsonfile_1.writeFileSync(`${option['appName']}/config.json`, manifestJSON, { spaces: 4, EOL: "\r\n" });
     if (option['entry']) {
         fs_1.writeFileSync(`${option['appName']}/source/${option['entry']}`, sampleCode_1.generateSample(option));
+        spawnSync('npx', ['prettier', '--write', `${option['appName']}/source/${option['entry']}`, '--single-quote'], { stdio: 'inherit', windowsHide: true });
     }
     if (fs_1.existsSync('.gitignore')) {
         let gitIgnoreContent = fs_1.readFileSync('.gitignore').toString();

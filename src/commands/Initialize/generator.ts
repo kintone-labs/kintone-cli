@@ -114,6 +114,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
     }
     else {
         writeFileSyncFS(`${option['appName']}/source/js/script.js`, generateSample(option))
+        spawnSync('npx',['prettier', '--write', `${option['appName']}/source/js/script.js`, '--single-quote'], {stdio: 'inherit', windowsHide: true})
         writeFileSyncFS(`${option['appName']}/source/css/style.css`, '')
         manifestJSON['uploadConfig'] = {
             desktop: {
@@ -237,6 +238,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
     writeFileSync(`${option['appName']}/config.json`,manifestJSON,{spaces: 4, EOL: "\r\n"})
     if (option['entry']) {
         writeFileSyncFS(`${option['appName']}/source/${option['entry']}`, generateSample(option) )
+        spawnSync('npx',['prettier', '--write', `${option['appName']}/source/${option['entry']}`, '--single-quote'], {stdio: 'inherit', windowsHide: true})
     }
 
     if (existsSync('.gitignore')) {

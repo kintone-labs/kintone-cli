@@ -43,13 +43,13 @@ const buildCommand = (program) => {
             if (!fs_1.existsSync(`${config['appName']}/auth.json`)) {
                 console.log(chalk_1.default.yellow('To set auth info, use:'));
                 console.log('');
-                console.log(chalk_1.default.greenBright('     kintone-cli auth --app-name <appName>'));
+                console.log(chalk_1.default.greenBright(`     kintone-cli auth --app-name ${config['appName']}`));
                 console.log('');
             }
             else {
                 console.log(chalk_1.default.yellow('To deploy app, use:'));
                 console.log('');
-                console.log(chalk_1.default.greenBright('     kintone-cli deploy --app-name <appName>'));
+                console.log(chalk_1.default.greenBright(`     kintone-cli deploy --app-name ${config['appName']}`));
                 console.log('');
             }
         }
