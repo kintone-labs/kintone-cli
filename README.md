@@ -87,7 +87,7 @@ After the above information is inputted, the following folder structure will be 
 
 ### 3. Start dev
 ``
-kintone-cli dev --app-name <App Name> [--watch]
+kintone-cli dev [--app-name <App Name>] [--watch]
 ``
 
 Deploy customization files|plugin in <App Name> to test domains for debugging.
@@ -129,7 +129,22 @@ Result:
 
 If --fix flag is specified, cli will also attempt to fix all auto-fixable problems in source code
 ### 2. Import / export data (WIP)
-### 3. Auth (WIP)
+### 3. Auth
+
+```
+kintone-cli auth
+    [--app-name <appName>]
+    [--domain <domain>]
+    [--username <username>]
+    [--password <password>]
+    [--app-id <appID>]
+    [--use-proxy]
+    [--proxy <proxyURL>]
+```
+
+Save authentication credentials into ``auth.json`` file.
+
+Flag ``appName``, ``domain``, ``username``, ``password`` is required. Flag ``proxyURL`` is required when the flag --use-proxy is set.
 
 ## License
 MIT License
