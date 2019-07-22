@@ -144,7 +144,9 @@ kintone-cli auth
 
 Save authentication credentials into ``auth.json`` file.
 
-Flag ``appName``, ``domain``, ``username``, ``password`` is required. Flag ``proxyURL`` is required when the flag --use-proxy is set.
+Flag --app-name, --domain, --username, --password is required. 
+
+Flag --proxy is required when the flag --use-proxy is set.
 
 ## License
 MIT License
