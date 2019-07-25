@@ -14,7 +14,7 @@ When working with kintone, developers usually follow this flow:
 
 ### 1. Initialize Project
 ``
-kintone-cli init [--install]
+kintone-cli init [--install] [--quick] [--project-name <projectName>]
 ``
 Kintone CLI will require following input information. If any piece of info is skipped default value will be auto assigned:
 - Project name
@@ -31,6 +31,9 @@ After all the above info is inputted, cli will initialize the following folder s
     - package.json
 
 If --install flag is specified, Kintone CLI will run npm install after initializing folder structure
+
+If --quick flag is specified, Kintone CLI will init a project with default parameters.
+
 Ask if user wants to create-template after finishing init project.
 ### 2. Create customization / plugin template
 ```
