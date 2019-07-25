@@ -259,7 +259,7 @@ const initializeCommand = (program) => {
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let packageInfo = {};
         if (cmd.quick) {
-            packageInfo['projectName'] = 'kintone-customization-project';
+            packageInfo['name'] = 'kintone-customization-project';
             packageInfo['version'] = '0.0.1';
             packageInfo['description'] = 'kintone customization project';
             packageInfo['author'] = '';
@@ -273,7 +273,7 @@ const initializeCommand = (program) => {
             console.log(chalk_1.default.yellow('Please, input below information so we can get started!'));
         }
         if (cmd.projectName) {
-            packageInfo['projectName'] = cmd.projectName;
+            packageInfo['name'] = cmd.projectName;
         }
         // ask info about project
         const answer = yield inquirer_1.prompt([
@@ -282,7 +282,7 @@ const initializeCommand = (program) => {
                 name: 'name',
                 message: 'Project name',
                 default: 'kintone-customization-project',
-                when: !packageInfo['projectName']
+                when: !packageInfo['name']
             },
             {
                 type: 'input',

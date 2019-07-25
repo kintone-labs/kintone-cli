@@ -261,7 +261,7 @@ const initializeCommand = (program: CommanderStatic) => {
         .action(async (cmd)=>{
             let packageInfo = {}
             if (cmd.quick) {
-                packageInfo['projectName'] = 'kintone-customization-project'
+                packageInfo['name'] = 'kintone-customization-project'
                 packageInfo['version'] = '0.0.1'
                 packageInfo['description'] = 'kintone customization project'
                 packageInfo['author'] = ''
@@ -276,7 +276,7 @@ const initializeCommand = (program: CommanderStatic) => {
             }
 
             if (cmd.projectName) {
-                packageInfo['projectName'] = cmd.projectName
+                packageInfo['name'] = cmd.projectName
             }
             
             // ask info about project
@@ -286,7 +286,7 @@ const initializeCommand = (program: CommanderStatic) => {
                     name: 'name',
                     message: 'Project name',
                     default: 'kintone-customization-project',
-                    when: !packageInfo['projectName']
+                    when: !packageInfo['name']
                 },
                 {
                     type: 'input',
