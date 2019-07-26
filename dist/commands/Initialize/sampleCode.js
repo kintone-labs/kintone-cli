@@ -1,12 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsSample = `document.addEventListener('DOMContentLoaded', function() {
-    kintone.events.on('app.record.index.show', function(event) {
-        console.log('Hello from kintone CLI')
-        
-        return event;
-    });
-}, false);
+const jsSample = `kintone.events.on('app.record.index.show', function(event) {
+    console.log('Hello from kintone CLI')
+    
+    return event;
+});
 `;
 const jsxSample = `import * as React from 'react'
 import * as ReactDOM from 'react-dom'
@@ -15,22 +13,17 @@ const App = () => {
     return <span>Hello from kintone CLI</span>
 }
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    kintone.events.on('app.record.index.show', function(event) {
-        ReactDOM.render(<App />,kintone.app.getHeaderSpaceElement())
-        
-        return event;
-    });
-}, false);
+kintone.events.on('app.record.index.show', (event) => {
+    ReactDOM.render(<App />,kintone.app.getHeaderSpaceElement())
+    
+    return event;
+});
 `;
-const tsSample = `document.addEventListener('DOMContentLoaded', function() {
-    kintone.events.on('app.record.index.show', function(event) {
-        console.log('Hello from kintone CLI')
-        
-        return event;
-    });
-}, false);
+const tsSample = `kintone.events.on('app.record.index.show', (event) => {
+    console.log('Hello from kintone CLI')
+    
+    return event;
+});
 `;
 const tsxSample = `import * as React from 'react'
 import * as ReactDOM from 'react-dom'
@@ -39,14 +32,11 @@ const App = () => {
     return <span>Hello from kintone CLI</span>
 }
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    kintone.events.on('app.record.index.show', function(event) {
-        ReactDOM.render(<App />,kintone.app.getHeaderSpaceElement())
-        
-        return event;
-    });
-}, false);
+kintone.events.on('app.record.index.show', (event) => {
+    ReactDOM.render(<App />,kintone.app.getHeaderSpaceElement())
+    
+    return event;
+});
 `;
 const generateSample = ({ useTypescript, useReact }) => {
     if (useReact) {
