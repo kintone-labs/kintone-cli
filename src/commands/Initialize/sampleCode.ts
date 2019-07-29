@@ -12,7 +12,7 @@ import * as ReactDOM from 'react-dom'
 const App = () => {
     return <span>Hello from kintone CLI</span>
 }
-(function(){
+(() => {
     'use strict';
     kintone.events.on('app.record.index.show', (event) => {
         ReactDOM.render(<App />,kintone.app.getHeaderSpaceElement())
@@ -20,7 +20,7 @@ const App = () => {
         return event;
     });
 })();`
-const tsSample = `(function(){
+const tsSample = `(() => {
     'use strict';
     kintone.events.on('app.record.index.show', event => {
         console.log('Hello from kintone CLI');
@@ -35,7 +35,7 @@ const App = () => {
     return <span>Hello from kintone CLI</span>;
 };
 
-(function(){
+(() => {
     kintone.events.on('app.record.index.show', event => {
         'use strict';
         ReactDOM.render(<App />, kintone.app.getHeaderSpaceElement());
