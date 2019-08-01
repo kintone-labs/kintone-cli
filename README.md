@@ -4,6 +4,8 @@ A tool to quickly start developing with kintone
 ``
 npm install -g git://github.dev.cybozu.co.jp/SC/kintone-cli.git
 ``
+## Quickstart
+To quickly start with a minimum project, follow the instruction [here](./quickstart.md)
 ## Usage
 When working with kintone, developers usually follow this flow:
 1. Initialize Project
