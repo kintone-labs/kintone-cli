@@ -14,7 +14,7 @@ const App = () => {
 }
 (() => {
     'use strict';
-    kintone.events.on('app.record.index.show', (event) => {
+    kintone.events.on('app.record.index.show', event => {
         ReactDOM.render(<App />,kintone.app.getHeaderSpaceElement())
         
         return event;
