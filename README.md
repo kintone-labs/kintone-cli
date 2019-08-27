@@ -1,9 +1,9 @@
 # Kintone CLI
 A tool to quickly start developing with kintone
 ## Installation
-``
+```
 npm install -g git://github.dev.cybozu.co.jp/SC/kintone-cli.git
-``
+```
 ## Quickstart
 To quickly start with a minimum project, follow the instruction [here](./quickstart.md)
 ## Usage
@@ -15,9 +15,9 @@ When working with kintone, developers usually follow this flow:
 5. Deploy to kintone
 
 ### 1. Initialize Project
-``
+```
 kintone-cli init [--install] [--quick] [--project-name <projectName>]
-``
+```
 Kintone CLI will require following input information. If any piece of info is skipped default value will be auto assigned:
 - Project name
 - Project version
@@ -89,6 +89,34 @@ After the above information is inputted, the following folder structure will be 
     - config.json
     - auth.json
     - webpack.config.js (if using webpack)
+
+Sample `config.json` file:
+```json
+{
+    "appID": YOUR_APP_ID,
+    "appName": "YOUR_APP_NAME",
+    "type": "Plugin",
+    "icon": "{YOUR_APP_NAME}/{PATH_TO_YOUR_ICON}",
+    "uploadConfig": {
+        "desktop": {
+            "js": [
+                "{YOUR_APP_NAME}/{PATH_TO_YOUR_JS_FILE}"
+            ],
+            "css": [
+                "{YOUR_APP_NAME}/{PATH_TO_YOUR_CSS_FILE}"
+            ]
+        },
+        "mobile": {
+            "js": [
+                "{YOUR_APP_NAME}/{PATH_TO_YOUR_JS_FILE_FOR_MOBILE}"
+            ],
+            "css": [
+                "{YOUR_APP_NAME}/{PATH_TO_YOUR_CSS_FILE_FOR_MOBILE}"
+            ]
+        }
+    }
+}
+```
 
 ### 3. Start dev
 ``
