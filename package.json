@@ -11,7 +11,7 @@
     "kintone-cli": "./dist/index.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
     "cross-spawn": "^6.0.5",
