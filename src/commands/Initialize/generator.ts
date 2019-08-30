@@ -57,6 +57,18 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             plugins: [
                 "@babel/plugin-proposal-class-properties",
                 "@babel/plugin-syntax-dynamic-import"
+            ],
+            presets: [
+                [
+                    "@babel/preset-env",
+                    {
+                        useBuiltIns: "usage", 
+                        corejs: { 
+                            "version": 3, 
+                            "proposals": true 
+                        }
+                    }
+                ]
             ]
         }
 
@@ -74,6 +86,8 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         packageJSON.devDependencies['babel-loader'] = "^8.0.5"
         packageJSON.devDependencies['style-loader'] = "^0.23.1"
         packageJSON.devDependencies['css-loader'] = "^2.1.0"
+        packageJSON.devDependencies['core-js'] = "^3.2.1"
+        packageJSON.devDependencies['regenerator-runtime'] = "^0.13.3"
         packageJSON.devDependencies["@babel/core"] = "^7.3.3"
         packageJSON.devDependencies["@babel/preset-env"] = "^7.3.1"
         packageJSON.devDependencies["@babel/plugin-proposal-class-properties"] = "^7.3.3"
