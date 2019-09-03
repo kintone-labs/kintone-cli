@@ -120,13 +120,15 @@ Sample `config.json` file:
 
 ### 3. Start dev
 ``
-kintone-cli dev [--app-name <App Name>] [--watch]
+kintone-cli dev [--app-name <App Name>] [--watch] [--localhost]
 ``
 
 Deploy customization files|plugin in <App Name> to test domains for debugging.
 Using local web server to serve js/css files directly from project source files.
 
 If --watch flag is specified and customization|plugin uses webpack, each time a source file is changed it is automatically built.
+
+If --localhost flag is specified, CLI will use localhost link instead of IP address.
 
 ### 4. Build source code
 ``
