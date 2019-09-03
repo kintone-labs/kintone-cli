@@ -22,8 +22,9 @@ const isURL = (str: string) => {
 const devCommand = (program: CommanderStatic) => {
     program
         .command('dev')
-        .option('--watch','Watch for changes in source code')
-        .option('--app-name <appName>','Watch for changes in source code')
+        .option('--watch', 'Watch for changes in source code')
+        .option('--app-name <appName>', 'Watch for changes in source code')
+        .option('--localhost', 'Use localhost as link')
         .action(async (cmd) => {
             let error = validator.devValidator(cmd)
             if (error && typeof error === 'string') {
@@ -47,7 +48,8 @@ const devCommand = (program: CommanderStatic) => {
             ws.stderr.on('data', (data) => {   
                 let webserverInfo = data.toString().replace('Serving at', '')
                 webserverInfo = webserverInfo.split(',')
-                const serverAddr = stripAnsi(webserverInfo[0].trim())
+
+                const serverAddr = stripAnsi((cmd.localhost ? webserverInfo[1] : webserverInfo[webserverInfo.length - 1]).trim())
 
                 let config = readFileSync(`${cmd['appName']}/config.json`)
 

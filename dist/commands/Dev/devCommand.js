@@ -30,6 +30,7 @@ const devCommand = (program) => {
         .command('dev')
         .option('--watch', 'Watch for changes in source code')
         .option('--app-name <appName>', 'Watch for changes in source code')
+        .option('--localhost', 'Use localhost as link')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let error = validator_1.default.devValidator(cmd);
         if (error && typeof error === 'string') {
@@ -50,7 +51,7 @@ const devCommand = (program) => {
         ws.stderr.on('data', (data) => {
             let webserverInfo = data.toString().replace('Serving at', '');
             webserverInfo = webserverInfo.split(',');
-            const serverAddr = strip_ansi_1.default(webserverInfo[0].trim());
+            const serverAddr = strip_ansi_1.default((cmd.localhost ? webserverInfo[1] : webserverInfo[webserverInfo.length - 1]).trim());
             let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
             config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item) => {
                 if (!isURL(item))
