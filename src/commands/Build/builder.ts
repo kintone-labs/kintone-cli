@@ -27,6 +27,7 @@ const buildPlugin = (option: object) => {
     }
     manifestJSON['desktop'] = option['uploadConfig']['desktop']
     manifestJSON['mobile'] = option['uploadConfig']['mobile']
+    manifestJSON['config'] = option['uploadConfig']['config']
     
     writeFileSync(`manifest.json`,manifestJSON,{spaces: 4, EOL: "\r\n"})
 
