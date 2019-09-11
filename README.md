@@ -48,8 +48,11 @@ kintone-cli create-template
     [--password <password>]
     [--type Customization|Plugin]
     [--use-typescript]
+    [--use-webpack]
     [--use-react]
-    [--appID <App ID (for Customization) >]
+    [--use-cybozu-lint]
+    [--app-name <appName>]
+    [--app-id <App ID (for Customization) >]
 ```
 
 Create a JS customization|plugin folder structure in project folder.
