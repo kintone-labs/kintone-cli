@@ -27,6 +27,7 @@ const initializeCommand = (program: CommanderStatic) => {
         .option('-p, --password <password>', 'Set password')
         .option('-n, --app-name <appName>', 'Set app name')
         .option('-s, --use-typescript', 'Use typescript or not')
+        .option('-r, --use-react', 'Use React or not')
         .option('-w, --use-webpack', 'Use webpack or not')
         .option('-i, --app-id <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
@@ -86,7 +87,7 @@ const initializeCommand = (program: CommanderStatic) => {
                         name : 'domain',
                         message : 'What is your kintone domain ?',
                         when: (curAnswers:object) => {
-                            return cmd.setAuth || curAnswers['setAuth']
+                            return (cmd.setAuth || curAnswers['setAuth']) && !cmd.domain
                         },
                         validate: (input: any,curAnswer: object): any => {
                             if (!isDomain(input)) {
@@ -100,7 +101,7 @@ const initializeCommand = (program: CommanderStatic) => {
                         name : 'username',
                         message : 'What is your kintone username ?',
                         when: (curAnswers:object) => {
-                            return cmd.setAuth || curAnswers['setAuth']
+                            return (cmd.setAuth || curAnswers['setAuth']) && !cmd.username
                         }
                     },
                     {
@@ -108,7 +109,7 @@ const initializeCommand = (program: CommanderStatic) => {
                         name : 'password',
                         message : 'What is your kintone password ?',
                         when: (curAnswers:object) => {
-                            return cmd.setAuth || curAnswers['setAuth']
+                            return (cmd.setAuth || curAnswers['setAuth']) && !cmd.password
                         }
                     },
                     {

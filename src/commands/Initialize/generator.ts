@@ -127,13 +127,17 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         }
     }
     else {
-        writeFileSyncFS(`${option['appName']}/source/js/script.js`, generateSample(option))
-        spawnSync('npx',['prettier', '--write', `${option['appName']}/source/js/script.js`, '--single-quote'], {stdio: 'inherit', windowsHide: true})
+        let extension = 'js'
+        if (option.useTypescript) {
+            extension = 'ts'
+        }
+        writeFileSyncFS(`${option['appName']}/source/js/script.${extension}`, generateSample(option))
+        spawnSync('npx',['prettier', '--write', `${option['appName']}/source/js/script.${extension}`, '--single-quote'], {stdio: 'inherit', windowsHide: true})
         writeFileSyncFS(`${option['appName']}/source/css/style.css`, '')
         manifestJSON['uploadConfig'] = {
             desktop: {
                 js: [
-                    `${option['appName']}/source/js/script.js`
+                    `${option['appName']}/source/js/script.${extension}`
                 ],
                 css:[
                     `${option['appName']}/source/css/style.css`

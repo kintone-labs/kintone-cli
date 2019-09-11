@@ -32,6 +32,7 @@ const initializeCommand = (program) => {
         .option('-p, --password <password>', 'Set password')
         .option('-n, --app-name <appName>', 'Set app name')
         .option('-s, --use-typescript', 'Use typescript or not')
+        .option('-r, --use-react', 'Use React or not')
         .option('-w, --use-webpack', 'Use webpack or not')
         .option('-i, --app-id <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
@@ -91,7 +92,7 @@ const initializeCommand = (program) => {
                     name: 'domain',
                     message: 'What is your kintone domain ?',
                     when: (curAnswers) => {
-                        return cmd.setAuth || curAnswers['setAuth'];
+                        return (cmd.setAuth || curAnswers['setAuth']) && !cmd.domain;
                     },
                     validate: (input, curAnswer) => {
                         if (!string_1.isDomain(input)) {
@@ -105,7 +106,7 @@ const initializeCommand = (program) => {
                     name: 'username',
                     message: 'What is your kintone username ?',
                     when: (curAnswers) => {
-                        return cmd.setAuth || curAnswers['setAuth'];
+                        return (cmd.setAuth || curAnswers['setAuth']) && !cmd.username;
                     }
                 },
                 {
@@ -113,7 +114,7 @@ const initializeCommand = (program) => {
                     name: 'password',
                     message: 'What is your kintone password ?',
                     when: (curAnswers) => {
-                        return cmd.setAuth || curAnswers['setAuth'];
+                        return (cmd.setAuth || curAnswers['setAuth']) && !cmd.password;
                     }
                 },
                 {
