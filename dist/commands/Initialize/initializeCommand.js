@@ -158,13 +158,14 @@ const initializeCommand = (program) => {
                     message: 'What is the entry for webpack ?',
                     default: (curAnswers) => {
                         let ext = '.js';
-                        if (curAnswers['useReact'] && curAnswers['useTypescript']) {
+                        let tempOption = Object.assign({}, cmd, curAnswers);
+                        if (tempOption['useReact'] && tempOption['useTypescript']) {
                             ext = '.tsx';
                         }
-                        else if (curAnswers['useReact']) {
+                        else if (tempOption['useReact']) {
                             ext = '.jsx';
                         }
-                        else if (curAnswers['useTypescript']) {
+                        else if (tempOption['useTypescript']) {
                             ext = '.ts';
                         }
                         return `index${ext}`;

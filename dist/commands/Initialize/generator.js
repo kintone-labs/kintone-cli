@@ -6,6 +6,7 @@ const webpackTemplate_1 = require("./webpackTemplate");
 const spawn = require("cross-spawn");
 const eslintRcTemplate_1 = require("./eslintRcTemplate");
 const sampleCode_1 = require("./sampleCode");
+const imageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAYAAACohjseAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABVtJREFUeNrcm0tsG1UUhs+MZ/x2HLutKZQ+ojSpiqKItEWIR6SAhJC6aSPURaUuaiSgGyIQEosuYEUEC0RUWHTVdAcFiRIJUbFoE1F1UYgUhBKgSkrSFrWxUWM7tvFr7HDP9YwZz4wd2/E83F+6sWd8PTNfzrnn3Dl3zEAdHTm/eJy8HCNthLR9YC2tkDZD2tTsmb7vanViaoAh0KQFoerBhgnojPIDVgPuM/Iy3UFwIF7rtHjttS1IOqDVTkNn6yKxZFhlQZG+0+FQp+WWZGRjbhoeLb2EY1Ky4KRVrmow5IDeAN+OQ1EmRkwFl80GQ6gPXgzCYx4bXJm/D5/ejAPn6d7qYUc5Mc+Zqld63PDes2WYVE6ACzduQy6RodtbhDzGiUncNJ055Ifj/Z7K9jezd2BVhMs9/HurkCOsmflu9ICnCg7B0HpyIaSQjoPXzsKHw8Fmx+c+1sxg8taQv2rf+JUFzb4IebKfg+d2OeHdwx4o5bMNn4c1b9y5VPseiK6p1E6/C14b2E7f79/uhmx0uWFI0wCff9Kp2nd04AnNvmePDlTeL0aTsFEqNgxpGqCHV5/6xJG90BfyVe0b7gvB0O5AZXuJAKIaheTMAoykizTnyeV1cHDu5DMwd3eNgjy9J1gFh8LPJEmQzlAPsHantQD/ihdUgBIkWg2bUpgjcRIg12aQprno5Vvppr+DOVJL9dzVNMDfojlIZPIN90frfV0DsB6kaYBvPsVCgSRwQRAa6j/+wzyFrCctSFMAhx9naFtPpiASeQDJ5DoUi0XNvji7GftqFq4vRhs6thLS8CCz18dQ6/2byUAylQIM+gKBy2YzkCsx8O1CDHwk0GDSx0i6KKaFZiRBOnbsMRbQTc529hBxTeKW60n1hX/04xLMr6baci4KGVk21kURzmnbgLVYHEqljTK0y0XbhZv32wZnSpA51c9S94wROGm88TwH3f4umF5ag+9//0eX87JGBZVXdzNkzKUhly+nBpZlYFswCMtrGWo9vcQaEVTQetlcjgYVSQiXKZTgk6srkM4XOxMQg8o7gyzwIEA8kajs93f5gOc4ChdN5XX9B+sKiHBBxwaFkwcVj9sNl36N6BJUDANEtzwYYChcoSBUgkoXsd7PdxNwaW7VkOCmC+DhHf8HlWw2Vwkqwe5uuBPLwufX7xmWmlg9ggrOVJRBBeGyJJZ8QeD0DCq6AmJQeeMgAw6mqAoqdrudWg7TgpFqKyBaDi1os9nA5/XSfU6noxJUcOwZrZbnoliNxsIR1lZ6A2RynBRgl0uAHHHNQiFPoTAVcDwPCyRaGhVU2gKIBVisUcq1P2gnf+3gcrkpYCpVnkxjnvuY5Duz1LSLnhrwqeCU4nk7BALboMjadZ+ptBUQy+dYbm+4v9cHGfPYmgdEy2nVM2sCkhvX11/o7RxADCxN30lolP8sG2QGQ/aq7ckbt2HuXqwcZEI+GHv5gKYVOwIQV4PkwiKQfKlLqjhrQXaMi0rC8t25a7dU+7EwqyztbVbqsySgfBVWKWUVrNFyn+kuimsJ2NyMoFqFlTSkWCyhlr76Z2cApvIleP/aQ7DFa9/qvC0bfwg39uUvlnDRlWYg486dmqs48rU9Ca6Vom2btYKAM818g2FtqqUqeULHtHHi/E9WgEPNoItOQZPPqEmQ0hqA18nTwIPlduX6ncmakp5VW4YWHidpZq3cDPf8Y3y0R0oT4VaOoOWuFlK4kgfFJ2UnHiHICWI9Glva9kCshdz1IoELa85kxCdlO9mSE3I4lQVllhyBFh9KN8mSmMvDkltuCigDbelnBQZBrog5fIqA1fxZwX8CDABQJHv904sMOAAAAABJRU5ErkJggg==';
 const spawnSync = spawn.sync;
 const generateAppFolder = (option) => {
     if (!fs_1.existsSync('package.json')) {
@@ -107,6 +108,17 @@ const generateAppFolder = (option) => {
                 ]
             }
         };
+        if (option['type'] === 'Plugin') {
+            let extension = 'jsx';
+            if (option.useTypescript) {
+                extension = 'tsx';
+            }
+            fs_1.writeFileSync(`${option['appName']}/source/config.${extension}`, '');
+            manifestJSON['uploadConfig']['config'] = {
+                html: `${option['appName']}/config.html`,
+                js: `${manifestJSON['appName']}/dist/config.min.js`
+            };
+        }
     }
     else {
         let extension = 'js';
@@ -119,7 +131,7 @@ const generateAppFolder = (option) => {
         manifestJSON['uploadConfig'] = {
             desktop: {
                 js: [
-                    `${option['appName']}/source/js/script.${extension}`
+                    `${option['appName']}/source/js/script.js`
                 ],
                 css: [
                     `${option['appName']}/source/css/style.css`
@@ -127,25 +139,31 @@ const generateAppFolder = (option) => {
             },
             mobile: {
                 js: []
-            },
-            config: {
-                html: `${option['appName']}/config.html`
             }
         };
+        if (option['type'] === 'Plugin') {
+            fs_1.writeFileSync(`${option['appName']}/source/config.${extension}`, '');
+            fs_1.writeFileSync(`${option['appName']}/source/css/config.css`, '');
+            manifestJSON['uploadConfig']['config'] = {
+                html: `${option['appName']}/config.html`,
+                js: [`${manifestJSON['appName']}/source/config.js`],
+                css: [`${manifestJSON['appName']}/source/css/config.css`],
+                required_params: []
+            };
+        }
     }
     if (option['useTypescript']) {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {};
         }
-        packageJSON.devDependencies.typescript = "^2.3.3";
-        packageJSON.devDependencies.tsc = "^1.20150623.0";
+        packageJSON.devDependencies.typescript = "^3.6.3";
         if (option['useReact']) {
             packageJSON.devDependencies['@types/react'] = "^16.8.16";
             packageJSON.devDependencies["@types/react-dom"] = "^16.8.4";
         }
         const tsConfigJSON = {
             "compilerOptions": {
-                "typeRoots": ["./source", "../node_modules/@types"],
+                "typeRoots": ["../node_modules/@types"],
                 "noImplicitAny": false
             },
             "include": [
@@ -158,11 +176,15 @@ const generateAppFolder = (option) => {
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         if (option['useReact']) {
             fs_1.writeFileSync(`${option['appName']}/source/global.d.tsx`, 'declare let kintone: any');
+            tsConfigJSON['compilerOptions']['typeRoots'].push("./source/global.d.tsx");
         }
         else {
             fs_1.writeFileSync(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any');
+            tsConfigJSON['compilerOptions']['typeRoots'].push("./source/global.d.ts");
         }
         jsonfile_1.writeFileSync(`${option['appName']}/tsconfig.json`, tsConfigJSON, { spaces: 4, EOL: "\r\n" });
+        if (!option['useWebpack'])
+            packageJSON.scripts[`build-${option['appName']}`] = `./node_modules/.bin/tsc --build ./${option['appName']}/tsconfig.json`;
     }
     if (option['type'] === 'Plugin') {
         if (!packageJSON.devDependencies) {
@@ -170,8 +192,10 @@ const generateAppFolder = (option) => {
         }
         packageJSON.devDependencies['@kintone/plugin-packer'] = "^1.0.8";
         packageJSON.devDependencies['@kintone/plugin-uploader'] = "^2.4.8";
+        manifestJSON['uploadConfig']['icon'] = `${option['appName']}/icon.png`;
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         fs_1.writeFileSync(`${option['appName']}/config.html`, '');
+        fs_1.writeFileSync(`${option['appName']}/icon.png`, new Buffer(imageBase64.replace(/^data:image\/\w+;base64,/, ""), 'base64'));
     }
     else {
         packageJSON.devDependencies["@kintone/customize-uploader"] = "^2.0.4";

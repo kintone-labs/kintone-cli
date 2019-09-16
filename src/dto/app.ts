@@ -18,6 +18,7 @@ type WebpackParams = {
     useTypescript: boolean
     useReact: boolean
     appName: string
+    type: string
 }
 
 type EslintRcParams = {

@@ -1,8 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName }) => {
+const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, type }) => {
     let jsRules;
+    let configEntry;
+    let pluginConfig = '';
     if (useTypescript) {
+        configEntry = 'config.ts';
         jsRules = `{
                 test: /\.ts?$/,
                 exclude: /node_modules/,
@@ -24,9 +27,11 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName }) 
                     }
                 }
             },`;
+            configEntry = 'config.tsx';
         }
     }
     else {
+        configEntry = 'config.js';
         jsRules = `{
                 test: /\.js?$/,
                 exclude: /node_modules/,
@@ -45,7 +50,31 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName }) 
                         }
                     }
                 },`;
+            configEntry = 'config.jsx';
         }
+    }
+    if (type === 'Plugin') {
+        pluginConfig = `
+        const configPlugin = {
+            entry: path.resolve('${appName}/source/${configEntry}'),
+            resolve: {
+                extensions: ['.ts', '.tsx', '.js']
+            },
+            output: {
+                path: path.resolve('${appName}/dist'),
+                filename: 'config.min.js',
+            },
+            module: {
+                rules: [
+                    ${jsRules}
+                    {
+                        test: /\.css$/,
+                        use: ['style-loader', 'css-loader']
+                    }
+                ]
+            }
+        }
+        `;
     }
     return `const path = require('path');
         const config = {
@@ -68,6 +97,8 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName }) 
             }
         }
 
+        ${pluginConfig}
+
         module.exports = (env, argv) => {
 
             if (argv.mode === 'development') {
@@ -77,8 +108,9 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName }) 
             if (argv.mode === 'production') {
               //...
             }
-          
-            return config;
+            ${type === 'Plugin' ?
+        'return [config, configPlugin];' :
+        'return [config];'}
         };`;
 };
 exports.buildWebpackReactTemplate = buildWebpackReactTemplate;
