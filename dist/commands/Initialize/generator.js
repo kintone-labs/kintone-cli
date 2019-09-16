@@ -195,7 +195,7 @@ const generateAppFolder = (option) => {
         manifestJSON['uploadConfig']['icon'] = `${option['appName']}/icon.png`;
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         fs_1.writeFileSync(`${option['appName']}/config.html`, '');
-        fs_1.writeFileSync(`${option['appName']}/icon.png`, new Buffer(imageBase64.replace(/^data:image\/\w+;base64,/, ""), 'base64'));
+        fs_1.writeFileSync(`${option['appName']}/icon.png`, Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ""), 'base64'));
     }
     else {
         packageJSON.devDependencies["@kintone/customize-uploader"] = "^2.0.4";
