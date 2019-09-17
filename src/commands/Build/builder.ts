@@ -18,7 +18,7 @@ const buildPlugin = (option: object) => {
     manifestJSON['manifest_version'] = 1
     manifestJSON['version'] = 1
     manifestJSON['type'] = 'APP'
-    manifestJSON['icon'] = option['icon']
+    manifestJSON['icon'] = option['uploadConfig']['icon']
     manifestJSON['name'] = {
         "en": option['appName']
     }
