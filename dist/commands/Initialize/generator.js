@@ -113,10 +113,10 @@ const generateAppFolder = (option) => {
             if (option.useTypescript) {
                 extension = 'tsx';
             }
-            fs_1.writeFileSync(`${option['appName']}/source/config.${extension}`, '');
+            fs_1.writeFileSync(`${option['appName']}/source/pluginConfig.${extension}`, '');
             manifestJSON['uploadConfig']['config'] = {
-                html: `${option['appName']}/config.html`,
-                js: `${manifestJSON['appName']}/dist/config.min.js`
+                html: `${option['appName']}/pluginConfig.html`,
+                js: `${manifestJSON['appName']}/dist/pluginConfig.min.js`
             };
         }
     }
@@ -145,7 +145,7 @@ const generateAppFolder = (option) => {
             fs_1.writeFileSync(`${option['appName']}/source/config.${extension}`, '');
             fs_1.writeFileSync(`${option['appName']}/source/css/config.css`, '');
             manifestJSON['uploadConfig']['config'] = {
-                html: `${option['appName']}/config.html`,
+                html: `${option['appName']}/pluginConfig.html`,
                 js: [`${manifestJSON['appName']}/source/config.js`],
                 css: [`${manifestJSON['appName']}/source/css/config.css`],
                 required_params: []
@@ -194,7 +194,7 @@ const generateAppFolder = (option) => {
         packageJSON.devDependencies['@kintone/plugin-uploader'] = "^2.4.8";
         manifestJSON['uploadConfig']['icon'] = `${option['appName']}/icon.png`;
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
-        fs_1.writeFileSync(`${option['appName']}/config.html`, '');
+        fs_1.writeFileSync(`${option['appName']}/pluginConfig.html`, '');
         fs_1.writeFileSync(`${option['appName']}/icon.png`, Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ""), 'base64'));
     }
     else {

@@ -4,7 +4,7 @@ const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName, typ
     let configEntry
     let pluginConfig = ''
     if (useTypescript) {
-        configEntry = 'config.ts'
+        configEntry = 'pluginConfig.ts'
         jsRules = `{
                 test: /\.ts?$/,
                 exclude: /node_modules/,
@@ -26,7 +26,7 @@ const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName, typ
                     }
                 }
             },`
-            configEntry = 'config.tsx'
+            configEntry = 'pluginConfig.tsx'
         }
     }
     else {
@@ -49,7 +49,7 @@ const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName, typ
                         }
                     }
                 },`
-            configEntry = 'config.jsx'
+            configEntry = 'pluginConfig.jsx'
         }
     }
     if (type === 'Plugin') {

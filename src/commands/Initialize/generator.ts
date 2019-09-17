@@ -133,11 +133,11 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             if (option.useTypescript) {
                 extension = 'tsx'
             }
-            writeFileSyncFS(`${option['appName']}/source/config.${extension}`, '')
+            writeFileSyncFS(`${option['appName']}/source/pluginConfig.${extension}`, '')
 
             manifestJSON['uploadConfig']['config'] = {
-                html: `${option['appName']}/config.html`,
-                js: `${manifestJSON['appName']}/dist/config.min.js`
+                html: `${option['appName']}/pluginConfig.html`,
+                js: `${manifestJSON['appName']}/dist/pluginConfig.min.js`
             }
         }
     }
@@ -168,7 +168,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             writeFileSyncFS(`${option['appName']}/source/css/config.css`, '')
 
             manifestJSON['uploadConfig']['config'] = {
-                html: `${option['appName']}/config.html`,
+                html: `${option['appName']}/pluginConfig.html`,
                 js: [`${manifestJSON['appName']}/source/config.js`],
                 css: [`${manifestJSON['appName']}/source/css/config.css`],
                 required_params: []
@@ -226,7 +226,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         manifestJSON['uploadConfig']['icon'] = `${option['appName']}/icon.png`
 
         writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
-        writeFileSyncFS(`${option['appName']}/config.html`, '')
+        writeFileSyncFS(`${option['appName']}/pluginConfig.html`, '')
         writeFileSyncFS(`${option['appName']}/icon.png`, Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ""), 'base64'))
     }
     else {
