@@ -34,6 +34,7 @@ const initializeCommand = (program: CommanderStatic) => {
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
         .option('--no-proxy', 'Use proxy URL')
         .action(async (cmd)=>{
+            cmd.appID = cmd.appId
             let error = validator.appValidator(cmd)
             if (error && typeof error === 'string') {
                 console.log(chalk.red(error))
