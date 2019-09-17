@@ -22,9 +22,13 @@ const buildPlugin = (option: object) => {
     manifestJSON['name'] = {
         "en": option['appName']
     }
+    if (option['uploadConfig'] && option['uploadConfig']['name']) manifestJSON['name'] = option['uploadConfig']['name']
+
     manifestJSON['description'] = {
         "en": "Kintone Plugin"
     }
+    if (option['uploadConfig'] && option['uploadConfig']['description']) manifestJSON['description'] = option['uploadConfig']['description']
+
     manifestJSON['desktop'] = option['uploadConfig']['desktop']
     manifestJSON['mobile'] = option['uploadConfig']['mobile']
     manifestJSON['config'] = option['uploadConfig']['config']
