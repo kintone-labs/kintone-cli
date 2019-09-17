@@ -29,8 +29,10 @@ const initializeCommand = (program: CommanderStatic) => {
         .option('-s, --use-typescript', 'Use typescript or not')
         .option('-r, --use-react', 'Use React or not')
         .option('-w, --use-webpack', 'Use webpack or not')
+        .option('--entry <entry>', 'Webpack entry')
         .option('-i, --app-id <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
+        .option('--no-proxy', 'Use proxy URL')
         .action(async (cmd)=>{
             let error = validator.appValidator(cmd)
             if (error && typeof error === 'string') {
@@ -118,7 +120,7 @@ const initializeCommand = (program: CommanderStatic) => {
                         message : 'Do you use proxy ?',
                         default: false,
                         when: (curAnswers:object) => {
-                            return cmd.setAuth || curAnswers['setAuth']
+                            return (cmd.setAuth || curAnswers['setAuth']) && cmd.proxy
                         }
                     },
                     {
@@ -126,7 +128,7 @@ const initializeCommand = (program: CommanderStatic) => {
                         name : 'proxy',
                         message : 'Specify your proxy full URL, including port number:',
                         when: (curAnswers:object) => {
-                            return cmd.useProxy || curAnswers['useProxy']
+                            return curAnswers['useProxy'] && cmd.proxy
                         }
                     },
                     {
@@ -166,7 +168,7 @@ const initializeCommand = (program: CommanderStatic) => {
                             return `index${ext}`;
                         },
                         when: (curAnswers:object) => {
-                            return cmd.useWebpack || curAnswers['useWebpack']
+                            return (cmd.useWebpack || curAnswers['useWebpack']) && !cmd.entry
                         }
                     },
                     {

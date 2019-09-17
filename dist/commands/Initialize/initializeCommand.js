@@ -34,8 +34,10 @@ const initializeCommand = (program) => {
         .option('-s, --use-typescript', 'Use typescript or not')
         .option('-r, --use-react', 'Use React or not')
         .option('-w, --use-webpack', 'Use webpack or not')
+        .option('--entry <entry>', 'Webpack entry')
         .option('-i, --app-id <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
+        .option('--no-proxy', 'Use proxy URL')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let error = validator_1.default.appValidator(cmd);
         if (error && typeof error === 'string') {
@@ -123,7 +125,7 @@ const initializeCommand = (program) => {
                     message: 'Do you use proxy ?',
                     default: false,
                     when: (curAnswers) => {
-                        return cmd.setAuth || curAnswers['setAuth'];
+                        return (cmd.setAuth || curAnswers['setAuth']) && cmd.proxy;
                     }
                 },
                 {
@@ -131,7 +133,7 @@ const initializeCommand = (program) => {
                     name: 'proxy',
                     message: 'Specify your proxy full URL, including port number:',
                     when: (curAnswers) => {
-                        return cmd.useProxy || curAnswers['useProxy'];
+                        return curAnswers['useProxy'] && cmd.proxy;
                     }
                 },
                 {
@@ -171,7 +173,7 @@ const initializeCommand = (program) => {
                         return `index${ext}`;
                     },
                     when: (curAnswers) => {
-                        return cmd.useWebpack || curAnswers['useWebpack'];
+                        return (cmd.useWebpack || curAnswers['useWebpack']) && !cmd.entry;
                     }
                 },
                 {
