@@ -99,7 +99,6 @@ Sample `config.json` file:
     "appID": YOUR_APP_ID,
     "appName": "YOUR_APP_NAME",
     "type": "Plugin",
-    "icon": "{YOUR_APP_NAME}/{PATH_TO_YOUR_ICON}",
     "uploadConfig": {
         "desktop": {
             "js": [
@@ -116,7 +115,13 @@ Sample `config.json` file:
             "css": [
                 "{YOUR_APP_NAME}/{PATH_TO_YOUR_CSS_FILE_FOR_MOBILE}"
             ]
-        }
+        },
+        // In case of Plugin
+        "config": {
+            "html": "{YOUR_APP_NAME}/{PATH_TO_YOUR_CONFIG_HTML}",
+            "js": "{YOUR_APP_NAME}/{PATH_TO_YOUR_CONFIG_JS}"
+        },
+        "icon": "{YOUR_APP_NAME}/{PATH_TO_YOUR_ICON}",
     }
 }
 ```
