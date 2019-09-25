@@ -126,6 +126,8 @@ Sample `config.json` file:
 }
 ```
 
+The `uploadConfig` field's value follow the rules of [manifest file](https://developer.kintone.io/hc/en-us/articles/212495078#manifest). Developers can extend it in case of developing a Plugin.
+
 ### 3. Start dev
 ``
 kintone-cli dev [--app-name <App Name>] [--watch] [--localhost]
