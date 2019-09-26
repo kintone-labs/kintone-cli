@@ -126,7 +126,26 @@ Sample `config.json` file:
 }
 ```
 
-The `uploadConfig` field's value follow the rules of [manifest file](https://developer.kintone.io/hc/en-us/articles/212495078#manifest). Developers can extend it in case of developing a Plugin.
+#### Config.json fields
+
+| Field   | Requred | Type    | Description                    |
+|---------|---------|---------|--------------------------------|
+| appName | Yes     | String  | Customization / Plugin name    |
+| appID   | Customization only        | Integer | App ID to deploy Customization |
+| type    | Yes        | String  | App's type: <ul><li>Customization</li><li>Plugin</li></ul> |
+| scope | Customization only     | String  | Customization scope (https://developer.kintone.io/hc/en-us/articles/115004873968-Update-Customization) <ul><li>ALL: Affect all users</li><li>ADMIN: Affect only App administrators</li><li>NONE: Disable</li></ul>    |
+| uploadConfig | Yes     | Object  | Config for `build`, `deploy` command    |
+| uploadConfig.desktop | Yes     | Object  | Config for kintone desktop    |
+| uploadConfig.desktop.js | Yes     | Array&lt;String&gt;  | JS files / URLs to upload to kintone desktop.    |
+| uploadConfig.desktop.css | Yes     | Array&lt;String&gt;  | CSS files / URLs to upload to kintone desktop.    |
+| uploadConfig.mobile |      | Object  | Config for kintone mobile    |
+| uploadConfig.mobile.js |      | Array&lt;String&gt;  | JS files / URLs to upload to kintone mobile.    |
+| uploadConfig.mobile.css |      | Array&lt;String&gt;  | CSS files / URLs to upload to kintone mobile.    |
+| uploadConfig.config | Plugin only     | Object  | Config for kintone plugin's config page |
+| uploadConfig.config.html |      | String  | HTML for kintone plugin's config page |
+| uploadConfig.config.js |      | Array&lt;String&gt;  | 	JS files / URLs for kintone plugin's config page |
+| uploadConfig.config.css |      | Array&lt;String&gt;  | CSS files / URLs for kintone plugin's config page |
+| uploadConfig.config.required_params |      | Array&lt;String&gt;  | An array of parameters that are required to be filled in in the Plug-in Settings page. Must be between 1 to 64 ASCII characters. |
 
 ### 3. Start dev
 ``
