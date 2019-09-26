@@ -84,14 +84,18 @@ CLI will require following input information. If any piece of info is skipped de
 - Use ESLint (y/n)
 
 After the above information is inputted, the following folder structure will be created:
-- <Customization|Plugin Name>
-    - source 
-        - js
-        - css
-    - dist
-    - config.json
-    - auth.json
-    - webpack.config.js (if using webpack)
+```
+<Customization|Plugin Name>
+    ├── source
+    │   ├── js
+    │   │   └── YOUR_JS_FILE.js
+    │   └── css
+    │       └── YOUR_CSS_FILE.css    
+    ├── dist // this folder is created only when using webpack
+    ├── config.json
+    ├── auth.json
+    └── webpack.config.js // if using webpack
+```
 
 Sample `config.json` file:
 ```json
