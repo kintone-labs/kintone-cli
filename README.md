@@ -88,9 +88,13 @@ After the above information is inputted, the following folder structure will be 
 <Customization|Plugin Name>
     ├── source
     │   ├── js
-    │   │   └── YOUR_JS_FILE.js
+    │   │   ├── desktop.js
+    │   │   ├── mobile.js
+    │   │   └── config.js
     │   └── css
-    │       └── YOUR_CSS_FILE.css    
+    │       ├── desktop.css
+    │       ├── mobile.css
+    │       └── config.css    
     ├── dist // this folder is created only when using webpack
     ├── config.json
     ├── auth.json
