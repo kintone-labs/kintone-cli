@@ -225,7 +225,6 @@ const initializeCommand = (program: CommanderStatic) => {
                     password: cmd.password || answer['password'],
                     type: cmd.type || answer['type'],
                     appID: cmd.appID || answer['appID'],
-                    pluginName: cmd.pluginName || answer['pluginName'],
                     useCybozuLint: cmd.useCybozuLint || answer['useCybozuLint'],
                     scope: cmd.scope || answer['scope'],
                     proxy: cmd.proxy || answer['proxy']

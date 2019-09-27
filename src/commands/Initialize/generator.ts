@@ -21,10 +21,6 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         manifestJSON['appID'] = option['appID']
     }
 
-    if (option['pluginName']) {
-        manifestJSON['pluginName'] = option['pluginName']
-    }
-
     manifestJSON['appName'] = option['appName']
     manifestJSON['type'] = option['type']
     manifestJSON['scope'] = option['scope']
@@ -127,19 +123,6 @@ const generateAppFolder = (option: AppOption): string | boolean => {
                 ]
             }
         }
-
-        if (option['type'] === 'Plugin') {
-            let extension = 'jsx'
-            if (option.useTypescript) {
-                extension = 'tsx'
-            }
-            writeFileSyncFS(`${option['appName']}/source/pluginConfig.${extension}`, '')
-
-            manifestJSON['uploadConfig']['config'] = {
-                html: `${option['appName']}/pluginConfig.html`,
-                js: `${manifestJSON['appName']}/dist/pluginConfig.min.js`
-            }
-        }
     }
     else {
         let extension = 'js'
@@ -160,18 +143,6 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             },
             mobile: {
                 js: []
-            }
-        }
-
-        if (option['type'] === 'Plugin') {
-            writeFileSyncFS(`${option['appName']}/source/config.${extension}`, '')
-            writeFileSyncFS(`${option['appName']}/source/css/config.css`, '')
-
-            manifestJSON['uploadConfig']['config'] = {
-                html: `${option['appName']}/pluginConfig.html`,
-                js: [`${manifestJSON['appName']}/source/config.js`],
-                css: [`${manifestJSON['appName']}/source/css/config.css`],
-                required_params: []
             }
         }
     }
@@ -228,6 +199,20 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
         writeFileSyncFS(`${option['appName']}/pluginConfig.html`, '')
         writeFileSyncFS(`${option['appName']}/icon.png`, Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ""), 'base64'))
+
+        let extension = 'js'
+        if (option.useTypescript) {
+            extension = 'ts'
+        }
+        writeFileSyncFS(`${option['appName']}/source/js/config.${extension}`, '')
+        writeFileSyncFS(`${option['appName']}/source/css/config.css`, '')
+
+        manifestJSON['uploadConfig']['config'] = {
+            html: `${option['appName']}/pluginConfig.html`,
+            js: [`${manifestJSON['appName']}/source/js/config.${extension}`],
+            css: [`${manifestJSON['appName']}/source/css/config.css`],
+            required_params: []
+        }
     }
     else {
         packageJSON.devDependencies["@kintone/customize-uploader"] = "^2.0.4"

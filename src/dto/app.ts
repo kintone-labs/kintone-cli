@@ -9,8 +9,7 @@ type AppOption = {
     username: string,
     password: string,
     type: 'Plugin' | 'Customization',
-    appID: number,
-    pluginName: string
+    appID: number
 }
 
 type WebpackParams = {

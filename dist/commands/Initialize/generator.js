@@ -17,9 +17,6 @@ const generateAppFolder = (option) => {
     if (option['appID']) {
         manifestJSON['appID'] = option['appID'];
     }
-    if (option['pluginName']) {
-        manifestJSON['pluginName'] = option['pluginName'];
-    }
     manifestJSON['appName'] = option['appName'];
     manifestJSON['type'] = option['type'];
     manifestJSON['scope'] = option['scope'];

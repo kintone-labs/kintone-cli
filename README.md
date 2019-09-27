@@ -95,10 +95,12 @@ After the above information is inputted, the following folder structure will be 
     │       ├── desktop.css
     │       ├── mobile.css
     │       └── config.css    
-    ├── dist // this folder is created only when using webpack
+    ├── dist                // this folder is created only when using webpack
+    ├── pluginConfig.html   // this folder is created only when developing Plugin
+    ├── icon.png            // this folder is created only when developing Plugin
     ├── config.json
     ├── auth.json
-    └── webpack.config.js // if using webpack
+    └── webpack.config.js   // if using webpack
 ```
 
 Sample `config.json` file:
