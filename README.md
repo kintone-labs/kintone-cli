@@ -90,14 +90,14 @@ After the above information is inputted, the following folder structure will be 
     │   ├── js
     │   │   ├── desktop.js
     │   │   ├── mobile.js
-    │   │   └── config.js
+    │   │   └── config.js   // this file is created only when developing Plugin
     │   └── css
     │       ├── desktop.css
     │       ├── mobile.css
-    │       └── config.css    
+    │       └── config.css  // this file is created only when developing Plugin
     ├── dist                // this folder is created only when using webpack
-    ├── pluginConfig.html   // this folder is created only when developing Plugin
-    ├── icon.png            // this folder is created only when developing Plugin
+    ├── pluginConfig.html   // this file is created only when developing Plugin
+    ├── icon.png            // this file is created only when developing Plugin
     ├── config.json
     ├── auth.json
     └── webpack.config.js   // if using webpack
