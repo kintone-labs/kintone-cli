@@ -88,12 +88,10 @@ After the above information is inputted, the following folder structure will be 
 <Customization|Plugin Name>
     ├── source
     │   ├── js
-    │   │   ├── desktop.js
-    │   │   ├── mobile.js
+    │   │   ├── script.js
     │   │   └── config.js   // this file is created only when developing Plugin
     │   └── css
-    │       ├── desktop.css
-    │       ├── mobile.css
+    │       ├── style.css
     │       └── config.css  // this file is created only when developing Plugin
     ├── dist                // this folder is created only when using webpack
     ├── pluginConfig.html   // this file is created only when developing Plugin
