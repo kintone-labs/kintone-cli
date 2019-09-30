@@ -37,7 +37,7 @@ const initializeCommand = (program) => {
         .option('--entry <entry>', 'Webpack entry')
         .option('-i, --app-id <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
-        .option('--no-proxy', 'Use proxy URL')
+        .option('--proxy <proxyURL>', 'Proxy URL')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         cmd.appID = cmd.appId;
         let error = validator_1.default.appValidator(cmd);
@@ -126,7 +126,7 @@ const initializeCommand = (program) => {
                     message: 'Do you use proxy ?',
                     default: false,
                     when: (curAnswers) => {
-                        return (cmd.setAuth || curAnswers['setAuth']) && cmd.proxy;
+                        return (cmd.setAuth || curAnswers['setAuth']) && !cmd.proxy;
                     }
                 },
                 {
@@ -228,6 +228,8 @@ const initializeCommand = (program) => {
                 scope: cmd.scope || answer['scope'],
                 proxy: cmd.proxy || answer['proxy']
             };
+            if (answer['proxy'] === 'null')
+                appSetting.proxy = false;
             console.log(chalk_1.default.yellow('Creating app...'));
             let err = generator_1.generateAppFolder(appSetting);
             if (err && typeof err === 'string') {

@@ -105,17 +105,6 @@ const generateAppFolder = (option) => {
                 ]
             }
         };
-        if (option['type'] === 'Plugin') {
-            let extension = 'jsx';
-            if (option.useTypescript) {
-                extension = 'tsx';
-            }
-            fs_1.writeFileSync(`${option['appName']}/source/pluginConfig.${extension}`, '');
-            manifestJSON['uploadConfig']['config'] = {
-                html: `${option['appName']}/pluginConfig.html`,
-                js: `${manifestJSON['appName']}/dist/pluginConfig.min.js`
-            };
-        }
     }
     else {
         let extension = 'js';
@@ -138,16 +127,6 @@ const generateAppFolder = (option) => {
                 js: []
             }
         };
-        if (option['type'] === 'Plugin') {
-            fs_1.writeFileSync(`${option['appName']}/source/config.${extension}`, '');
-            fs_1.writeFileSync(`${option['appName']}/source/css/config.css`, '');
-            manifestJSON['uploadConfig']['config'] = {
-                html: `${option['appName']}/pluginConfig.html`,
-                js: [`${manifestJSON['appName']}/source/config.js`],
-                css: [`${manifestJSON['appName']}/source/css/config.css`],
-                required_params: []
-            };
-        }
     }
     if (option['useTypescript']) {
         if (!packageJSON.devDependencies) {
@@ -193,6 +172,18 @@ const generateAppFolder = (option) => {
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         fs_1.writeFileSync(`${option['appName']}/pluginConfig.html`, '');
         fs_1.writeFileSync(`${option['appName']}/icon.png`, Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ""), 'base64'));
+        let extension = 'js';
+        if (option.useTypescript) {
+            extension = 'ts';
+        }
+        fs_1.writeFileSync(`${option['appName']}/source/js/config.${extension}`, '');
+        fs_1.writeFileSync(`${option['appName']}/source/css/config.css`, '');
+        manifestJSON['uploadConfig']['config'] = {
+            html: `${option['appName']}/pluginConfig.html`,
+            js: [`${manifestJSON['appName']}/source/js/config.${extension}`],
+            css: [`${manifestJSON['appName']}/source/css/config.css`],
+            required_params: []
+        };
     }
     else {
         packageJSON.devDependencies["@kintone/customize-uploader"] = "^2.0.4";
