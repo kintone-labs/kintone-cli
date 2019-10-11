@@ -1,4 +1,4 @@
-# Kintone CLI
+# kintone CLI(β)
 A tool to quickly start developing with kintone
 ## Installation
 ```
