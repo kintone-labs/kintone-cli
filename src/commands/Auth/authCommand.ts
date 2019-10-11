@@ -84,7 +84,7 @@ const authCommand = (program: CommanderStatic) => {
                     name : 'useProxy',
                     message : 'Do you use proxy ?',
                     default: false,
-                    when: !cmd.useProxy
+                    when: !cmd.useProxy && !cmd.proxy
                 },
                 {
                     type : 'input',

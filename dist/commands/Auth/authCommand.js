@@ -91,7 +91,7 @@ const authCommand = (program) => {
                 name: 'useProxy',
                 message: 'Do you use proxy ?',
                 default: false,
-                when: !cmd.useProxy
+                when: !cmd.useProxy && !cmd.proxy
             },
             {
                 type: 'input',
