@@ -14,7 +14,7 @@ const authCommand = (program: CommanderStatic) => {
         .option('-p, --password <password>', 'Kintone password')
         .option('-i, --app-id <appID>', 'Kintone app ID')
         .option('-r, --use-proxy', 'Use proxy or not')
-        .option('-x, --proxy <proxyURL>', 'Proxy full URL, including port number')
+        .option('-x, --proxy <proxy>', 'Proxy full URL, including port number')
         .action(async (cmd)=>{
             let error = validator.authValidator(cmd)
             if (error && typeof error === 'string') {
@@ -91,7 +91,7 @@ const authCommand = (program: CommanderStatic) => {
                     name : 'proxy',
                     message : 'Specify your proxy full URL, including port number:',
                     when: (curAnswers:object) => {
-                        return (cmd.useProxy || curAnswers['useProxy']) && !cmd.proxyURL
+                        return (cmd.useProxy || curAnswers['useProxy']) && !cmd.proxy
                     },
                     validate: (input: any): any => {
                         if (!input) {

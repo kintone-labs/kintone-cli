@@ -22,7 +22,7 @@ const authCommand = (program) => {
         .option('-p, --password <password>', 'Kintone password')
         .option('-i, --app-id <appID>', 'Kintone app ID')
         .option('-r, --use-proxy', 'Use proxy or not')
-        .option('-x, --proxy <proxyURL>', 'Proxy full URL, including port number')
+        .option('-x, --proxy <proxy>', 'Proxy full URL, including port number')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let error = validator_1.default.authValidator(cmd);
         if (error && typeof error === 'string') {
@@ -98,7 +98,7 @@ const authCommand = (program) => {
                 name: 'proxy',
                 message: 'Specify your proxy full URL, including port number:',
                 when: (curAnswers) => {
-                    return (cmd.useProxy || curAnswers['useProxy']) && !cmd.proxyURL;
+                    return (cmd.useProxy || curAnswers['useProxy']) && !cmd.proxy;
                 },
                 validate: (input) => {
                     if (!input) {
