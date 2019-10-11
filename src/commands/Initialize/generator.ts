@@ -204,6 +204,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (option.useTypescript) {
             extension = 'ts'
         }
+        if (option.useReact) extension += 'x';
         writeFileSyncFS(`${option['appName']}/source/js/config.${extension}`, '')
         writeFileSyncFS(`${option['appName']}/source/css/config.css`, '')
 

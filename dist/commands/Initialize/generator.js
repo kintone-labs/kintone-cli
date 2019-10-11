@@ -176,6 +176,8 @@ const generateAppFolder = (option) => {
         if (option.useTypescript) {
             extension = 'ts';
         }
+        if (option.useReact)
+            extension += 'x';
         fs_1.writeFileSync(`${option['appName']}/source/js/config.${extension}`, '');
         fs_1.writeFileSync(`${option['appName']}/source/css/config.css`, '');
         manifestJSON['uploadConfig']['config'] = {
