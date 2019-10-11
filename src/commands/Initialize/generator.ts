@@ -210,10 +210,12 @@ const generateAppFolder = (option: AppOption): string | boolean => {
 
         manifestJSON['uploadConfig']['config'] = {
             html: `${option['appName']}/pluginConfig.html`,
-            js: [`${manifestJSON['appName']}/source/js/config.${extension}`],
+            js: [`${manifestJSON['appName']}/source/js/config.js`],
             css: [`${manifestJSON['appName']}/source/css/config.css`],
             required_params: []
         }
+
+        if (option.useReact) manifestJSON['uploadConfig']['config']['js'] = [`${manifestJSON['appName']}/dist/config.min.js`]
     }
     else {
         packageJSON.devDependencies["@kintone/customize-uploader"] = "^2.0.4"

@@ -44,9 +44,8 @@ const buildPlugin = (option) => {
             return /.ppk$/.test(name);
         });
         fs_1.renameSync(`${option['appName']}/dist/${keyFileName[0]}`, `${option['appName']}/dist/private.ppk`);
-        //console.log(keyFileName)
     }
-    fs_1.unlinkSync(`manifest.json`);
+    // unlinkSync(`manifest.json`)
 };
 exports.buildPlugin = buildPlugin;
 const builder = {
