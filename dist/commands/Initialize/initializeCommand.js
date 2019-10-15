@@ -181,7 +181,13 @@ const initializeCommand = (program) => {
                     type: 'input',
                     name: 'appName',
                     message: 'What is the app name ?',
-                    when: cmd.appName === undefined
+                    when: cmd.appName === undefined,
+                    validate: (input) => {
+                        if (!input) {
+                            return 'App name invalid';
+                        }
+                        return true;
+                    }
                 },
                 {
                     type: 'confirm',
