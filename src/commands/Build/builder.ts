@@ -55,7 +55,7 @@ const buildPlugin = (option: object) => {
         renameSync(`${option['appName']}/dist/${keyFileName[0]}`,`${option['appName']}/dist/private.ppk`)
     }
 
-    // unlinkSync(`manifest.json`)
+    unlinkSync(`manifest.json`)
 }
 
 const builder = {

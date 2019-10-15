@@ -45,7 +45,7 @@ const buildPlugin = (option) => {
         });
         fs_1.renameSync(`${option['appName']}/dist/${keyFileName[0]}`, `${option['appName']}/dist/private.ppk`);
     }
-    // unlinkSync(`manifest.json`)
+    fs_1.unlinkSync(`manifest.json`);
 };
 exports.buildPlugin = buildPlugin;
 const builder = {

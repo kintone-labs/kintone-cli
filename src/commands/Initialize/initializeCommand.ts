@@ -12,8 +12,8 @@ import { isDomain } from "../../utils/string";
 const spawnSync = spawn.sync
 
 const initializeCommand = (program: CommanderStatic) => {
-    const latestUIComponentVersion = '^0.2.0';
-    const latestJsSdkVersion = '^0.2.0';
+    const latestUIComponentVersion = '^0.4.0';
+    const latestJsSdkVersion = '^0.6.2';
     
     program
         .command('create-template')

@@ -218,7 +218,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (option.useReact) manifestJSON['uploadConfig']['config']['js'] = [`${manifestJSON['appName']}/dist/config.min.js`]
     }
     else {
-        packageJSON.devDependencies["@kintone/customize-uploader"] = "^2.0.4"
+        packageJSON.devDependencies["@kintone/customize-uploader"] = "^2.0.5"
         writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
     }
 
@@ -262,8 +262,8 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {}
         }
-        packageJSON.devDependencies['eslint'] = '^5.16.0'
-        packageJSON.devDependencies['@cybozu/eslint-config'] = '>=5.0.1'
+        packageJSON.devDependencies['eslint'] = '^6.5.1'
+        packageJSON.devDependencies['@cybozu/eslint-config'] = '>=7.1.0'
         writeFileSync(`package.json`,packageJSON,{spaces:2, EOL: "\r\n"})
 
         // create .eslintrc.js file according to customization structure
