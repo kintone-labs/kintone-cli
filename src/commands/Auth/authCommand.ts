@@ -71,7 +71,7 @@ const authCommand = (program: CommanderStatic) => {
                     type: 'number',
                     name: 'appID',
                     message : 'What is the app ID ?',
-                    when: !cmd.appID,
+                    when: !cmd.appID && !configJSON.appID,
                     validate: (input: any): any => {
                         if (!input) {
                             return 'App ID can\'t be empty.'

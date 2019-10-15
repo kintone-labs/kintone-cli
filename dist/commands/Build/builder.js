@@ -30,6 +30,13 @@ const buildPlugin = (option) => {
     manifestJSON['desktop'] = option['uploadConfig']['desktop'];
     manifestJSON['mobile'] = option['uploadConfig']['mobile'];
     manifestJSON['config'] = option['uploadConfig']['config'];
+    if (manifestJSON['config']['required_params'] && manifestJSON['config']['required_params'].length === 0)
+        delete manifestJSON['config']['required_params'];
+    if (manifestJSON['config'] && manifestJSON['config']['html']) {
+        const htmlContent = fs_1.readFileSync(manifestJSON['config']['html'], 'utf-8');
+        if (!htmlContent)
+            delete manifestJSON['config'];
+    }
     jsonfile_1.writeFileSync(`manifest.json`, manifestJSON, { spaces: 4, EOL: "\r\n" });
     let paramArr = ['./', '--out', `${option['appName']}/dist/plugin.zip`];
     if (fs_1.existsSync(`${option['appName']}/dist/private.ppk`)) {
