@@ -59,13 +59,13 @@ const initializeCommand = (program: CommanderStatic) => {
                             cmd.useTypescript = false
                             cmd.useWebpack = true
                             cmd.useReact = true
-                            cmd.entry = 'app.jsx'
+                            cmd.entry = 'index.jsx'
                             break;
                         case 'ReactTS':
                             cmd.useTypescript = true
                             cmd.useWebpack = true
                             cmd.useReact = true
-                            cmd.entry = 'app.tsx'
+                            cmd.entry = 'index.tsx'
                             break;
                         default:
                             break;
