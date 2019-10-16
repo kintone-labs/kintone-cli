@@ -129,7 +129,7 @@ const initializeCommand = (program: CommanderStatic) => {
                         name : 'proxy',
                         message : 'Specify your proxy full URL, including port number:',
                         when: (curAnswers:object) => {
-                            return curAnswers['useProxy'] && cmd.proxy
+                            return curAnswers['useProxy'] && !cmd.proxy
                         }
                     },
                     {
