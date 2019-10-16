@@ -151,11 +151,11 @@ const generateAppFolder = (option) => {
         }
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         if (option['useReact']) {
-            fs_1.writeFileSync(`${option['appName']}/source/global.d.tsx`, 'declare let kintone: any');
+            fs_1.writeFileSync(`${option['appName']}/source/global.d.tsx`, 'declare let kintone: any;');
             tsConfigJSON['compilerOptions']['typeRoots'].push("./source/global.d.tsx");
         }
         else {
-            fs_1.writeFileSync(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any');
+            fs_1.writeFileSync(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any;');
             tsConfigJSON['compilerOptions']['typeRoots'].push("./source/global.d.ts");
         }
         jsonfile_1.writeFileSync(`${option['appName']}/tsconfig.json`, tsConfigJSON, { spaces: 4, EOL: "\r\n" });
