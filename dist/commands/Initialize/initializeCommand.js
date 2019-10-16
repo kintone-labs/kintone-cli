@@ -184,7 +184,7 @@ const initializeCommand = (program) => {
                     when: cmd.appName === undefined,
                     validate: (input) => {
                         if (!input) {
-                            return 'App name invalid';
+                            return 'Missing app name';
                         }
                         return true;
                     }
