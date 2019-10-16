@@ -114,7 +114,8 @@ const authCommand = (program) => {
         if (cmd['proxy'] || answer['proxy'])
             authJSON['proxy'] = cmd['proxy'] || answer['proxy'];
         jsonfile_1.writeFileSync(`${cmd['appName']}/auth.json`, authJSON, { spaces: 4, EOL: "\r\n" });
-        configJSON['appID'] = cmd['appID'] || answer['appID'];
+        if (!configJSON.appID)
+            configJSON['appID'] = cmd['appID'] || answer['appID'];
         jsonfile_1.writeFileSync(`${cmd['appName']}/config.json`, configJSON, { spaces: 4, EOL: "\r\n" });
         console.log(chalk_1.default.yellow('Set auth info complete.'));
         console.log(chalk_1.default.yellow('To start dev, use:'));

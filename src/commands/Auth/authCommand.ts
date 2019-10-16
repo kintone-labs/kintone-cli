@@ -110,7 +110,7 @@ const authCommand = (program: CommanderStatic) => {
 
             writeFileSync(`${cmd['appName']}/auth.json`, authJSON, {spaces: 4, EOL: "\r\n"});
 
-            configJSON['appID'] = cmd['appID'] || answer['appID']
+            if (!configJSON.appID) configJSON['appID'] = cmd['appID'] || answer['appID']
             writeFileSync(`${cmd['appName']}/config.json`, configJSON, {spaces: 4, EOL: "\r\n"});
 
             console.log(chalk.yellow('Set auth info complete.'))
