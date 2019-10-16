@@ -68,13 +68,18 @@ const authCommand = (program: CommanderStatic) => {
                     }
                 },
                 {
-                    type: 'number',
+                    type: 'input',
                     name: 'appID',
                     message : 'What is the app ID ?',
                     when: !cmd.appID && !configJSON.appID,
                     validate: (input: any): any => {
                         if (!input) {
                             return 'App ID can\'t be empty.'
+                        }
+                        let numberMatch = input.match(/(^-?\d+|^\d+\.\d*|^\d*\.\d+)(e\d+)?$/);
+                        // If a number is found, return that input.
+                        if (!numberMatch) {
+                            return 'App ID must be a number.'
                         }
                         return true
                     }
@@ -110,7 +115,7 @@ const authCommand = (program: CommanderStatic) => {
 
             writeFileSync(`${cmd['appName']}/auth.json`, authJSON, {spaces: 4, EOL: "\r\n"});
 
-            configJSON['appID'] = cmd['appID'] || answer['appID']
+            if (!configJSON['appID']) configJSON['appID'] = cmd['appID'] || answer['appID']
             writeFileSync(`${cmd['appName']}/config.json`, configJSON, {spaces: 4, EOL: "\r\n"});
 
             console.log(chalk.yellow('Set auth info complete.'))
