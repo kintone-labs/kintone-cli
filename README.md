@@ -29,8 +29,11 @@ Kintone CLI will require following input information. If any piece of info is sk
     -   @kintone/kintone-ui-component (y/n)
 
 After all the above info is inputted, cli will initialize the following folder structure:
-- Project-Name
-    - package.json
+```
+<Project Name>
+    ├── package.json
+    └── .gitignore
+```
 
 If --install flag is specified, Kintone CLI will run npm install after initializing folder structure
 
@@ -98,6 +101,8 @@ After the above information is inputted, the following folder structure will be 
     ├── icon.png            // this file is created only when developing Plugin
     ├── config.json
     ├── auth.json
+    ├── tsconfig.json       // if using TypeScript
+    ├── .eslintrc.js        // if using ESLint
     └── webpack.config.js   // if using webpack
 ```
 
