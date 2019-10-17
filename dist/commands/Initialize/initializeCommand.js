@@ -134,7 +134,7 @@ const initializeCommand = (program) => {
                     name: 'proxy',
                     message: 'Specify your proxy full URL, including port number:',
                     when: (curAnswers) => {
-                        return curAnswers['useProxy'] && cmd.proxy;
+                        return curAnswers['useProxy'] && !cmd.proxy;
                     }
                 },
                 {
@@ -184,7 +184,7 @@ const initializeCommand = (program) => {
                     when: cmd.appName === undefined,
                     validate: (input) => {
                         if (!input) {
-                            return 'App name invalid';
+                            return 'Missing app name';
                         }
                         return true;
                     }
