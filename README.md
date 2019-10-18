@@ -141,7 +141,7 @@ Sample `config.json` file:
 
 #### Config.json fields
 
-| Field   | Requred | Type    | Description                    |
+| Field   | Required | Type    | Description                    |
 |---------|---------|---------|--------------------------------|
 | appName | Yes     | String  | Customization / Plugin name    |
 | appID   | Customization only        | Integer | App ID to deploy Customization |
@@ -159,7 +159,7 @@ Sample `config.json` file:
 | uploadConfig.config.js |      | Array&lt;String&gt;  | 	JS files / URLs for kintone plugin's config page |
 | uploadConfig.config.css |      | Array&lt;String&gt;  | CSS files / URLs for kintone plugin's config page |
 | uploadConfig.config.required_params |      | Array&lt;String&gt;  | An array of parameters that are required to be filled in in the Plug-in Settings page. Must be between 1 to 64 ASCII characters. |
-| uploadConfig.icon |      | String  | Plugin's icon |
+| uploadConfig.icon | Plugin only     | String  | Plugin's icon |
 
 ### 3. Start dev
 ``
