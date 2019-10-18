@@ -10,7 +10,7 @@ To quickly start with a minimum project, follow the instruction [here](./quickst
 When working with kintone, developers usually follow this flow:
 1. Initialize Project
 2. Create Template
-3. Start dev locallly
+3. Start dev locally
 4. Build source code
 5. Deploy to kintone
 
