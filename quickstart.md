@@ -55,7 +55,7 @@ This command will first start a local web server and provide you a link to trust
 
 Then after trusting kintone files:
 
-![Develope](./img/dev.png)
+![Develop](./img/dev.png)
 
 ## 5. Deploy
 ``
