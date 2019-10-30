@@ -1,6 +1,6 @@
 import * as spawn from "cross-spawn"
-import {writeFileSync, readFileSync} from 'jsonfile'
-import { unlinkSync, existsSync, readdirSync, renameSync } from 'fs';
+import {writeFileSync} from 'jsonfile'
+import { unlinkSync, existsSync, readdirSync, renameSync, readFileSync } from 'fs';
 
 const spawnSync = spawn.sync
 
@@ -32,6 +32,12 @@ const buildPlugin = (option: object) => {
     manifestJSON['desktop'] = option['uploadConfig']['desktop']
     manifestJSON['mobile'] = option['uploadConfig']['mobile']
     manifestJSON['config'] = option['uploadConfig']['config']
+
+    if (manifestJSON['config']['required_params'] && manifestJSON['config']['required_params'].length === 0) delete manifestJSON['config']['required_params'];
+    if (manifestJSON['config'] && manifestJSON['config']['html']) {
+        const htmlContent = readFileSync(manifestJSON['config']['html'], 'utf-8')
+        if (!htmlContent) delete manifestJSON['config']
+    }
     
     writeFileSync(`manifest.json`,manifestJSON,{spaces: 4, EOL: "\r\n"})
 
@@ -40,6 +46,7 @@ const buildPlugin = (option: object) => {
         paramArr.push('--ppk')
         paramArr.push(`${option['appName']}/dist/private.ppk`)
     }
+    
     spawnSync(
         './node_modules/.bin/kintone-plugin-packer',
         paramArr,
@@ -53,7 +60,6 @@ const buildPlugin = (option: object) => {
             return /.ppk$/.test(name)
         })
         renameSync(`${option['appName']}/dist/${keyFileName[0]}`,`${option['appName']}/dist/private.ppk`)
-        //console.log(keyFileName)
     }
 
     unlinkSync(`manifest.json`)

@@ -15,7 +15,6 @@ const App = () => {
     return <span>Hello from kintone CLI</span>
 }
 (() => {
-    'use strict';
     kintone.events.on('app.record.index.show', event => {
         ReactDOM.render(<App />,kintone.app.getHeaderSpaceElement())
         
@@ -39,7 +38,6 @@ const App = () => {
 
 (() => {
     kintone.events.on('app.record.index.show', event => {
-        'use strict';
         ReactDOM.render(<App />, kintone.app.getHeaderSpaceElement());
     
         return event;

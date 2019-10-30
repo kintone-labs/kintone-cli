@@ -14,7 +14,7 @@ const authCommand = (program: CommanderStatic) => {
         .option('-p, --password <password>', 'Kintone password')
         .option('-i, --app-id <appID>', 'Kintone app ID')
         .option('-r, --use-proxy', 'Use proxy or not')
-        .option('-x, --proxy <proxyURL>', 'Proxy full URL, including port number')
+        .option('-x, --proxy <proxy>', 'Proxy full URL, including port number')
         .action(async (cmd)=>{
             let error = validator.authValidator(cmd)
             if (error && typeof error === 'string') {
@@ -68,13 +68,18 @@ const authCommand = (program: CommanderStatic) => {
                     }
                 },
                 {
-                    type: 'number',
+                    type: 'input',
                     name: 'appID',
                     message : 'What is the app ID ?',
-                    when: !cmd.appID,
+                    when: !cmd.appID && !configJSON.appID,
                     validate: (input: any): any => {
                         if (!input) {
                             return 'App ID can\'t be empty.'
+                        }
+                        let numberMatch = input.match(/(^-?\d+|^\d+\.\d*|^\d*\.\d+)(e\d+)?$/);
+                        // If a number is found, return that input.
+                        if (!numberMatch) {
+                            return 'App ID must be a number.'
                         }
                         return true
                     }
@@ -84,14 +89,14 @@ const authCommand = (program: CommanderStatic) => {
                     name : 'useProxy',
                     message : 'Do you use proxy ?',
                     default: false,
-                    when: !cmd.useProxy
+                    when: !cmd.useProxy && !cmd.proxy
                 },
                 {
                     type : 'input',
                     name : 'proxy',
                     message : 'Specify your proxy full URL, including port number:',
                     when: (curAnswers:object) => {
-                        return (cmd.useProxy || curAnswers['useProxy']) && !cmd.proxyURL
+                        return (cmd.useProxy || curAnswers['useProxy']) && !cmd.proxy
                     },
                     validate: (input: any): any => {
                         if (!input) {
@@ -110,7 +115,7 @@ const authCommand = (program: CommanderStatic) => {
 
             writeFileSync(`${cmd['appName']}/auth.json`, authJSON, {spaces: 4, EOL: "\r\n"});
 
-            configJSON['appID'] = cmd['appID'] || answer['appID']
+            if (!configJSON['appID']) configJSON['appID'] = cmd['appID'] || answer['appID']
             writeFileSync(`${cmd['appName']}/config.json`, configJSON, {spaces: 4, EOL: "\r\n"});
 
             console.log(chalk.yellow('Set auth info complete.'))

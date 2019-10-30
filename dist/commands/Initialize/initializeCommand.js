@@ -18,8 +18,8 @@ const generator_1 = require("./generator");
 const string_1 = require("../../utils/string");
 const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
-    const latestUIComponentVersion = '^0.2.0';
-    const latestJsSdkVersion = '^0.2.0';
+    const latestUIComponentVersion = '^0.4.0';
+    const latestJsSdkVersion = '^0.6.2';
     program
         .command('create-template')
         .option('-q, --quick', 'Use default template')
@@ -64,13 +64,13 @@ const initializeCommand = (program) => {
                         cmd.useTypescript = false;
                         cmd.useWebpack = true;
                         cmd.useReact = true;
-                        cmd.entry = 'app.jsx';
+                        cmd.entry = 'index.jsx';
                         break;
                     case 'ReactTS':
                         cmd.useTypescript = true;
                         cmd.useWebpack = true;
                         cmd.useReact = true;
-                        cmd.entry = 'app.tsx';
+                        cmd.entry = 'index.tsx';
                         break;
                     default:
                         break;
@@ -134,7 +134,7 @@ const initializeCommand = (program) => {
                     name: 'proxy',
                     message: 'Specify your proxy full URL, including port number:',
                     when: (curAnswers) => {
-                        return curAnswers['useProxy'] && cmd.proxy;
+                        return curAnswers['useProxy'] && !cmd.proxy;
                     }
                 },
                 {
@@ -181,7 +181,13 @@ const initializeCommand = (program) => {
                     type: 'input',
                     name: 'appName',
                     message: 'What is the app name ?',
-                    when: cmd.appName === undefined
+                    when: cmd.appName === undefined,
+                    validate: (input) => {
+                        if (!input) {
+                            return 'Missing app name';
+                        }
+                        return true;
+                    }
                 },
                 {
                     type: 'confirm',

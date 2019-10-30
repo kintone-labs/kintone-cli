@@ -10,7 +10,7 @@ To quickly start with a minimum project, follow the instruction [here](./quickst
 When working with kintone, developers usually follow this flow:
 1. Initialize Project
 2. Create Template
-3. Start dev locallly
+3. Start dev locally
 4. Build source code
 5. Deploy to kintone
 
@@ -29,8 +29,11 @@ Kintone CLI will require following input information. If any piece of info is sk
     -   @kintone/kintone-ui-component (y/n)
 
 After all the above info is inputted, cli will initialize the following folder structure:
-- Project-Name
-    - package.json
+```
+<Project Name>
+    ├── package.json
+    └── .gitignore
+```
 
 If --install flag is specified, Kintone CLI will run npm install after initializing folder structure
 
@@ -98,6 +101,8 @@ After the above information is inputted, the following folder structure will be 
     ├── icon.png            // this file is created only when developing Plugin
     ├── config.json
     ├── auth.json
+    ├── tsconfig.json       // if using TypeScript
+    ├── .eslintrc.js        // if using ESLint
     └── webpack.config.js   // if using webpack
 ```
 
@@ -136,7 +141,7 @@ Sample `config.json` file:
 
 #### Config.json fields
 
-| Field   | Requred | Type    | Description                    |
+| Field   | Required | Type    | Description                    |
 |---------|---------|---------|--------------------------------|
 | appName | Yes     | String  | Customization / Plugin name    |
 | appID   | Customization only        | Integer | App ID to deploy Customization |
@@ -154,7 +159,7 @@ Sample `config.json` file:
 | uploadConfig.config.js |      | Array&lt;String&gt;  | 	JS files / URLs for kintone plugin's config page |
 | uploadConfig.config.css |      | Array&lt;String&gt;  | CSS files / URLs for kintone plugin's config page |
 | uploadConfig.config.required_params |      | Array&lt;String&gt;  | An array of parameters that are required to be filled in in the Plug-in Settings page. Must be between 1 to 64 ASCII characters. |
-| uploadConfig.icon |      | String  | Plugin's icon |
+| uploadConfig.icon | Plugin only     | String  | Plugin's icon |
 
 ### 3. Start dev
 ``

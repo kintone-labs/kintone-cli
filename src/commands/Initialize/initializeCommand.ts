@@ -12,8 +12,8 @@ import { isDomain } from "../../utils/string";
 const spawnSync = spawn.sync
 
 const initializeCommand = (program: CommanderStatic) => {
-    const latestUIComponentVersion = '^0.2.0';
-    const latestJsSdkVersion = '^0.2.0';
+    const latestUIComponentVersion = '^0.4.0';
+    const latestJsSdkVersion = '^0.6.2';
     
     program
         .command('create-template')
@@ -59,13 +59,13 @@ const initializeCommand = (program: CommanderStatic) => {
                             cmd.useTypescript = false
                             cmd.useWebpack = true
                             cmd.useReact = true
-                            cmd.entry = 'app.jsx'
+                            cmd.entry = 'index.jsx'
                             break;
                         case 'ReactTS':
                             cmd.useTypescript = true
                             cmd.useWebpack = true
                             cmd.useReact = true
-                            cmd.entry = 'app.tsx'
+                            cmd.entry = 'index.tsx'
                             break;
                         default:
                             break;
@@ -129,7 +129,7 @@ const initializeCommand = (program: CommanderStatic) => {
                         name : 'proxy',
                         message : 'Specify your proxy full URL, including port number:',
                         when: (curAnswers:object) => {
-                            return curAnswers['useProxy'] && cmd.proxy
+                            return curAnswers['useProxy'] && !cmd.proxy
                         }
                     },
                     {
@@ -176,7 +176,13 @@ const initializeCommand = (program: CommanderStatic) => {
                         type: 'input',
                         name: 'appName',
                         message : 'What is the app name ?',
-                        when: cmd.appName === undefined
+                        when: cmd.appName === undefined,
+                        validate: (input) => {
+                            if (!input) {
+                                return 'Missing app name'
+                            }
+                            return true
+                        }
                     },
                     {
                         type: 'confirm',

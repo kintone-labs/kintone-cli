@@ -5,7 +5,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
     let configEntry;
     let pluginConfig = '';
     if (useTypescript) {
-        configEntry = 'pluginConfig.ts';
+        configEntry = 'config.ts';
         jsRules = `{
                 test: /\.ts?$/,
                 exclude: /node_modules/,
@@ -27,7 +27,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
                     }
                 }
             },`;
-            configEntry = 'pluginConfig.tsx';
+            configEntry = 'config.tsx';
         }
     }
     else {
@@ -50,13 +50,13 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
                         }
                     }
                 },`;
-            configEntry = 'pluginConfig.jsx';
+            configEntry = 'config.jsx';
         }
     }
     if (type === 'Plugin') {
         pluginConfig = `
         const configPlugin = {
-            entry: path.resolve('${appName}/source/${configEntry}'),
+            entry: path.resolve('${appName}/source/js/${configEntry}'),
             resolve: {
                 extensions: ['.ts', '.tsx', '.js']
             },

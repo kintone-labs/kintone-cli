@@ -22,7 +22,7 @@ const authCommand = (program) => {
         .option('-p, --password <password>', 'Kintone password')
         .option('-i, --app-id <appID>', 'Kintone app ID')
         .option('-r, --use-proxy', 'Use proxy or not')
-        .option('-x, --proxy <proxyURL>', 'Proxy full URL, including port number')
+        .option('-x, --proxy <proxy>', 'Proxy full URL, including port number')
         .action((cmd) => __awaiter(this, void 0, void 0, function* () {
         let error = validator_1.default.authValidator(cmd);
         if (error && typeof error === 'string') {
@@ -75,13 +75,18 @@ const authCommand = (program) => {
                 }
             },
             {
-                type: 'number',
+                type: 'input',
                 name: 'appID',
                 message: 'What is the app ID ?',
-                when: !cmd.appID,
+                when: !cmd.appID && !configJSON.appID,
                 validate: (input) => {
                     if (!input) {
                         return 'App ID can\'t be empty.';
+                    }
+                    let numberMatch = input.match(/(^-?\d+|^\d+\.\d*|^\d*\.\d+)(e\d+)?$/);
+                    // If a number is found, return that input.
+                    if (!numberMatch) {
+                        return 'App ID must be a number.';
                     }
                     return true;
                 }
@@ -91,14 +96,14 @@ const authCommand = (program) => {
                 name: 'useProxy',
                 message: 'Do you use proxy ?',
                 default: false,
-                when: !cmd.useProxy
+                when: !cmd.useProxy && !cmd.proxy
             },
             {
                 type: 'input',
                 name: 'proxy',
                 message: 'Specify your proxy full URL, including port number:',
                 when: (curAnswers) => {
-                    return (cmd.useProxy || curAnswers['useProxy']) && !cmd.proxyURL;
+                    return (cmd.useProxy || curAnswers['useProxy']) && !cmd.proxy;
                 },
                 validate: (input) => {
                     if (!input) {
@@ -114,7 +119,8 @@ const authCommand = (program) => {
         if (cmd['proxy'] || answer['proxy'])
             authJSON['proxy'] = cmd['proxy'] || answer['proxy'];
         jsonfile_1.writeFileSync(`${cmd['appName']}/auth.json`, authJSON, { spaces: 4, EOL: "\r\n" });
-        configJSON['appID'] = cmd['appID'] || answer['appID'];
+        if (!configJSON['appID'])
+            configJSON['appID'] = cmd['appID'] || answer['appID'];
         jsonfile_1.writeFileSync(`${cmd['appName']}/config.json`, configJSON, { spaces: 4, EOL: "\r\n" });
         console.log(chalk_1.default.yellow('Set auth info complete.'));
         console.log(chalk_1.default.yellow('To start dev, use:'));
