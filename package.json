@@ -11,6 +11,9 @@
   "bin": {
     "kintone-cli": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "axios": "^0.18.1",
     "chalk": "^2.4.2",
