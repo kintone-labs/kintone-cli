@@ -166,8 +166,8 @@ const generateAppFolder = (option) => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {};
         }
-        packageJSON.devDependencies['@kintone/plugin-packer'] = "^1.0.8";
-        packageJSON.devDependencies['@kintone/plugin-uploader'] = "^2.4.8";
+        packageJSON.devDependencies['@kintone/plugin-packer'] = "^2.0.6";
+        packageJSON.devDependencies['@kintone/plugin-uploader'] = "^3.0.5";
         manifestJSON['uploadConfig']['icon'] = `${option['appName']}/icon.png`;
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         fs_1.writeFileSync(`${option['appName']}/pluginConfig.html`, '');
