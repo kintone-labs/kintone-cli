@@ -14,7 +14,10 @@ const App = () => {
 }
 (() => {
     kintone.events.on('app.record.index.show', event => {
-        ReactDOM.render(<App />,kintone.app.getHeaderSpaceElement())
+        const container = document.createElement('div');
+        kintone.app.getHeaderSpaceElement().append(container);
+        
+        ReactDOM.render(<App />, container)
         
         return event;
     });
@@ -36,7 +39,10 @@ const App = () => {
 
 (() => {
     kintone.events.on('app.record.index.show', event => {
-        ReactDOM.render(<App />, kintone.app.getHeaderSpaceElement());
+        const container = document.createElement('div');
+        kintone.app.getHeaderSpaceElement().append(container);
+
+        ReactDOM.render(<App />, container);
     
         return event;
     });
