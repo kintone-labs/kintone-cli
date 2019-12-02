@@ -202,7 +202,9 @@ const initializeCommand = (program) => {
                     when: (curAnswers) => {
                         return ((cmd.setAuth || curAnswers['setAuth'])
                             &&
-                                (!cmd.appID));
+                                (!cmd.appID)
+                            &&
+                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization'));
                     }
                 },
                 {

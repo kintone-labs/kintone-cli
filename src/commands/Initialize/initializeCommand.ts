@@ -199,6 +199,8 @@ const initializeCommand = (program: CommanderStatic) => {
                                 (cmd.setAuth || curAnswers['setAuth']) 
                                 && 
                                 (!cmd.appID)
+                                &&
+                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization')
                             )
                         }
                     },
