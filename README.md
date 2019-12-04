@@ -85,6 +85,7 @@ CLI will require following input information. If any piece of info is skipped de
 - If using Webpack, config webpack:
     - Entry
 - Use ESLint (y/n)
+- If selecting 'Customization', configure kintone App ID
 
 After the above information is inputted, the following folder structure will be created:
 ```
