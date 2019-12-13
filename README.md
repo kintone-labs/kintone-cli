@@ -171,7 +171,7 @@ Deploy customization files|plugin in <App Name> to test domains for debugging.
 Using local web server to serve js/css files directly from project source files.
 
 If --watch flag is specified and customization|plugin uses webpack, each time a source file is changed it is automatically built.  
-Please note that html file and img file for icon are not changed automatically. js/css files are only changed.
+Please note that html file and img file for icon are not changed automatically. Only js/css files are changed.
 
 If --localhost flag is specified, CLI will use localhost link instead of IP address.
 
