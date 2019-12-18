@@ -191,7 +191,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {}
         }
-        packageJSON.devDependencies['@kintone/plugin-packer'] = "^2.0.6"
+        packageJSON.devDependencies['@kintone/plugin-packer'] = "^2.0.7"
         packageJSON.devDependencies['@kintone/plugin-uploader'] = "^3.0.5"
 
         manifestJSON['uploadConfig']['icon'] = `${option['appName']}/icon.png`
@@ -214,6 +214,9 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             css: [`${manifestJSON['appName']}/source/css/config.css`],
             required_params: []
         }
+
+        const pluginConfigHtmlTemplate = `<span>Hello from kintone CLI</span>`;
+        writeFileSyncFS(`${option['appName']}/pluginConfig.html`, pluginConfigHtmlTemplate);
 
         if (option.useReact) manifestJSON['uploadConfig']['config']['js'] = [`${manifestJSON['appName']}/dist/config.min.js`]
     }

@@ -19,7 +19,7 @@ const string_1 = require("../../utils/string");
 const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
     const latestUIComponentVersion = '^0.4.0';
-    const latestJsSdkVersion = '^0.6.2';
+    const latestJsSdkVersion = '^0.7.4';
     program
         .command('create-template')
         .option('-q, --quick', 'Use default template')
@@ -202,7 +202,9 @@ const initializeCommand = (program) => {
                     when: (curAnswers) => {
                         return ((cmd.setAuth || curAnswers['setAuth'])
                             &&
-                                (!cmd.appID));
+                                (!cmd.appID)
+                            &&
+                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization'));
                     }
                 },
                 {

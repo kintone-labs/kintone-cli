@@ -13,7 +13,7 @@ const spawnSync = spawn.sync
 
 const initializeCommand = (program: CommanderStatic) => {
     const latestUIComponentVersion = '^0.4.0';
-    const latestJsSdkVersion = '^0.6.2';
+    const latestJsSdkVersion = '^0.7.4';
     
     program
         .command('create-template')
@@ -199,6 +199,8 @@ const initializeCommand = (program: CommanderStatic) => {
                                 (cmd.setAuth || curAnswers['setAuth']) 
                                 && 
                                 (!cmd.appID)
+                                &&
+                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization')
                             )
                         }
                     },

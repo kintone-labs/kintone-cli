@@ -68,6 +68,16 @@ const devCommand = (program) => {
                     return `${serverAddr}/${item}`;
                 return item;
             });
+            config.uploadConfig.config.js = config.uploadConfig.config.js.map((item) => {
+                if (!isURL(item))
+                    return `${serverAddr}/${item}`;
+                return item;
+            });
+            config.uploadConfig.config.css = config.uploadConfig.config.css.map((item) => {
+                if (!isURL(item))
+                    return `${serverAddr}/${item}`;
+                return item;
+            });
             config.watch = cmd.watch;
             console.log('');
             console.log(chalk_1.default.yellow(`Please open this link in your browser to trust kintone ${config.type} files:`));
