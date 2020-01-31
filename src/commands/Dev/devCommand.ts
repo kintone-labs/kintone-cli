@@ -68,15 +68,17 @@ const devCommand = (program: CommanderStatic) => {
                     return item
                 })
 
-                config.uploadConfig.config.js = config.uploadConfig.config.js.map((item: string) =>{
+                if (config.type !== 'Customization') {
+                  config.uploadConfig.config.js = config.uploadConfig.config.js.map((item: string) =>{
                     if (!isURL(item)) return `${serverAddr}/${item}`
                     return item
-                })
+                  });
 
-                config.uploadConfig.config.css = config.uploadConfig.config.css.map((item: string) =>{
+                  config.uploadConfig.config.css = config.uploadConfig.config.css.map((item: string) =>{
                     if (!isURL(item)) return `${serverAddr}/${item}`
                     return item
-                })
+                  });
+                }
 
                 config.watch = cmd.watch
 
