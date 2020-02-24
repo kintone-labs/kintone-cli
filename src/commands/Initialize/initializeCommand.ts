@@ -12,8 +12,8 @@ import { isDomain } from "../../utils/string";
 const spawnSync = spawn.sync
 
 const initializeCommand = (program: CommanderStatic) => {
-    const latestUIComponentVersion = '^0.4.0';
-    const latestJsSdkVersion = '^0.7.4';
+    const latestUIComponentVersion = '^0.6.0';
+    const latestJsSdkVersion = '^1.0.0';
     
     program
         .command('create-template')
@@ -282,7 +282,7 @@ const initializeCommand = (program: CommanderStatic) => {
                 packageInfo['license'] = 'MIT'
                 packageInfo['dependencies'] = {}
                 packageInfo['dependencies']['@kintone/kintone-ui-component'] = true
-                packageInfo['dependencies']['@kintone/kintone-js-sdk'] = true
+                packageInfo['dependencies']['@kintone/rest-api-client'] = true
             }
             else {
                 console.log(chalk.yellow('Welcome to kintone-cli!'));
@@ -339,10 +339,10 @@ const initializeCommand = (program: CommanderStatic) => {
                 },
                 {
                     type: 'confirm',
-                    name: 'dependencies.@kintone/kintone-js-sdk',
-                    message: 'Do you want to use @kintone/kintone-js-sdk?',
+                    name: 'dependencies.@kintone/rest-api-client',
+                    message: 'Do you want to use @kintone/rest-api-client?',
                     default: true,
-                    when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/kintone-js-sdk'] === undefined
+                    when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/rest-api-client'] === undefined
                 }
             ])
             packageInfo = {...packageInfo, ...answer}
@@ -351,10 +351,10 @@ const initializeCommand = (program: CommanderStatic) => {
             else 
                 delete packageInfo['dependencies']['@kintone/kintone-ui-component']
                 
-            if(packageInfo['dependencies']['@kintone/kintone-js-sdk'])
-                packageInfo['dependencies']['@kintone/kintone-js-sdk'] = latestJsSdkVersion;
+            if(packageInfo['dependencies']['@kintone/rest-api-client'])
+                packageInfo['dependencies']['@kintone/rest-api-client'] = latestJsSdkVersion;
             else
-                delete packageInfo['dependencies']['@kintone/kintone-js-sdk']
+                delete packageInfo['dependencies']['@kintone/rest-api-client']
 
             // create project folder 
             const projectFolder = global['currentDir'] + '/' + packageInfo['name'];

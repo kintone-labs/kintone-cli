@@ -72,6 +72,10 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
                         use: ['style-loader', 'css-loader']
                     }
                 ]
+            },
+            performance: {
+                maxEntrypointSize: 10000000,
+                maxAssetSize: 10000000
             }
         }
         `;
@@ -94,13 +98,17 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
                         use: ['style-loader', 'css-loader']
                     }
                 ]
+            },
+            performance: {
+                maxEntrypointSize: 10000000,
+                maxAssetSize: 10000000
             }
         }
 
         ${pluginConfig}
 
         module.exports = (env, argv) => {
-
+            'use strict';
             if (argv.mode === 'development') {
                 config.devtool = 'source-map';
             }

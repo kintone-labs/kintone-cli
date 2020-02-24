@@ -25,7 +25,7 @@ Kintone CLI will require following input information. If any piece of info is sk
 - Project author
 - Project license
 - Optional dependencies:
-    -   @kintone/kintone-js-sdk (y/n)
+    -   @kintone/rest-api-client (y/n)
     -   @kintone/kintone-ui-component (y/n)
 
 After all the above info is inputted, cli will initialize the following folder structure:
