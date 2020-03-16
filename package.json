@@ -21,7 +21,7 @@
     "cross-spawn": "^6.0.5",
     "inquirer": "^6.2.1",
     "jsonfile": "^5.0.0",
-    "strip-ansi": "^5.2.0"
+    "strip-ansi": "^6.0.0"
   },
   "devDependencies": {
     "@types/inquirer": "^6.0.0",
