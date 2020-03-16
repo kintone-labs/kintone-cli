@@ -12,7 +12,7 @@ import { isDomain } from "../../utils/string";
 const spawnSync = spawn.sync
 
 const initializeCommand = (program: CommanderStatic) => {
-    const latestUIComponentVersion = '^0.4.0';
+    const latestUIComponentVersion = '^0.6.0';
     const latestJsSdkVersion = '^0.7.4';
     
     program

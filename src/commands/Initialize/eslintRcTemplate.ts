@@ -1,6 +1,7 @@
 import {EslintRcParams} from '../../dto/app'
 
-const buildEslintRcTemplate = ({useTypescript, useReact}:EslintRcParams):string => {
+const buildEslintRcTemplate = ({useTypescript, useWebpack, useReact}:EslintRcParams):string => {
+    const env = useTypescript || useWebpack || useReact ? 'es2017' : 'es6';
     const eslintRules = ["@cybozu/eslint-config/lib/kintone.js", "@cybozu/eslint-config/globals/kintone.js"];
     if(useTypescript && useReact) {
         eslintRules.push('@cybozu/eslint-config/presets/react-typescript')
@@ -13,7 +14,7 @@ const buildEslintRcTemplate = ({useTypescript, useReact}:EslintRcParams):string 
     let eslintRulesToString = '["' + eslintRules.join('", "') + '"]';
     return `module.exports = {
         env: {
-            es6: true
+            ${env}: true
         },
             extends: ${eslintRulesToString},
         }`

@@ -22,6 +22,7 @@ type WebpackParams = {
 
 type EslintRcParams = {
     useTypescript: boolean
+    useWebpack: boolean,
     useReact: boolean
 }
 

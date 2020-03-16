@@ -102,7 +102,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             packageJSON.devDependencies["@babel/preset-react"] = "^7.0.0"
             
         }
-        packageJSON.scripts[`build-${option['appName']}`] = `webpack --config ${option['appName']}/webpack.config.js`
+        packageJSON.scripts[`build-${option['appName']}`] = `webpack --mode production --config ${option['appName']}/webpack.config.js`
 
         writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
 

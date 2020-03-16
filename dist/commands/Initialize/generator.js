@@ -87,7 +87,7 @@ const generateAppFolder = (option) => {
         if (option['useReact']) {
             packageJSON.devDependencies["@babel/preset-react"] = "^7.0.0";
         }
-        packageJSON.scripts[`build-${option['appName']}`] = `webpack --config ${option['appName']}/webpack.config.js`;
+        packageJSON.scripts[`build-${option['appName']}`] = `webpack --mode production --config ${option['appName']}/webpack.config.js`;
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         let webpackTemplate = webpackTemplate_1.buildWebpackReactTemplate(option);
         fs_1.writeFileSync(`${option['appName']}/webpack.config.js`, webpackTemplate);
