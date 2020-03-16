@@ -11,14 +11,14 @@ This will create a minimum project for kintone.
 
 ![Minimum project](./img/project.png)
 
-To use `@kintone/kintone-ui-component` or `@kintone/rest-api-client`:
+To use `@kintone/kintone-ui-component` or `@kintone/kintone-js-sdk`:
 
 ```
 npm install @kintone/kintone-ui-component
 
 // or
 
-npm install @kintone/rest-api-client
+npm install @kintone/kintone-js-sdk
 ```
 
 ## 2. Create customization template
