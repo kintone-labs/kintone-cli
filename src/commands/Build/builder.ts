@@ -5,7 +5,7 @@ import { unlinkSync, existsSync, readdirSync, renameSync, readFileSync } from 'f
 const spawnSync = spawn.sync
 
 const buildUsingWebpack = (option: object) => {
-    spawnSync('npm',['run', `build-${option['appName']}`,'--', '--mode', 'production'],{stdio: 'inherit'})
+    spawnSync('npm',['run', `build-${option['appName']}`],{stdio: 'inherit'})
 }
 
 const buildVanillaJS = (option: object) => {
