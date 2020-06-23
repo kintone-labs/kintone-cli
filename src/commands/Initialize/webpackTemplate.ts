@@ -110,6 +110,10 @@ const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName, typ
             'use strict';
             if (argv.mode === 'development') {
                 config.devtool = 'source-map';
+                ${
+                    type === 'Plugin' &&
+                    `configPlugin.devtool='source-map';`
+                }
             }
           
             if (argv.mode === 'production') {
