@@ -17,7 +17,7 @@
   "dependencies": {
     "axios": "^0.18.1",
     "chalk": "^2.4.2",
-    "commander": "^2.19.0",
+    "commander": "^5.0.0",
     "cross-spawn": "^6.0.5",
     "inquirer": "^6.2.1",
     "jsonfile": "^5.0.0",
