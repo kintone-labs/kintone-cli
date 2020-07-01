@@ -20,12 +20,12 @@
     "commander": "^2.19.0",
     "cross-spawn": "^6.0.5",
     "inquirer": "^6.2.1",
-    "jsonfile": "^5.0.0",
+    "jsonfile": "^6.0.0",
     "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
     "@types/inquirer": "^6.0.0",
-    "@types/jsonfile": "^5.0.0",
+    "@types/jsonfile": "6.0.0",
     "@types/node": "^11.13.0",
     "@types/cross-spawn": "^6.0.0",
     "tsc": "^1.20150623.0",
