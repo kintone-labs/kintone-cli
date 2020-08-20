@@ -24,13 +24,13 @@
     "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
-    "@types/cross-spawn": "^6.0.0",
-    "@types/inquirer": "^6.0.0",
-    "@types/jsonfile": "^5.0.0",
-    "@types/node": "^11.13.0",
-    "lodash": "^4.17.19",
-    "tsc": "^1.20150623.0",
-    "typescript": "^2.3.3"
+    "@types/cross-spawn": "6.0.2",
+    "@types/inquirer": "6.5.0",
+    "@types/jsonfile": "5.0.1",
+    "@types/node": "11.15.16",
+    "lodash": "4.17.19",
+    "tsc": "1.20150623.0",
+    "typescript": "2.9.2"
   },
   "repository": {
     "type": "git",
