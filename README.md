@@ -6,7 +6,7 @@ A tool to quickly start developing with kintone
 
 ## Installation
 ```
-npm install -g git://github.com/kintone/kintone-cli.git
+npm install -g git://github.com/kintone-labs/kintone-cli.git
 ```
 ## Quickstart
 To quickly start with a minimum project, follow the instruction [here](./quickstart.md)
