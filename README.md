@@ -1,7 +1,7 @@
 # kintone CLI(β)
 A tool to quickly start developing with kintone
 ```
-ⓘ This tool have been migrated from git://github.com/kintone/kintone-cli
+ⓘ This tool has been migrated from git://github.com/kintone/kintone-cli
 ```
 
 ## Installation
