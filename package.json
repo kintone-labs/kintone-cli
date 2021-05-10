@@ -28,7 +28,7 @@
     "@types/inquirer": "^6.0.0",
     "@types/jsonfile": "^5.0.0",
     "@types/node": "^11.13.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "tsc": "^1.20150623.0",
     "typescript": "^2.3.3"
   },
