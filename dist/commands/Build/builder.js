@@ -27,6 +27,8 @@ const buildPlugin = (option) => {
     };
     if (option['uploadConfig'] && option['uploadConfig']['description'])
         manifestJSON['description'] = option['uploadConfig']['description'];
+    if (option['uploadConfig'] && option['uploadConfig']['version'])
+        manifestJSON['version'] = option['uploadConfig']['version'];
     manifestJSON['desktop'] = option['uploadConfig']['desktop'];
     manifestJSON['mobile'] = option['uploadConfig']['mobile'];
     manifestJSON['config'] = option['uploadConfig']['config'];
