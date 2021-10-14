@@ -191,7 +191,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {}
         }
-        packageJSON.devDependencies['@kintone/plugin-packer'] = "^2.0.7"
+        packageJSON.devDependencies['@kintone/plugin-packer'] = "^5.0.18"
         packageJSON.devDependencies['@kintone/plugin-uploader'] = "3.0.5"
 
         manifestJSON['uploadConfig']['icon'] = `${option['appName']}/icon.png`
