@@ -140,6 +140,7 @@ Sample `config.json` file:
             "js": "{YOUR_APP_NAME}/{PATH_TO_YOUR_CONFIG_JS}"
         },
         "icon": "{YOUR_APP_NAME}/{PATH_TO_YOUR_ICON}",
+        "version": "{PLUGIN_VERSION}"
     }
 }
 ```
@@ -165,6 +166,7 @@ Sample `config.json` file:
 | uploadConfig.config.css |      | Array&lt;String&gt;  | CSS files / URLs for kintone plugin's config page |
 | uploadConfig.config.required_params |      | Array&lt;String&gt;  | An array of parameters that are required to be filled in in the Plug-in Settings page. Must be between 1 to 64 ASCII characters. |
 | uploadConfig.icon | Plugin only     | String  | Plugin's icon |
+| uploadConfig.version | Plugin only     | String  | Plugin's version |
 
 ### 3. Start dev
 ``
