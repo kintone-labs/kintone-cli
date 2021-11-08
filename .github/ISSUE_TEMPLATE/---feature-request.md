@@ -19,7 +19,7 @@ But it's not an absolute rule. Japanese is ok.
 
 ## Why
 
-<!-- Why do you want the feature and why does it make sense for kintone UI Component? -->
+<!-- Why do you want the feature and why does it make sense for the tool? -->
 
 
 ## What

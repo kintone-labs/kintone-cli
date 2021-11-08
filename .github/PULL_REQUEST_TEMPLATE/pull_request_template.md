@@ -11,6 +11,6 @@
 
 ## Checklist
 
-- [ ] Read [README.md](https://github.com/kintone/js-sdk/blob/master/README.md)
+- [ ] Read [README.md](https://github.com/kintone-labs/kintone-cli/blob/master/README.md)
 - [ ] Updated documentation if it is required.
-- [ ] Check the behavior.
+- [ ] Checked the behavior.
