@@ -35,12 +35,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phongnhat19/kintone-node-cli.git"
+    "url": "git+https://github.com/kintone-labs/kintone-cli.git"
   },
-  "author": "Nhat Nguyen",
+  "author": {
+    "name": "Cybozu, Inc.",
+    "url": "https://cybozu.co.jp"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/phongnhat19/kintone-node-cli/issues"
+    "url": "https://github.com/kintone-labs/kintone-cli/issues"
   },
-  "homepage": "https://github.com/phongnhat19/kintone-node-cli#readme"
+  "homepage": "https://github.com/kintone-labs/kintone-cli#README"
 }
