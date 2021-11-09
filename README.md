@@ -234,6 +234,11 @@ Flag --app-name, --domain, --username, --password is required.
 
 Flag --proxy is required when the flag --use-proxy is set.
 
+## Contributing
+
+We welcome contributions to kintone-cli.
+If you have a question, feature request, or bug report, please register [GitHub issue](https://github.com/kintone-labs/kintone-cli/issues/new/choose). Pull requests are also welcome when you find trivial bugs, typos or feature requests.
+
 ## License
 MIT License
 
