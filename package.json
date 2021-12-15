@@ -1,11 +1,11 @@
 {
   "name": "kintone-cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:init": "node dist/index.js init --quick"
   },
   "preferGlobal": true,
   "bin": {
@@ -15,19 +15,19 @@
     "dist"
   ],
   "dependencies": {
-    "ansi-regex": "^5.0.1",
+    "ansi-regex": "^6.0.1",
     "axios": "^0.21.2",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
-    "cross-spawn": "^6.0.5",
-    "inquirer": "^6.2.1",
-    "jsonfile": "^5.0.0",
+    "cross-spawn": "^7.0.3",
+    "inquirer": "^8.2.0",
+    "jsonfile": "^6.1.0",
     "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
-    "@types/cross-spawn": "^6.0.0",
-    "@types/inquirer": "^6.0.0",
-    "@types/jsonfile": "^5.0.0",
+    "@types/cross-spawn": "^6.0.2",
+    "@types/inquirer": "^8.1.3",
+    "@types/jsonfile": "^6.0.1",
     "@types/node": "^11.13.0",
     "lodash": "^4.17.21",
     "tsc": "^1.20150623.0",
