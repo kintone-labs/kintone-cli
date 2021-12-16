@@ -12,7 +12,7 @@ const path = require("path");
 global['cliRoot'] = path.resolve(path.dirname(require.main.filename) + "/../");
 global['currentDir'] = process.cwd();
 program
-    .version('0.1.6')
+    .version('0.2.2')
     .description('kintone Node CLI');
 initializeCommand_1.default(program);
 buildCommand_1.default(program);
