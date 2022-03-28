@@ -50,7 +50,6 @@ const devCommand = (program: CommanderStatic) => {
                 webserverInfo = webserverInfo.split(',')
 
                 let loopbackExist = (new RegExp("https://127.0.0.1:8000")).test(webserverInfo);
-                webserverInfo = webserverInfo.split(',')
                 const serverAddr = stripAnsi((cmd.localhost ? webserverInfo[1] : loopbackExist ? "https://127.0.0.1:8000" : webserverInfo[webserverInfo.length - 1])).trim();
 
                 let config = readFileSync(`${cmd['appName']}/config.json`)
