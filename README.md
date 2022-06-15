@@ -154,7 +154,7 @@ Sample `config.json` file:
 | appName | Yes     | String  | Customization / Plugin name    |
 | appID   | Customization only        | Integer | App ID to deploy Customization |
 | type    | Yes        | String  | App's type: <ul><li>Customization</li><li>Plugin</li></ul> |
-| scope | Customization only     | String  | Customization scope (https://developer.kintone.io/hc/en-us/articles/115004873968-Update-Customization) <ul><li>ALL: Affect all users</li><li>ADMIN: Affect only App administrators</li><li>NONE: Disable</li></ul>    |
+| scope | Customization only     | String  | Customization scope<ul><li>ALL: Affect all users</li><li>ADMIN: Affect only App administrators</li><li>NONE: Disable</li></ul>    |
 | uploadConfig | Yes     | Object  | Config for `build`, `deploy` command    |
 | uploadConfig.desktop | Yes     | Object  | Config for kintone desktop    |
 | uploadConfig.desktop.js | Yes     | Array&lt;String&gt;  | JS files / URLs to upload to kintone desktop.    |
