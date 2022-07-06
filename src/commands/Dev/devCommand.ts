@@ -6,7 +6,8 @@ import stripAnsi from 'strip-ansi'
 import { existsSync } from "fs";
 import {prompt} from 'inquirer'
 import {devCustomize, devPlugin} from './devGenerator'
-import validator from './validator'
+import validator from './validator';
+const readline = require('readline');
 
 const spawnSync = spawn.sync
 
@@ -55,6 +56,19 @@ const getLoopBackAddress = async(resp: any, localhost:boolean) => {
     }
 }
 
+const readLineAsync = () => {
+    const rl = readline.createInterface({
+        input: process.stdin
+    });
+    return new Promise((resolve) => {
+        rl.prompt();
+        rl.on('line', (line: string) => {
+            rl.close();
+            resolve(line);
+        });
+    });
+};
+
 const devCommand = (program: CommanderStatic) => {
     program
         .command('dev')
@@ -83,7 +97,7 @@ const devCommand = (program: CommanderStatic) => {
 
             ws.stderr.on('data', async (data) => {
                 const resp = data.toString();
-                let serverAddr = 'https://10.192.32.230:8000'; //await getLoopBackAddress(resp, cmd.localhost);
+                let serverAddr = await getLoopBackAddress(resp, cmd.localhost);
 
                 let config = readFileSync(`${cmd['appName']}/config.json`)
 
@@ -123,23 +137,17 @@ const devCommand = (program: CommanderStatic) => {
                 console.log('')
 
                 console.log(chalk.yellow('Then, press any key to continue:'));
-                console.log("vo day");
-                process.stdin.on('data', ()=>{
-                    console.log("vo day1111", watching, JSON.stringify(config));
-                    if (!watching) {
-                        console.log("vo day2222");
-                        watching = true
-                        if (config.type === 'Customization') {
-                            console.log("vo day3333");
-                            devCustomize(ws, config)
-                        }
-                        else if (config.type === 'Plugin') {
-                            console.log("vo day4444");
-                            devPlugin(ws, config)
-                        }
-                    }
-                });
 
+                await readLineAsync();
+                if (!watching) {
+                    watching = true
+                    if (config.type === 'Customization') {
+                        devCustomize(ws, config)
+                    }
+                    else if (config.type === 'Plugin') {
+                        devPlugin(ws, config)
+                    }
+                }
             })
         })
 }

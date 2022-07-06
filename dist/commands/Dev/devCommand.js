@@ -16,6 +16,7 @@ const fs_1 = require("fs");
 const inquirer_1 = require("inquirer");
 const devGenerator_1 = require("./devGenerator");
 const validator_1 = require("./validator");
+const readline = require('readline');
 const spawnSync = spawn.sync;
 const isURL = (str) => {
     var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -63,6 +64,18 @@ const getLoopBackAddress = (resp, localhost) => __awaiter(this, void 0, void 0, 
         return answer["localAddress"];
     }
 });
+const readLineAsync = () => {
+    const rl = readline.createInterface({
+        input: process.stdin
+    });
+    return new Promise((resolve) => {
+        rl.prompt();
+        rl.on('line', (line) => {
+            rl.close();
+            resolve(line);
+        });
+    });
+};
 const devCommand = (program) => {
     program
         .command('dev')
@@ -88,7 +101,7 @@ const devCommand = (program) => {
         const ws = spawn('npm', ['run', 'dev', '--', '--https']);
         ws.stderr.on('data', (data) => __awaiter(this, void 0, void 0, function* () {
             const resp = data.toString();
-            let serverAddr = 'https://10.192.32.230:8000'; //await getLoopBackAddress(resp, cmd.localhost);
+            let serverAddr = yield getLoopBackAddress(resp, cmd.localhost);
             let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
             config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item) => {
                 if (!isURL(item))
@@ -124,22 +137,16 @@ const devCommand = (program) => {
             console.log(`   ${chalk_1.default.green(`${serverAddr}`)}`);
             console.log('');
             console.log(chalk_1.default.yellow('Then, press any key to continue:'));
-            console.log("vo day");
-            process.stdin.on('data', () => {
-                console.log("vo day1111", watching, JSON.stringify(config));
-                if (!watching) {
-                    console.log("vo day2222");
-                    watching = true;
-                    if (config.type === 'Customization') {
-                        console.log("vo day3333");
-                        devGenerator_1.devCustomize(ws, config);
-                    }
-                    else if (config.type === 'Plugin') {
-                        console.log("vo day4444");
-                        devGenerator_1.devPlugin(ws, config);
-                    }
+            yield readLineAsync();
+            if (!watching) {
+                watching = true;
+                if (config.type === 'Customization') {
+                    devGenerator_1.devCustomize(ws, config);
                 }
-            });
+                else if (config.type === 'Plugin') {
+                    devGenerator_1.devPlugin(ws, config);
+                }
+            }
         }));
     }));
 };
