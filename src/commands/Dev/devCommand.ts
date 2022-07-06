@@ -4,6 +4,7 @@ import {readFileSync} from 'jsonfile'
 import * as spawn from "cross-spawn"
 import stripAnsi from 'strip-ansi'
 import { existsSync } from "fs";
+import {prompt} from 'inquirer'
 import {devCustomize, devPlugin} from './devGenerator'
 import validator from './validator'
 
@@ -17,6 +18,41 @@ const isURL = (str: string) => {
         '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(str);
+}
+
+const getLoopBackAddress = async(resp: any, localhost:boolean) => {
+    if(resp.indexOf('Serving at') == -1) {
+        console.log(chalk.red(`${resp}`));
+        return '';
+    }
+    const webServerInfo = resp.replace('Serving at', '')
+    const loopbackAddress = webServerInfo.split(',');
+    if(loopbackAddress.length < 1) {
+        console.log(chalk.red(`There is no local link, Please try again.`));
+        return '';
+    }
+    if(localhost) {
+        const LOCAL_ADDRESS_DEFAULT = 'https://127.0.0.1:8000';
+        if(loopbackAddress.indexOf(LOCAL_ADDRESS_DEFAULT) > -1) return LOCAL_ADDRESS_DEFAULT;
+        return stripAnsi(loopbackAddress[loopbackAddress.length - 1].trim())
+    } else {
+        let localAddress = [];
+        for (let index = 0; index < loopbackAddress.length; index++) {
+            const url = loopbackAddress[index].trim();
+            const address = stripAnsi(url);
+            if(address) localAddress.push(address);
+        }
+        let answer = await prompt([
+            {
+                type: 'list',
+                name: 'localAddress',
+                message: 'Please choose a loopback address',
+                when: !localhost,
+                choices: localAddress,
+            }
+        ]);
+        return answer["localAddress"];
+    }
 }
 
 const devCommand = (program: CommanderStatic) => {
@@ -35,7 +71,7 @@ const devCommand = (program: CommanderStatic) => {
                 process.exit()
             })
             let watching = false
-            
+
             // build the first time and upload link to kintone
             if (existsSync(`${cmd.appName}/webpack.config.js`)) {
                 console.log(chalk.yellow('Building distributed file...'))
@@ -45,11 +81,9 @@ const devCommand = (program: CommanderStatic) => {
             console.log(chalk.yellow('Starting local webserver...'))
             const ws = spawn('npm', ['run','dev', '--', '--https'])
 
-            ws.stderr.on('data', (data) => {   
-                let webserverInfo = data.toString().replace('Serving at', '')
-                webserverInfo = webserverInfo.split(',')
-
-                const serverAddr = stripAnsi((cmd.localhost ? webserverInfo[1] : webserverInfo[webserverInfo.length - 1]).trim())
+            ws.stderr.on('data', async (data) => {
+                const resp = data.toString();
+                let serverAddr = 'https://10.192.32.230:8000'; //await getLoopBackAddress(resp, cmd.localhost);
 
                 let config = readFileSync(`${cmd['appName']}/config.json`)
 
@@ -89,14 +123,18 @@ const devCommand = (program: CommanderStatic) => {
                 console.log('')
 
                 console.log(chalk.yellow('Then, press any key to continue:'));
-
+                console.log("vo day");
                 process.stdin.on('data', ()=>{
+                    console.log("vo day1111", watching, JSON.stringify(config));
                     if (!watching) {
+                        console.log("vo day2222");
                         watching = true
                         if (config.type === 'Customization') {
+                            console.log("vo day3333");
                             devCustomize(ws, config)
                         }
                         else if (config.type === 'Plugin') {
+                            console.log("vo day4444");
                             devPlugin(ws, config)
                         }
                     }

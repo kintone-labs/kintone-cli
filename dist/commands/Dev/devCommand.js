@@ -13,6 +13,7 @@ const jsonfile_1 = require("jsonfile");
 const spawn = require("cross-spawn");
 const strip_ansi_1 = require("strip-ansi");
 const fs_1 = require("fs");
+const inquirer_1 = require("inquirer");
 const devGenerator_1 = require("./devGenerator");
 const validator_1 = require("./validator");
 const spawnSync = spawn.sync;
@@ -25,6 +26,43 @@ const isURL = (str) => {
         '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
     return !!pattern.test(str);
 };
+const getLoopBackAddress = (resp, localhost) => __awaiter(this, void 0, void 0, function* () {
+    if (resp.indexOf('Serving at') == -1) {
+        console.log(chalk_1.default.red(`${resp}`));
+        return '';
+    }
+    const webServerInfo = resp.replace('Serving at', '');
+    const loopbackAddress = webServerInfo.split(',');
+    if (loopbackAddress.length < 1) {
+        console.log(chalk_1.default.red(`There is no local link, Please try again.`));
+        return '';
+    }
+    if (localhost) {
+        const LOCAL_ADDRESS_DEFAULT = 'https://127.0.0.1:8000';
+        if (loopbackAddress.indexOf(LOCAL_ADDRESS_DEFAULT) > -1)
+            return LOCAL_ADDRESS_DEFAULT;
+        return strip_ansi_1.default(loopbackAddress[loopbackAddress.length - 1].trim());
+    }
+    else {
+        let localAddress = [];
+        for (let index = 0; index < loopbackAddress.length; index++) {
+            const url = loopbackAddress[index].trim();
+            const address = strip_ansi_1.default(url);
+            if (address)
+                localAddress.push(address);
+        }
+        let answer = yield inquirer_1.prompt([
+            {
+                type: 'list',
+                name: 'localAddress',
+                message: 'Please choose a loopback address',
+                when: !localhost,
+                choices: localAddress,
+            }
+        ]);
+        return answer["localAddress"];
+    }
+});
 const devCommand = (program) => {
     program
         .command('dev')
@@ -48,10 +86,9 @@ const devCommand = (program) => {
         }
         console.log(chalk_1.default.yellow('Starting local webserver...'));
         const ws = spawn('npm', ['run', 'dev', '--', '--https']);
-        ws.stderr.on('data', (data) => {
-            let webserverInfo = data.toString().replace('Serving at', '');
-            webserverInfo = webserverInfo.split(',');
-            const serverAddr = strip_ansi_1.default((cmd.localhost ? webserverInfo[1] : webserverInfo[webserverInfo.length - 1]).trim());
+        ws.stderr.on('data', (data) => __awaiter(this, void 0, void 0, function* () {
+            const resp = data.toString();
+            let serverAddr = 'https://10.192.32.230:8000'; //await getLoopBackAddress(resp, cmd.localhost);
             let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
             config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item) => {
                 if (!isURL(item))
@@ -87,18 +124,23 @@ const devCommand = (program) => {
             console.log(`   ${chalk_1.default.green(`${serverAddr}`)}`);
             console.log('');
             console.log(chalk_1.default.yellow('Then, press any key to continue:'));
+            console.log("vo day");
             process.stdin.on('data', () => {
+                console.log("vo day1111", watching, JSON.stringify(config));
                 if (!watching) {
+                    console.log("vo day2222");
                     watching = true;
                     if (config.type === 'Customization') {
+                        console.log("vo day3333");
                         devGenerator_1.devCustomize(ws, config);
                     }
                     else if (config.type === 'Plugin') {
+                        console.log("vo day4444");
                         devGenerator_1.devPlugin(ws, config);
                     }
                 }
             });
-        });
+        }));
     }));
 };
 exports.default = devCommand;
