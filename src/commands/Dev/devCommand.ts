@@ -36,24 +36,23 @@ const getLoopBackAddress = async(resp: any, localhost:boolean) => {
         const LOCAL_ADDRESS_DEFAULT = 'https://127.0.0.1:8000';
         if(loopbackAddress.indexOf(LOCAL_ADDRESS_DEFAULT) > -1) return LOCAL_ADDRESS_DEFAULT;
         return stripAnsi(loopbackAddress[loopbackAddress.length - 1].trim())
-    } else {
-        let localAddress = [];
-        for (let index = 0; index < loopbackAddress.length; index++) {
-            const url = loopbackAddress[index].trim();
-            const address = stripAnsi(url);
-            if(address) localAddress.push(address);
-        }
-        let answer = await prompt([
-            {
-                type: 'list',
-                name: 'localAddress',
-                message: 'Please choose a loopback address',
-                when: !localhost,
-                choices: localAddress,
-            }
-        ]);
-        return answer["localAddress"];
     }
+    let localAddress = [];
+    for (let index = 0; index < loopbackAddress.length; index++) {
+        const url = loopbackAddress[index].trim();
+        const address = stripAnsi(url);
+        if(address) localAddress.push(address);
+    }
+    let answer = await prompt([
+        {
+            type: 'list',
+            name: 'localAddress',
+            message: 'Please choose a loopback address',
+            when: !localhost,
+            choices: localAddress,
+        }
+    ]);
+    return answer["localAddress"];
 }
 
 const readLineAsync = () => {

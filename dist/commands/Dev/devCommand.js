@@ -44,25 +44,23 @@ const getLoopBackAddress = (resp, localhost) => __awaiter(this, void 0, void 0, 
             return LOCAL_ADDRESS_DEFAULT;
         return strip_ansi_1.default(loopbackAddress[loopbackAddress.length - 1].trim());
     }
-    else {
-        let localAddress = [];
-        for (let index = 0; index < loopbackAddress.length; index++) {
-            const url = loopbackAddress[index].trim();
-            const address = strip_ansi_1.default(url);
-            if (address)
-                localAddress.push(address);
-        }
-        let answer = yield inquirer_1.prompt([
-            {
-                type: 'list',
-                name: 'localAddress',
-                message: 'Please choose a loopback address',
-                when: !localhost,
-                choices: localAddress,
-            }
-        ]);
-        return answer["localAddress"];
+    let localAddress = [];
+    for (let index = 0; index < loopbackAddress.length; index++) {
+        const url = loopbackAddress[index].trim();
+        const address = strip_ansi_1.default(url);
+        if (address)
+            localAddress.push(address);
     }
+    let answer = yield inquirer_1.prompt([
+        {
+            type: 'list',
+            name: 'localAddress',
+            message: 'Please choose a loopback address',
+            when: !localhost,
+            choices: localAddress,
+        }
+    ]);
+    return answer["localAddress"];
 });
 const readLineAsync = () => {
     const rl = readline.createInterface({
