@@ -4,8 +4,10 @@ import {readFileSync} from 'jsonfile'
 import * as spawn from "cross-spawn"
 import stripAnsi from 'strip-ansi'
 import { existsSync } from "fs";
+import {prompt} from 'inquirer'
 import {devCustomize, devPlugin} from './devGenerator'
-import validator from './validator'
+import validator from './validator';
+const readline = require('readline');
 
 const spawnSync = spawn.sync
 
@@ -18,6 +20,53 @@ const isURL = (str: string) => {
         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(str);
 }
+
+const getLoopBackAddress = async(resp: any, localhost:boolean) => {
+    if(resp.indexOf('Serving at') == -1) {
+        console.log(chalk.red(`${resp}`));
+        return '';
+    }
+    const webServerInfo = resp.replace('Serving at', '')
+    const loopbackAddress = webServerInfo.split(',');
+    let localAddress = [];
+    for (let index = 0; index < loopbackAddress.length; index++) {
+        const url = loopbackAddress[index].trim();
+        const address = stripAnsi(url);
+        if(address) localAddress.push(address);
+    }
+    if(localAddress.length < 1) {
+        console.log(chalk.red(`There is no local link, Please try again.`));
+        return '';
+    }
+    if(localhost) {
+        const LOCAL_ADDRESS_DEFAULT = 'https://127.0.0.1:8000';
+        if(localAddress.indexOf(LOCAL_ADDRESS_DEFAULT) > -1) return LOCAL_ADDRESS_DEFAULT;
+        return localAddress[localAddress.length - 1]
+    }
+    let answer = await prompt([
+        {
+            type: 'list',
+            name: 'localAddress',
+            message: 'Please choose a loopback address',
+            when: !localhost,
+            choices: localAddress,
+        }
+    ]);
+    return answer["localAddress"];
+}
+
+const readLineAsync = () => {
+    const rl = readline.createInterface({
+        input: process.stdin
+    });
+    return new Promise((resolve) => {
+        rl.prompt();
+        rl.on('line', (line: string) => {
+            rl.close();
+            resolve(line);
+        });
+    });
+};
 
 const devCommand = (program: CommanderStatic) => {
     program
@@ -35,7 +84,7 @@ const devCommand = (program: CommanderStatic) => {
                 process.exit()
             })
             let watching = false
-            
+
             // build the first time and upload link to kintone
             if (existsSync(`${cmd.appName}/webpack.config.js`)) {
                 console.log(chalk.yellow('Building distributed file...'))
@@ -45,11 +94,9 @@ const devCommand = (program: CommanderStatic) => {
             console.log(chalk.yellow('Starting local webserver...'))
             const ws = spawn('npm', ['run','dev', '--', '--https'])
 
-            ws.stderr.on('data', (data) => {   
-                let webserverInfo = data.toString().replace('Serving at', '')
-                webserverInfo = webserverInfo.split(',')
-
-                const serverAddr = stripAnsi((cmd.localhost ? webserverInfo[1] : webserverInfo[webserverInfo.length - 1]).trim())
+            ws.stderr.on('data', async (data) => {
+                const resp = data.toString();
+                let serverAddr = await getLoopBackAddress(resp, cmd.localhost);
 
                 let config = readFileSync(`${cmd['appName']}/config.json`)
 
@@ -90,18 +137,16 @@ const devCommand = (program: CommanderStatic) => {
 
                 console.log(chalk.yellow('Then, press any key to continue:'));
 
-                process.stdin.on('data', ()=>{
-                    if (!watching) {
-                        watching = true
-                        if (config.type === 'Customization') {
-                            devCustomize(ws, config)
-                        }
-                        else if (config.type === 'Plugin') {
-                            devPlugin(ws, config)
-                        }
+                await readLineAsync();
+                if (!watching) {
+                    watching = true
+                    if (config.type === 'Customization') {
+                        devCustomize(ws, config)
                     }
-                });
-
+                    else if (config.type === 'Plugin') {
+                        devPlugin(ws, config)
+                    }
+                }
             })
         })
 }

@@ -13,8 +13,10 @@ const jsonfile_1 = require("jsonfile");
 const spawn = require("cross-spawn");
 const strip_ansi_1 = require("strip-ansi");
 const fs_1 = require("fs");
+const inquirer_1 = require("inquirer");
 const devGenerator_1 = require("./devGenerator");
 const validator_1 = require("./validator");
+const readline = require('readline');
 const spawnSync = spawn.sync;
 const isURL = (str) => {
     var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -24,6 +26,53 @@ const isURL = (str) => {
         '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
         '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
     return !!pattern.test(str);
+};
+const getLoopBackAddress = (resp, localhost) => __awaiter(this, void 0, void 0, function* () {
+    if (resp.indexOf('Serving at') == -1) {
+        console.log(chalk_1.default.red(`${resp}`));
+        return '';
+    }
+    const webServerInfo = resp.replace('Serving at', '');
+    const loopbackAddress = webServerInfo.split(',');
+    let localAddress = [];
+    for (let index = 0; index < loopbackAddress.length; index++) {
+        const url = loopbackAddress[index].trim();
+        const address = strip_ansi_1.default(url);
+        if (address)
+            localAddress.push(address);
+    }
+    if (localAddress.length < 1) {
+        console.log(chalk_1.default.red(`There is no local link, Please try again.`));
+        return '';
+    }
+    if (localhost) {
+        const LOCAL_ADDRESS_DEFAULT = 'https://127.0.0.1:8000';
+        if (localAddress.indexOf(LOCAL_ADDRESS_DEFAULT) > -1)
+            return LOCAL_ADDRESS_DEFAULT;
+        return localAddress[localAddress.length - 1];
+    }
+    let answer = yield inquirer_1.prompt([
+        {
+            type: 'list',
+            name: 'localAddress',
+            message: 'Please choose a loopback address',
+            when: !localhost,
+            choices: localAddress,
+        }
+    ]);
+    return answer["localAddress"];
+});
+const readLineAsync = () => {
+    const rl = readline.createInterface({
+        input: process.stdin
+    });
+    return new Promise((resolve) => {
+        rl.prompt();
+        rl.on('line', (line) => {
+            rl.close();
+            resolve(line);
+        });
+    });
 };
 const devCommand = (program) => {
     program
@@ -48,10 +97,9 @@ const devCommand = (program) => {
         }
         console.log(chalk_1.default.yellow('Starting local webserver...'));
         const ws = spawn('npm', ['run', 'dev', '--', '--https']);
-        ws.stderr.on('data', (data) => {
-            let webserverInfo = data.toString().replace('Serving at', '');
-            webserverInfo = webserverInfo.split(',');
-            const serverAddr = strip_ansi_1.default((cmd.localhost ? webserverInfo[1] : webserverInfo[webserverInfo.length - 1]).trim());
+        ws.stderr.on('data', (data) => __awaiter(this, void 0, void 0, function* () {
+            const resp = data.toString();
+            let serverAddr = yield getLoopBackAddress(resp, cmd.localhost);
             let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
             config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item) => {
                 if (!isURL(item))
@@ -87,18 +135,17 @@ const devCommand = (program) => {
             console.log(`   ${chalk_1.default.green(`${serverAddr}`)}`);
             console.log('');
             console.log(chalk_1.default.yellow('Then, press any key to continue:'));
-            process.stdin.on('data', () => {
-                if (!watching) {
-                    watching = true;
-                    if (config.type === 'Customization') {
-                        devGenerator_1.devCustomize(ws, config);
-                    }
-                    else if (config.type === 'Plugin') {
-                        devGenerator_1.devPlugin(ws, config);
-                    }
+            yield readLineAsync();
+            if (!watching) {
+                watching = true;
+                if (config.type === 'Customization') {
+                    devGenerator_1.devCustomize(ws, config);
                 }
-            });
-        });
+                else if (config.type === 'Plugin') {
+                    devGenerator_1.devPlugin(ws, config);
+                }
+            }
+        }));
     }));
 };
 exports.default = devCommand;

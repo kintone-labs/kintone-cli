@@ -178,10 +178,12 @@ kintone-cli dev [--app-name <App Name>] [--watch] [--localhost]
 Deploy customization files|plugin in <App Name> to test domains for debugging.
 Using local web server to serve js/css files directly from project source files.
 
-If --watch flag is specified and customization|plugin uses webpack, each time a source file is changed it is automatically built.  
+If --watch flag is specified and customization|plugin uses webpack, each time a source file is changed it is automatically built.
 Please note that html file and img file for icon are not changed automatically. Only js/css files are changed.
 
-If --localhost flag is specified, CLI will use localhost link instead of IP address.
+The --localhost parameter:
++ The last IP on the list will be chosen if there is not exist `https://127.0.0.1:8000`.
++ Don't specified `--localhost` parameter for showing IP list for choosing.
 
 ### 4. Build source code
 ``
