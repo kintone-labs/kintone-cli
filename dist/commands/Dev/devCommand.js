@@ -34,22 +34,22 @@ const getLoopBackAddress = (resp, localhost) => __awaiter(this, void 0, void 0, 
     }
     const webServerInfo = resp.replace('Serving at', '');
     const loopbackAddress = webServerInfo.split(',');
-    if (loopbackAddress.length < 1) {
-        console.log(chalk_1.default.red(`There is no local link, Please try again.`));
-        return '';
-    }
-    if (localhost) {
-        const LOCAL_ADDRESS_DEFAULT = 'https://127.0.0.1:8000';
-        if (loopbackAddress.indexOf(LOCAL_ADDRESS_DEFAULT) > -1)
-            return LOCAL_ADDRESS_DEFAULT;
-        return strip_ansi_1.default(loopbackAddress[loopbackAddress.length - 1].trim());
-    }
     let localAddress = [];
     for (let index = 0; index < loopbackAddress.length; index++) {
         const url = loopbackAddress[index].trim();
         const address = strip_ansi_1.default(url);
         if (address)
             localAddress.push(address);
+    }
+    if (localAddress.length < 1) {
+        console.log(chalk_1.default.red(`There is no local link, Please try again.`));
+        return '';
+    }
+    if (localhost) {
+        const LOCAL_ADDRESS_DEFAULT = 'https://127.0.0.1:8000';
+        if (localAddress.indexOf(LOCAL_ADDRESS_DEFAULT) > -1)
+            return LOCAL_ADDRESS_DEFAULT;
+        return localAddress[localAddress.length - 1];
     }
     let answer = yield inquirer_1.prompt([
         {

@@ -28,20 +28,20 @@ const getLoopBackAddress = async(resp: any, localhost:boolean) => {
     }
     const webServerInfo = resp.replace('Serving at', '')
     const loopbackAddress = webServerInfo.split(',');
-    if(loopbackAddress.length < 1) {
-        console.log(chalk.red(`There is no local link, Please try again.`));
-        return '';
-    }
-    if(localhost) {
-        const LOCAL_ADDRESS_DEFAULT = 'https://127.0.0.1:8000';
-        if(loopbackAddress.indexOf(LOCAL_ADDRESS_DEFAULT) > -1) return LOCAL_ADDRESS_DEFAULT;
-        return stripAnsi(loopbackAddress[loopbackAddress.length - 1].trim())
-    }
     let localAddress = [];
     for (let index = 0; index < loopbackAddress.length; index++) {
         const url = loopbackAddress[index].trim();
         const address = stripAnsi(url);
         if(address) localAddress.push(address);
+    }
+    if(localAddress.length < 1) {
+        console.log(chalk.red(`There is no local link, Please try again.`));
+        return '';
+    }
+    if(localhost) {
+        const LOCAL_ADDRESS_DEFAULT = 'https://127.0.0.1:8000';
+        if(localAddress.indexOf(LOCAL_ADDRESS_DEFAULT) > -1) return LOCAL_ADDRESS_DEFAULT;
+        return localAddress[localAddress.length - 1]
     }
     let answer = await prompt([
         {
