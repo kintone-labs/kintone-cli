@@ -182,8 +182,8 @@ If --watch flag is specified and customization|plugin uses webpack, each time a 
 Please note that html file and img file for icon are not changed automatically. Only js/css files are changed.
 
 The --localhost parameter:
-+ The last IP on the list will be chosen if there is not exist `https://127.0.0.1:8000`.
-+ Don't specified `--localhost` parameter for showing IP list for choosing.
++ The last IP on the list will be chosen if there is no `https://127.0.0.1:8000`.
++ Don't specify `--localhost` parameter if you want to display the IP list for choosing.
 
 ### 4. Build source code
 ``
