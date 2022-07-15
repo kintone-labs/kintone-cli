@@ -12,8 +12,8 @@ import { isDomain } from "../../utils/string";
 const spawnSync = spawn.sync
 
 const initializeCommand = (program: CommanderStatic) => {
-    const latestUIComponentVersion = '^0.6.0';
-    const latestJsSdkVersion = '^0.7.4';
+    const latestUIComponentVersion = '^0.9.1';
+    const latestKintoneRestApiClientVersion = '^3.1.4';
     
     program
         .command('create-template')
@@ -196,8 +196,8 @@ const initializeCommand = (program: CommanderStatic) => {
                         message : 'What is the app ID ?',
                         when: (curAnswers:object) => {
                             return(
-                                (cmd.setAuth || curAnswers['setAuth']) 
-                                && 
+                                (cmd.setAuth || curAnswers['setAuth'])
+                                &&
                                 (!cmd.appID)
                                 &&
                                 (cmd.type === 'Customization' || curAnswers['type'] === 'Customization')
@@ -211,15 +211,15 @@ const initializeCommand = (program: CommanderStatic) => {
                         choices: ['ALL','ADMIN','NONE'],
                         when: (curAnswers:object) => {
                             return(
-                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization') 
-                                && 
+                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization')
+                                &&
                                 (!cmd.scope)
                             )
                         }
                     }
-                ])    
-                
-                
+                ])
+
+
                 // Config for appConfig.json
                 let appSetting = {
                     setAuth: cmd.setAuth || answer['setAuth'],
@@ -235,7 +235,7 @@ const initializeCommand = (program: CommanderStatic) => {
                     appID: cmd.appID || answer['appID'],
                     useCybozuLint: cmd.useCybozuLint || answer['useCybozuLint'],
                     scope: cmd.scope || answer['scope'],
-                    proxy: cmd.proxy || answer['proxy']  
+                    proxy: cmd.proxy || answer['proxy']
                 }
 
                 if (answer['proxy'] === 'null') appSetting.proxy = false
@@ -282,7 +282,7 @@ const initializeCommand = (program: CommanderStatic) => {
                 packageInfo['license'] = 'MIT'
                 packageInfo['dependencies'] = {}
                 packageInfo['dependencies']['@kintone/kintone-ui-component'] = true
-                packageInfo['dependencies']['@kintone/kintone-js-sdk'] = true
+                packageInfo['dependencies']['@kintone/rest-api-client'] = true
             }
             else {
                 console.log(chalk.yellow('Welcome to kintone-cli!'));
@@ -292,7 +292,7 @@ const initializeCommand = (program: CommanderStatic) => {
             if (cmd.projectName) {
                 packageInfo['name'] = cmd.projectName
             }
-            
+
             // ask info about project
             const answer = await prompt([
                 {
@@ -339,24 +339,24 @@ const initializeCommand = (program: CommanderStatic) => {
                 },
                 {
                     type: 'confirm',
-                    name: 'dependencies.@kintone/kintone-js-sdk',
-                    message: 'Do you want to use @kintone/kintone-js-sdk?',
+                    name: 'dependencies.@kintone/rest-api-client',
+                    message: 'Do you want to use @kintone/rest-api-client?',
                     default: true,
-                    when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/kintone-js-sdk'] === undefined
+                    when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/rest-api-client'] === undefined
                 }
             ])
             packageInfo = {...packageInfo, ...answer}
             if(packageInfo['dependencies']['@kintone/kintone-ui-component'])
                 packageInfo['dependencies']['@kintone/kintone-ui-component'] = latestUIComponentVersion;
-            else 
-                delete packageInfo['dependencies']['@kintone/kintone-ui-component']
-                
-            if(packageInfo['dependencies']['@kintone/kintone-js-sdk'])
-                packageInfo['dependencies']['@kintone/kintone-js-sdk'] = latestJsSdkVersion;
             else
-                delete packageInfo['dependencies']['@kintone/kintone-js-sdk']
+                delete packageInfo['dependencies']['@kintone/kintone-ui-component']
 
-            // create project folder 
+            if(packageInfo['dependencies']['@kintone/rest-api-client'])
+                packageInfo['dependencies']['@kintone/rest-api-client'] = latestKintoneRestApiClientVersion;
+            else
+                delete packageInfo['dependencies']['@kintone/rest-api-client']
+
+            // create project folder
             const projectFolder = global['currentDir'] + '/' + packageInfo['name'];
             if(existsSync(projectFolder)) {
                 console.error(chalk.red('Project folder already exists! Please, run the cli again and choose another project name.'))
@@ -375,11 +375,11 @@ const initializeCommand = (program: CommanderStatic) => {
             packageInfo['scripts']['dev'] = 'ws'
             const packageJsonPath = projectFolder + '/package.json'
             writeFileSync(packageJsonPath, packageInfo, { spaces: 2, EOL: '\r\n' });
-            
+
             process.chdir(projectFolder);
             spawnSync('git', ['init'], {stdio: "inherit"})
             writeFileSyncFS(`${projectFolder}/.gitignore`,'node_modules')
-            
+
             // if install is specified run npm install
             if(cmd.install) {
                 console.log(chalk.yellow('Installing dependencies...'));
@@ -388,6 +388,8 @@ const initializeCommand = (program: CommanderStatic) => {
             console.log('')
             console.log(chalk.yellow('Project created!'));
             console.log(chalk.yellow('To create new app, use:'));
+            console.log('');
+            console.log(chalk.green(`   cd ${packageInfo['name']}`));
             console.log('');
             console.log(chalk.green('   kintone-cli create-template'));
             console.log('');
