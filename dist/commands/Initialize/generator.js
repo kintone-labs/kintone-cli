@@ -134,8 +134,8 @@ const generateAppFolder = (option) => {
         }
         packageJSON.devDependencies.typescript = "^4.7.4";
         if (option['useReact']) {
-            packageJSON.devDependencies['@types/react'] = "^16.8.16";
-            packageJSON.devDependencies["@types/react-dom"] = "^16.8.4";
+            packageJSON.devDependencies['@types/react'] = "^17.0.2";
+            packageJSON.devDependencies["@types/react-dom"] = "^17.0.2";
         }
         const tsConfigJSON = {
             "compilerOptions": {
@@ -199,8 +199,8 @@ const generateAppFolder = (option) => {
         if (!packageJSON.dependencies) {
             packageJSON.dependencies = {};
         }
-        packageJSON.dependencies.react = "^16.8.6";
-        packageJSON.dependencies['react-dom'] = "^16.7.0";
+        packageJSON.dependencies.react = "^17.0.2";
+        packageJSON.dependencies['react-dom'] = "^17.0.2";
         jsonfile_1.writeFileSync(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
     }
     if (option['useCybozuLint']) {
