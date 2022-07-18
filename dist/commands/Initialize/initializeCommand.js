@@ -18,8 +18,8 @@ const generator_1 = require("./generator");
 const string_1 = require("../../utils/string");
 const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
-    const latestUIComponentVersion = '^0.6.0';
-    const latestJsSdkVersion = '^0.7.4';
+    const latestUIComponentVersion = '^0.9.1';
+    const latestKintoneRestApiClientVersion = '^3.1.4';
     program
         .command('create-template')
         .option('-q, --quick', 'Use default template')
@@ -280,7 +280,7 @@ const initializeCommand = (program) => {
             packageInfo['license'] = 'MIT';
             packageInfo['dependencies'] = {};
             packageInfo['dependencies']['@kintone/kintone-ui-component'] = true;
-            packageInfo['dependencies']['@kintone/kintone-js-sdk'] = true;
+            packageInfo['dependencies']['@kintone/rest-api-client'] = true;
         }
         else {
             console.log(chalk_1.default.yellow('Welcome to kintone-cli!'));
@@ -335,10 +335,10 @@ const initializeCommand = (program) => {
             },
             {
                 type: 'confirm',
-                name: 'dependencies.@kintone/kintone-js-sdk',
-                message: 'Do you want to use @kintone/kintone-js-sdk?',
+                name: 'dependencies.@kintone/rest-api-client',
+                message: 'Do you want to use @kintone/rest-api-client?',
                 default: true,
-                when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/kintone-js-sdk'] === undefined
+                when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/rest-api-client'] === undefined
             }
         ]);
         packageInfo = Object.assign({}, packageInfo, answer);
@@ -346,11 +346,11 @@ const initializeCommand = (program) => {
             packageInfo['dependencies']['@kintone/kintone-ui-component'] = latestUIComponentVersion;
         else
             delete packageInfo['dependencies']['@kintone/kintone-ui-component'];
-        if (packageInfo['dependencies']['@kintone/kintone-js-sdk'])
-            packageInfo['dependencies']['@kintone/kintone-js-sdk'] = latestJsSdkVersion;
+        if (packageInfo['dependencies']['@kintone/rest-api-client'])
+            packageInfo['dependencies']['@kintone/rest-api-client'] = latestKintoneRestApiClientVersion;
         else
-            delete packageInfo['dependencies']['@kintone/kintone-js-sdk'];
-        // create project folder 
+            delete packageInfo['dependencies']['@kintone/rest-api-client'];
+        // create project folder
         const projectFolder = global['currentDir'] + '/' + packageInfo['name'];
         if (fs_1.existsSync(projectFolder)) {
             console.error(chalk_1.default.red('Project folder already exists! Please, run the cli again and choose another project name.'));
@@ -379,6 +379,8 @@ const initializeCommand = (program) => {
         console.log('');
         console.log(chalk_1.default.yellow('Project created!'));
         console.log(chalk_1.default.yellow('To create new app, use:'));
+        console.log('');
+        console.log(chalk_1.default.green(`   cd ${packageInfo['name']}`));
         console.log('');
         console.log(chalk_1.default.green('   kintone-cli create-template'));
         console.log('');
