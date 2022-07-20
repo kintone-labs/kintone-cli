@@ -180,6 +180,12 @@ const initializeCommand = (program) => {
                     }
                 },
                 {
+                    type: 'confirm',
+                    name: 'useCybozuLint',
+                    message: 'Do you want to use @cybozu/eslint-config for syntax checking ?',
+                    when: cmd.useCybozuLint === undefined
+                },
+                {
                     type: 'input',
                     name: 'appName',
                     message: 'What is the app name ?',
@@ -202,12 +208,6 @@ const initializeCommand = (program) => {
                             &&
                                 (cmd.type === 'Customization' || curAnswers['type'] === 'Customization'));
                     }
-                },
-                {
-                    type: 'confirm',
-                    name: 'useCybozuLint',
-                    message: 'Do you want to use @cybozu/eslint-config for syntax checking ?',
-                    when: cmd.useCybozuLint === undefined
                 },
                 {
                     type: 'list',
