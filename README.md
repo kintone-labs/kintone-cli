@@ -142,7 +142,7 @@ Sample `config.json` file:
             "js": "{YOUR_APP_NAME}/{PATH_TO_YOUR_CONFIG_JS}"
         },
         "icon": "{YOUR_APP_NAME}/{PATH_TO_YOUR_ICON}",
-        "version": "{PLUGIN_VERSION}"//{PLUGIN_VERSION_NUMBER}
+        "version": "{PLUGIN_VERSION}"// Plugin version number (integer) e.g. "version": 1
     }
 }
 ```
