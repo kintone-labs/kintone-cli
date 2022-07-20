@@ -14,7 +14,7 @@ const deployCustomization = (option) => {
     let paramArr = [`${option['appName']}/dist/customize-manifest.json`];
     let authJSON = jsonfile_1.readFileSync(`${option['appName']}/auth.json`);
     if (authJSON.domain) {
-        paramArr.push('--domain');
+        paramArr.push('--base-url');
         paramArr.push(authJSON.domain);
     }
     if (authJSON.username) {

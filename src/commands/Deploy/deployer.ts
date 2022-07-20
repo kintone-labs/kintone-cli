@@ -15,7 +15,7 @@ const deployCustomization = (option: object) => {
 
     let authJSON = readFileSync(`${option['appName']}/auth.json`)
     if (authJSON.domain) {
-        paramArr.push('--domain')
+        paramArr.push('--base-url')
         paramArr.push(authJSON.domain)
     }
     if (authJSON.username) {
