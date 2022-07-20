@@ -44,6 +44,8 @@ const authCommand = (program) => {
                 message: 'What is your kintone domain ?',
                 when: !cmd.domain,
                 validate: (input) => {
+                    if (!input.startsWith("https://"))
+                        return 'Domain have to starting with https';
                     if (!string_1.isDomain(input)) {
                         return 'Please enter a valid domain';
                     }

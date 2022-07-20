@@ -49,7 +49,7 @@ exports.deployCustomization = deployCustomization;
 const deployPlugin = (option) => {
     let authJSON = jsonfile_1.readFileSync(`${option['appName']}/auth.json`);
     spawnSync('./node_modules/.bin/kintone-plugin-uploader', [
-        '--domain', authJSON['domain'],
+        '--base-url', authJSON['domain'],
         '--username', authJSON['username'],
         '--password', authJSON['password'],
         `${option['appName']}/dist/plugin.zip`

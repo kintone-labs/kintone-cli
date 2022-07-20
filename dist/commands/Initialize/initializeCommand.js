@@ -98,6 +98,8 @@ const initializeCommand = (program) => {
                         return (cmd.setAuth || curAnswers['setAuth']) && !cmd.domain;
                     },
                     validate: (input, curAnswer) => {
+                        if (!input.startsWith("https://"))
+                            return 'Domain have to starting with https';
                         if (!string_1.isDomain(input)) {
                             return 'Please enter a valid domain';
                         }
@@ -190,12 +192,6 @@ const initializeCommand = (program) => {
                     }
                 },
                 {
-                    type: 'confirm',
-                    name: 'useCybozuLint',
-                    message: 'Do you want to use @cybozu/eslint-config for syntax checking ?',
-                    when: cmd.useCybozuLint === undefined
-                },
-                {
                     type: 'number',
                     name: 'appID',
                     message: 'What is the app ID ?',
@@ -206,6 +202,12 @@ const initializeCommand = (program) => {
                             &&
                                 (cmd.type === 'Customization' || curAnswers['type'] === 'Customization'));
                     }
+                },
+                {
+                    type: 'confirm',
+                    name: 'useCybozuLint',
+                    message: 'Do you want to use @cybozu/eslint-config for syntax checking ?',
+                    when: cmd.useCybozuLint === undefined
                 },
                 {
                     type: 'list',

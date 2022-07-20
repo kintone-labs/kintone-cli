@@ -59,7 +59,7 @@ const deployPlugin = (option: object) => {
     spawnSync(
         './node_modules/.bin/kintone-plugin-uploader',
         [
-            '--domain', authJSON['domain'],
+            '--base-url', authJSON['domain'],
             '--username', authJSON['username'],
             '--password', authJSON['password'],
             `${option['appName']}/dist/plugin.zip`
