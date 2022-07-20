@@ -31,7 +31,7 @@ Kintone CLI will require following input information. If any piece of info is sk
 - Project author
 - Project license
 - Optional dependencies:
-    -   @kintone/kintone-js-sdk (y/n)
+    -   @kintone/rest-api-client (y/n)
     -   @kintone/kintone-ui-component (y/n)
 
 After all the above info is inputted, cli will initialize the following folder structure:
@@ -71,7 +71,7 @@ If the flag --quick existed, CLI will use all default variable for other flags. 
 kintone-cli create-template --quick --type Plugin
 ``
 
-If value is set for flag --preset, CLI will use preset variable to create folder. If both flag --preset and --quick is set, the config will be merge from both --quick config and --preset config. 
+If value is set for flag --preset, CLI will use preset variable to create folder. If both flag --preset and --quick is set, the config will be merge from both --quick config and --preset config.
 
 Current supported preset:
 - React
@@ -142,7 +142,7 @@ Sample `config.json` file:
             "js": "{YOUR_APP_NAME}/{PATH_TO_YOUR_CONFIG_JS}"
         },
         "icon": "{YOUR_APP_NAME}/{PATH_TO_YOUR_ICON}",
-        "version": "{PLUGIN_VERSION}"/{PLUGIN_VERSION_NUMBER}
+        "version": "{PLUGIN_VERSION}"// Plugin version number (integer) e.g. "version": 1
     }
 }
 ```
@@ -208,7 +208,7 @@ Check/fix code (using ＠cybozu/eslint-config)
 kintone-cli lint [--app-name <App Name>] [--fix]
 ``
 
-Result: 
+Result:
 - {File name} ( {File Path} ):
     - {Error 1}:
         - Line {Line Number 1}
@@ -234,7 +234,7 @@ kintone-cli auth
 
 Save authentication credentials into ``auth.json`` file.
 
-Flag --app-name, --domain, --username, --password is required. 
+Flag --app-name, --domain, --username, --password is required.
 
 Flag --proxy is required when the flag --use-proxy is set.
 
