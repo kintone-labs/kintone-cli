@@ -93,7 +93,7 @@ const initializeCommand = (program: CommanderStatic) => {
                             return (cmd.setAuth || curAnswers['setAuth']) && !cmd.domain
                         },
                         validate: (input: any,curAnswer: object): any => {
-                            if(!input.startsWith("https://")) return 'Domain have to starting with https';
+                            if(!input.startsWith("https://")) return 'Domain has to start with https';
                             if (!isDomain(input)) {
                                 return 'Please enter a valid domain'
                             }
