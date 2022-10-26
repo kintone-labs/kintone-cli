@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.devPlugin = exports.devCustomize = void 0;
 const deployer_1 = require("../Deploy/deployer");
 const fs_1 = require("fs");
 const spawn = require("cross-spawn");
@@ -14,7 +15,7 @@ const devCustomize = (ws, config) => {
     // Attaching links to kintone
     console.log(chalk_1.default.yellow('Attaching links to kintone...'));
     try {
-        deployer_1.deployCustomization(config);
+        (0, deployer_1.deployCustomization)(config);
     }
     catch (error) {
         console.log(chalk_1.default.red(error));
@@ -26,7 +27,7 @@ const devCustomize = (ws, config) => {
     }
     else {
         // watch for changes
-        if (fs_1.existsSync(`${config.appName}/webpack.config.js`)) {
+        if ((0, fs_1.existsSync)(`${config.appName}/webpack.config.js`)) {
             console.log(chalk_1.default.yellow('Watching for changes...'));
             spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch', '--mode', 'development'], { stdio: 'inherit' });
         }
@@ -36,8 +37,8 @@ exports.devCustomize = devCustomize;
 const devPlugin = (ws, config) => {
     console.log(chalk_1.default.yellow('Building plugin...'));
     try {
-        builder_1.buildPlugin(config);
-        deployer_1.deployPlugin(config);
+        (0, builder_1.buildPlugin)(config);
+        (0, deployer_1.deployPlugin)(config);
     }
     catch (error) {
         console.log(chalk_1.default.red(error));
@@ -49,7 +50,7 @@ const devPlugin = (ws, config) => {
     }
     else {
         // watch for changes
-        if (fs_1.existsSync(`${config.appName}/webpack.config.js`)) {
+        if ((0, fs_1.existsSync)(`${config.appName}/webpack.config.js`)) {
             console.log(chalk_1.default.yellow('Watching for changes...'));
             spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch', '--mode', 'development'], { stdio: 'inherit' });
         }

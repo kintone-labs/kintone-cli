@@ -6,7 +6,7 @@ exports.default = {
         if (!params['appName']) {
             return 'App name missing';
         }
-        if (!fs_1.existsSync(params['appName'])) {
+        if (!(0, fs_1.existsSync)(params['appName'])) {
             return 'App not existed';
         }
         return false;

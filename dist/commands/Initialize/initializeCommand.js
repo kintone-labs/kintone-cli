@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -38,7 +39,7 @@ const initializeCommand = (program) => {
         .option('-i, --app-id <appID>', 'Set app ID for customization')
         .option('-l, --use-cybozu-lint', 'Use cybozu eslint rules')
         .option('--proxy <proxyURL>', 'Proxy URL')
-        .action((cmd) => __awaiter(this, void 0, void 0, function* () {
+        .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         cmd.appID = cmd.appId;
         let error = validator_1.default.appValidator(cmd);
         if (error && typeof error === 'string') {
@@ -76,7 +77,7 @@ const initializeCommand = (program) => {
                         break;
                 }
             }
-            answer = yield inquirer_1.prompt([
+            answer = yield (0, inquirer_1.prompt)([
                 {
                     type: 'list',
                     name: 'type',
@@ -100,7 +101,7 @@ const initializeCommand = (program) => {
                     validate: (input, curAnswer) => {
                         if (!input.startsWith("https://"))
                             return 'Domain has to start with https';
-                        if (!string_1.isDomain(input)) {
+                        if (!(0, string_1.isDomain)(input)) {
                             return 'Please enter a valid domain';
                         }
                         return true;
@@ -163,7 +164,7 @@ const initializeCommand = (program) => {
                     message: 'What is the entry for webpack ?',
                     default: (curAnswers) => {
                         let ext = '.js';
-                        let tempOption = Object.assign({}, cmd, curAnswers);
+                        let tempOption = Object.assign(Object.assign({}, cmd), curAnswers);
                         if (tempOption['useReact'] && tempOption['useTypescript']) {
                             ext = '.tsx';
                         }
@@ -241,7 +242,7 @@ const initializeCommand = (program) => {
             if (answer['proxy'] === 'null')
                 appSetting.proxy = false;
             console.log(chalk_1.default.yellow('Creating app...'));
-            let err = generator_1.generateAppFolder(appSetting);
+            let err = (0, generator_1.generateAppFolder)(appSetting);
             if (err && typeof err === 'string') {
                 console.log(chalk_1.default.red(err));
                 return;
@@ -272,7 +273,7 @@ const initializeCommand = (program) => {
         .option('--install', 'Install dependencies or not')
         .option('--quick', 'Quickly create a kintone project')
         .option('-p, --project-name <projectName>', 'Project name')
-        .action((cmd) => __awaiter(this, void 0, void 0, function* () {
+        .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         let packageInfo = {};
         if (cmd.quick) {
             packageInfo['name'] = 'kintone-customization-project';
@@ -292,7 +293,7 @@ const initializeCommand = (program) => {
             packageInfo['name'] = cmd.projectName;
         }
         // ask info about project
-        const answer = yield inquirer_1.prompt([
+        const answer = yield (0, inquirer_1.prompt)([
             {
                 type: 'input',
                 name: 'name',
@@ -343,7 +344,7 @@ const initializeCommand = (program) => {
                 when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/rest-api-client'] === undefined
             }
         ]);
-        packageInfo = Object.assign({}, packageInfo, answer);
+        packageInfo = Object.assign(Object.assign({}, packageInfo), answer);
         if (packageInfo['dependencies']['@kintone/kintone-ui-component'])
             packageInfo['dependencies']['@kintone/kintone-ui-component'] = latestUIComponentVersion;
         else
@@ -354,11 +355,11 @@ const initializeCommand = (program) => {
             delete packageInfo['dependencies']['@kintone/rest-api-client'];
         // create project folder
         const projectFolder = global['currentDir'] + '/' + packageInfo['name'];
-        if (fs_1.existsSync(projectFolder)) {
+        if ((0, fs_1.existsSync)(projectFolder)) {
             console.error(chalk_1.default.red('Project folder already exists! Please, run the cli again and choose another project name.'));
             process.exit(-1);
         }
-        fs_1.mkdirSync(projectFolder);
+        (0, fs_1.mkdirSync)(projectFolder);
         // write project info object to package.json
         if (!packageInfo['devDependencies']) {
             packageInfo['devDependencies'] = {};
@@ -369,10 +370,10 @@ const initializeCommand = (program) => {
         }
         packageInfo['scripts']['dev'] = 'ws';
         const packageJsonPath = projectFolder + '/package.json';
-        jsonfile_1.writeFileSync(packageJsonPath, packageInfo, { spaces: 2, EOL: '\r\n' });
+        (0, jsonfile_1.writeFileSync)(packageJsonPath, packageInfo, { spaces: 2, EOL: '\r\n' });
         process.chdir(projectFolder);
         spawnSync('git', ['init'], { stdio: "inherit" });
-        fs_1.writeFileSync(`${projectFolder}/.gitignore`, 'node_modules');
+        (0, fs_1.writeFileSync)(`${projectFolder}/.gitignore`, 'node_modules');
         // if install is specified run npm install
         if (cmd.install) {
             console.log(chalk_1.default.yellow('Installing dependencies...'));

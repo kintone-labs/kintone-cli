@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.buildPlugin = exports.buildVanillaJS = exports.buildUsingWebpack = void 0;
 const spawn = require("cross-spawn");
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
@@ -35,26 +36,26 @@ const buildPlugin = (option) => {
     if (manifestJSON['config']['required_params'] && manifestJSON['config']['required_params'].length === 0)
         delete manifestJSON['config']['required_params'];
     if (manifestJSON['config'] && manifestJSON['config']['html']) {
-        const htmlContent = fs_1.readFileSync(manifestJSON['config']['html'], 'utf-8');
+        const htmlContent = (0, fs_1.readFileSync)(manifestJSON['config']['html'], 'utf-8');
         if (!htmlContent)
             delete manifestJSON['config'];
     }
-    jsonfile_1.writeFileSync(`manifest.json`, manifestJSON, { spaces: 4, EOL: "\r\n" });
+    (0, jsonfile_1.writeFileSync)(`manifest.json`, manifestJSON, { spaces: 4, EOL: "\r\n" });
     let paramArr = ['./', '--out', `${option['appName']}/dist/plugin.zip`];
-    if (fs_1.existsSync(`${option['appName']}/dist/private.ppk`)) {
+    if ((0, fs_1.existsSync)(`${option['appName']}/dist/private.ppk`)) {
         paramArr.push('--ppk');
         paramArr.push(`${option['appName']}/dist/private.ppk`);
     }
     spawnSync('./node_modules/.bin/kintone-plugin-packer', paramArr, {
         stdio: 'inherit'
     });
-    if (!fs_1.existsSync(`${option['appName']}/dist/private.ppk`)) {
-        let keyFileName = fs_1.readdirSync(`${option['appName']}/dist`).filter((name) => {
+    if (!(0, fs_1.existsSync)(`${option['appName']}/dist/private.ppk`)) {
+        let keyFileName = (0, fs_1.readdirSync)(`${option['appName']}/dist`).filter((name) => {
             return /.ppk$/.test(name);
         });
-        fs_1.renameSync(`${option['appName']}/dist/${keyFileName[0]}`, `${option['appName']}/dist/private.ppk`);
+        (0, fs_1.renameSync)(`${option['appName']}/dist/${keyFileName[0]}`, `${option['appName']}/dist/private.ppk`);
     }
-    fs_1.unlinkSync(`manifest.json`);
+    (0, fs_1.unlinkSync)(`manifest.json`);
 };
 exports.buildPlugin = buildPlugin;
 const builder = {

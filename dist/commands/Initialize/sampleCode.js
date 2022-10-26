@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateSample = void 0;
 const jsSample = `(function() {
     'use strict';
     kintone.events.on('app.record.index.show', function(event) {

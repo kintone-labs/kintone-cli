@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.buildEslintRcTemplate = void 0;
 const buildEslintRcTemplate = ({ useTypescript, useWebpack, useReact }) => {
     const env = useTypescript || useWebpack || useReact ? 'es2017' : 'es6';
     const eslintRules = ["@cybozu/eslint-config/lib/kintone.js", "@cybozu/eslint-config/globals/kintone.js"];

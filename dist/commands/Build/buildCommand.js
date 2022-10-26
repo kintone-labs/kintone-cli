@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -17,30 +18,30 @@ const buildCommand = (program) => {
     program
         .command('build')
         .option('--app-name <appName>', 'App name')
-        .action((cmd) => __awaiter(this, void 0, void 0, function* () {
+        .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         let error = validator_1.default.buildValidator(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
             return;
         }
         try {
-            let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
-            if (fs_1.existsSync(`${config['appName']}/webpack.config.js`)) {
-                builder_1.buildUsingWebpack(config);
+            let config = (0, jsonfile_1.readFileSync)(`${cmd['appName']}/config.json`);
+            if ((0, fs_1.existsSync)(`${config['appName']}/webpack.config.js`)) {
+                (0, builder_1.buildUsingWebpack)(config);
             }
             else {
                 if (config['type'] === 'Customization') {
                     console.log(chalk_1.default.red('No webpack.config.js'));
                     return;
                 }
-                builder_1.buildVanillaJS(config);
+                (0, builder_1.buildVanillaJS)(config);
             }
             if (config['type'] === 'Plugin') {
-                builder_1.buildPlugin(config);
+                (0, builder_1.buildPlugin)(config);
             }
             console.log('');
             console.log(chalk_1.default.yellow('Build app complete.'));
-            if (!fs_1.existsSync(`${config['appName']}/auth.json`)) {
+            if (!(0, fs_1.existsSync)(`${config['appName']}/auth.json`)) {
                 console.log(chalk_1.default.yellow('To set auth info, use:'));
                 console.log('');
                 console.log(chalk_1.default.greenBright(`     kintone-cli auth --app-name ${config['appName']}`));
