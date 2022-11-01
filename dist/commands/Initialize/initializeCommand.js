@@ -19,8 +19,8 @@ const generator_1 = require("./generator");
 const string_1 = require("../../utils/string");
 const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
-    const latestUIComponentVersion = '^0.9.1';
-    const latestKintoneRestApiClientVersion = '^3.1.4';
+    const latestUIComponentVersion = '^0.9.2';
+    const latestKintoneRestApiClientVersion = '^3.1.16';
     program
         .command('create-template')
         .option('-q, --quick', 'Use default template')
