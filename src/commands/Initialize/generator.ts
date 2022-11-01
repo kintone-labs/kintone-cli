@@ -33,7 +33,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
     mkdirSync(`${option['appName']}/source`)
     mkdirSync(`${option['appName']}/source/js`)
     mkdirSync(`${option['appName']}/source/css`)
-    
+
     if (option['setAuth']) {
         let authJSON = {
             username: option['username'],
@@ -60,10 +60,10 @@ const generateAppFolder = (option: AppOption): string | boolean => {
                 [
                     "@babel/preset-env",
                     {
-                        useBuiltIns: "usage", 
-                        corejs: { 
-                            "version": 3, 
-                            "proposals": true 
+                        useBuiltIns: "usage",
+                        corejs: {
+                            "version": 3,
+                            "proposals": true
                         }
                     }
                 ]
@@ -100,7 +100,6 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         }
         if (option['useReact']) {
             packageJSON.devDependencies["@babel/preset-react"] = "^7.18.6"
-            
         }
         packageJSON.scripts[`build-${option['appName']}`] = `webpack --config ${option['appName']}/webpack.config.js --mode production`
 
@@ -181,7 +180,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             writeFileSyncFS(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any;')
             tsConfigJSON['compilerOptions']['typeRoots'].push("./source/global.d.ts")
         }
-        
+
         writeFileSync(`${option['appName']}/tsconfig.json`, tsConfigJSON, {spaces: 4, EOL: "\r\n"})
 
         if (!option['useWebpack']) packageJSON.scripts[`build-${option['appName']}`] = `./node_modules/.bin/tsc --build ./${option['appName']}/tsconfig.json`
