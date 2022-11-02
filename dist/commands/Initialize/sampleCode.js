@@ -19,9 +19,7 @@ const App = () => {
     kintone.events.on('app.record.index.show', event => {
         const container = document.createElement('div');
         kintone.app.getHeaderSpaceElement().append(container);
-        
         ReactDOM.render(<App />, container)
-        
         return event;
     });
 })();`;
@@ -29,7 +27,6 @@ const tsSample = `(() => {
     'use strict';
     kintone.events.on('app.record.index.show', event => {
         console.log('Hello from kintone CLI');
-    
         return event;
     });
 })();`;
@@ -44,9 +41,7 @@ const App = () => {
     kintone.events.on('app.record.index.show', event => {
         const container = document.createElement('div');
         kintone.app.getHeaderSpaceElement().append(container);
-
         ReactDOM.render(<App />, container);
-    
         return event;
     });
 })();

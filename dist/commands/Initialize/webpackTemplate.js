@@ -115,7 +115,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
                 ${type === 'Plugin' &&
         `configPlugin.devtool='source-map';`}
             }
-          
+
             if (argv.mode === 'production') {
               //...
             }
