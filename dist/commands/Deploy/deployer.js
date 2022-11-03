@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.deployPlugin = exports.deployCustomization = void 0;
 const spawn = require("cross-spawn");
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
@@ -12,7 +13,7 @@ const deployCustomization = (option) => {
         mobile: option['uploadConfig']['mobile']
     };
     let paramArr = [`${option['appName']}/dist/customize-manifest.json`];
-    let authJSON = jsonfile_1.readFileSync(`${option['appName']}/auth.json`);
+    let authJSON = (0, jsonfile_1.readFileSync)(`${option['appName']}/auth.json`);
     if (authJSON.domain) {
         paramArr.push('--base-url');
         paramArr.push(authJSON.domain);
@@ -33,21 +34,21 @@ const deployCustomization = (option) => {
         paramArr.push('--proxy');
         paramArr.push(authJSON.proxy);
     }
-    if (!fs_1.existsSync(`${option['appName']}/dist`)) {
-        fs_1.mkdirSync(`${option['appName']}/dist`);
+    if (!(0, fs_1.existsSync)(`${option['appName']}/dist`)) {
+        (0, fs_1.mkdirSync)(`${option['appName']}/dist`);
     }
-    if (fs_1.existsSync(`${option['appName']}/webpack.config.js`)) {
+    if ((0, fs_1.existsSync)(`${option['appName']}/webpack.config.js`)) {
         spawnSync('npm', ['run', `build-${option['appName']}`, '--', '--mode', 'production'], { stdio: ['ignore', 'ignore', process.stderr] });
     }
-    jsonfile_1.writeFileSync(`${option['appName']}/dist/customize-manifest.json`, customizeManifestJSON, { spaces: 2, EOL: '\r\n' });
+    (0, jsonfile_1.writeFileSync)(`${option['appName']}/dist/customize-manifest.json`, customizeManifestJSON, { spaces: 2, EOL: '\r\n' });
     spawnSync('./node_modules/.bin/kintone-customize-uploader', paramArr, {
         stdio: 'inherit'
     });
-    fs_1.unlinkSync(`${option['appName']}/dist/customize-manifest.json`);
+    (0, fs_1.unlinkSync)(`${option['appName']}/dist/customize-manifest.json`);
 };
 exports.deployCustomization = deployCustomization;
 const deployPlugin = (option) => {
-    let authJSON = jsonfile_1.readFileSync(`${option['appName']}/auth.json`);
+    let authJSON = (0, jsonfile_1.readFileSync)(`${option['appName']}/auth.json`);
     spawnSync('./node_modules/.bin/kintone-plugin-uploader', [
         '--base-url', authJSON['domain'],
         '--username', authJSON['username'],

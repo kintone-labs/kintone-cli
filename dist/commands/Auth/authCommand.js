@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -23,7 +24,7 @@ const authCommand = (program) => {
         .option('-i, --app-id <appID>', 'Kintone app ID')
         .option('-r, --use-proxy', 'Use proxy or not')
         .option('-x, --proxy <proxy>', 'Proxy full URL, including port number')
-        .action((cmd) => __awaiter(this, void 0, void 0, function* () {
+        .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         let error = validator_1.default.authValidator(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
@@ -31,13 +32,13 @@ const authCommand = (program) => {
         }
         let authJSON;
         try {
-            authJSON = jsonfile_1.readFileSync(`${cmd['appName']}/auth.json`);
+            authJSON = (0, jsonfile_1.readFileSync)(`${cmd['appName']}/auth.json`);
         }
         catch (error) {
             authJSON = {};
         }
-        let configJSON = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
-        let answer = yield inquirer_1.prompt([
+        let configJSON = (0, jsonfile_1.readFileSync)(`${cmd['appName']}/config.json`);
+        let answer = yield (0, inquirer_1.prompt)([
             {
                 type: 'input',
                 name: 'domain',
@@ -46,7 +47,7 @@ const authCommand = (program) => {
                 validate: (input) => {
                     if (!input.startsWith("https://"))
                         return 'Domain has to start with https';
-                    if (!string_1.isDomain(input)) {
+                    if (!(0, string_1.isDomain)(input)) {
                         return 'Please enter a valid domain';
                     }
                     return true;
@@ -120,10 +121,10 @@ const authCommand = (program) => {
         authJSON['password'] = cmd['password'] || answer['password'];
         if (cmd['proxy'] || answer['proxy'])
             authJSON['proxy'] = cmd['proxy'] || answer['proxy'];
-        jsonfile_1.writeFileSync(`${cmd['appName']}/auth.json`, authJSON, { spaces: 4, EOL: "\r\n" });
+        (0, jsonfile_1.writeFileSync)(`${cmd['appName']}/auth.json`, authJSON, { spaces: 4, EOL: "\r\n" });
         if (!configJSON['appID'])
             configJSON['appID'] = cmd['appID'] || answer['appID'];
-        jsonfile_1.writeFileSync(`${cmd['appName']}/config.json`, configJSON, { spaces: 4, EOL: "\r\n" });
+        (0, jsonfile_1.writeFileSync)(`${cmd['appName']}/config.json`, configJSON, { spaces: 4, EOL: "\r\n" });
         console.log(chalk_1.default.yellow('Set auth info complete.'));
         console.log(chalk_1.default.yellow('To start dev, use:'));
         console.log('');

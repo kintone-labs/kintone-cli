@@ -40,7 +40,7 @@ const buildPlugin = (option: object) => {
         const htmlContent = readFileSync(manifestJSON['config']['html'], 'utf-8')
         if (!htmlContent) delete manifestJSON['config']
     }
-    
+
     writeFileSync(`manifest.json`,manifestJSON,{spaces: 4, EOL: "\r\n"})
 
     let paramArr = ['./' ,'--out', `${option['appName']}/dist/plugin.zip`]
@@ -48,7 +48,7 @@ const buildPlugin = (option: object) => {
         paramArr.push('--ppk')
         paramArr.push(`${option['appName']}/dist/private.ppk`)
     }
-    
+
     spawnSync(
         './node_modules/.bin/kintone-plugin-packer',
         paramArr,

@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -27,7 +28,7 @@ const isURL = (str) => {
         '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
     return !!pattern.test(str);
 };
-const getLoopBackAddress = (resp, localhost) => __awaiter(this, void 0, void 0, function* () {
+const getLoopBackAddress = (resp, localhost) => __awaiter(void 0, void 0, void 0, function* () {
     if (resp.indexOf('Serving at') == -1) {
         console.log(chalk_1.default.red(`${resp}`));
         return '';
@@ -37,7 +38,7 @@ const getLoopBackAddress = (resp, localhost) => __awaiter(this, void 0, void 0, 
     let localAddress = [];
     for (let index = 0; index < loopbackAddress.length; index++) {
         const url = loopbackAddress[index].trim();
-        const address = strip_ansi_1.default(url);
+        const address = (0, strip_ansi_1.default)(url);
         if (address)
             localAddress.push(address);
     }
@@ -51,7 +52,7 @@ const getLoopBackAddress = (resp, localhost) => __awaiter(this, void 0, void 0, 
             return LOCAL_ADDRESS_DEFAULT;
         return localAddress[localAddress.length - 1];
     }
-    let answer = yield inquirer_1.prompt([
+    let answer = yield (0, inquirer_1.prompt)([
         {
             type: 'list',
             name: 'localAddress',
@@ -80,7 +81,7 @@ const devCommand = (program) => {
         .option('--watch', 'Watch for changes in source code')
         .option('--app-name <appName>', 'Watch for changes in source code')
         .option('--localhost', 'Use localhost as link')
-        .action((cmd) => __awaiter(this, void 0, void 0, function* () {
+        .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         let error = validator_1.default.devValidator(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
@@ -91,16 +92,16 @@ const devCommand = (program) => {
         });
         let watching = false;
         // build the first time and upload link to kintone
-        if (fs_1.existsSync(`${cmd.appName}/webpack.config.js`)) {
+        if ((0, fs_1.existsSync)(`${cmd.appName}/webpack.config.js`)) {
             console.log(chalk_1.default.yellow('Building distributed file...'));
             spawnSync('npm', ['run', `build-${cmd.appName}`, '--', '--mode', 'development'], { stdio: ['ignore', 'ignore', process.stderr] });
         }
         console.log(chalk_1.default.yellow('Starting local webserver...'));
         const ws = spawn('npm', ['run', 'dev', '--', '--https']);
-        ws.stderr.on('data', (data) => __awaiter(this, void 0, void 0, function* () {
+        ws.stderr.on('data', (data) => __awaiter(void 0, void 0, void 0, function* () {
             const resp = data.toString();
             let serverAddr = yield getLoopBackAddress(resp, cmd.localhost);
-            let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
+            let config = (0, jsonfile_1.readFileSync)(`${cmd['appName']}/config.json`);
             config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item) => {
                 if (!isURL(item))
                     return `${serverAddr}/${item}`;
@@ -139,10 +140,10 @@ const devCommand = (program) => {
             if (!watching) {
                 watching = true;
                 if (config.type === 'Customization') {
-                    devGenerator_1.devCustomize(ws, config);
+                    (0, devGenerator_1.devCustomize)(ws, config);
                 }
                 else if (config.type === 'Plugin') {
-                    devGenerator_1.devPlugin(ws, config);
+                    (0, devGenerator_1.devPlugin)(ws, config);
                 }
             }
         }));

@@ -107,7 +107,7 @@ const authCommand = (program: CommanderStatic) => {
                     }
                 }
             ])
-            
+
             authJSON['domain'] = cmd['domain'] || answer['domain']
             authJSON['username'] = cmd['username'] || answer['username']
             authJSON['password'] = cmd['password'] || answer['password']
