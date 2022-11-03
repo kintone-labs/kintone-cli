@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -17,22 +18,22 @@ const deployCommand = (program) => {
     program
         .command('deploy')
         .option('--app-name <appName>', 'App name')
-        .action((cmd) => __awaiter(this, void 0, void 0, function* () {
+        .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         let error = validator_1.default.deployValidator(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
             return;
         }
         try {
-            let config = jsonfile_1.readFileSync(`${cmd['appName']}/config.json`);
-            if (fs_1.existsSync(`${cmd['appName']}/webpack.config.js`)) {
+            let config = (0, jsonfile_1.readFileSync)(`${cmd['appName']}/config.json`);
+            if ((0, fs_1.existsSync)(`${cmd['appName']}/webpack.config.js`)) {
                 config.useWebpack = true;
             }
             if (config.type === 'Customization') {
-                deployer_1.deployCustomization(config);
+                (0, deployer_1.deployCustomization)(config);
             }
             else {
-                deployer_1.deployPlugin(config);
+                (0, deployer_1.deployPlugin)(config);
             }
         }
         catch (error) {

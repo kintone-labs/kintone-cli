@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.buildWebpackReactTemplate = void 0;
 const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, type }) => {
     let jsRules;
     let configEntry;
@@ -114,7 +115,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
                 ${type === 'Plugin' &&
         `configPlugin.devtool='source-map';`}
             }
-          
+
             if (argv.mode === 'production') {
               //...
             }

@@ -33,7 +33,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
     mkdirSync(`${option['appName']}/source`)
     mkdirSync(`${option['appName']}/source/js`)
     mkdirSync(`${option['appName']}/source/css`)
-    
+
     if (option['setAuth']) {
         let authJSON = {
             username: option['username'],
@@ -60,10 +60,10 @@ const generateAppFolder = (option: AppOption): string | boolean => {
                 [
                     "@babel/preset-env",
                     {
-                        useBuiltIns: "usage", 
-                        corejs: { 
-                            "version": 3, 
-                            "proposals": true 
+                        useBuiltIns: "usage",
+                        corejs: {
+                            "version": 3,
+                            "proposals": true
                         }
                     }
                 ]
@@ -79,15 +79,15 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {}
         }
-        packageJSON.devDependencies.webpack = "^5.73.0"
+        packageJSON.devDependencies.webpack = "^5.74.0"
         packageJSON.devDependencies['webpack-cli'] = "^4.10.0"
         packageJSON.devDependencies['babel-loader'] = "^8.2.5"
         packageJSON.devDependencies['style-loader'] = "^3.3.1"
         packageJSON.devDependencies['css-loader'] = "^6.7.1"
-        packageJSON.devDependencies['core-js'] = "^3.23.4"
-        packageJSON.devDependencies['regenerator-runtime'] = "^0.13.9"
-        packageJSON.devDependencies["@babel/core"] = "^7.18.6"
-        packageJSON.devDependencies["@babel/preset-env"] = "^7.18.6"
+        packageJSON.devDependencies['core-js'] = "^3.26.0"
+        packageJSON.devDependencies['regenerator-runtime'] = "^0.13.10"
+        packageJSON.devDependencies["@babel/core"] = "^7.19.6"
+        packageJSON.devDependencies["@babel/preset-env"] = "^7.19.4"
         packageJSON.devDependencies["@babel/plugin-proposal-class-properties"] = "^7.18.6"
         packageJSON.devDependencies["@babel/plugin-syntax-dynamic-import"] = "^7.8.3"
 
@@ -100,7 +100,6 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         }
         if (option['useReact']) {
             packageJSON.devDependencies["@babel/preset-react"] = "^7.18.6"
-            
         }
         packageJSON.scripts[`build-${option['appName']}`] = `webpack --config ${option['appName']}/webpack.config.js --mode production`
 
@@ -151,7 +150,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {}
         }
-        packageJSON.devDependencies.typescript = "^4.7.4"
+        packageJSON.devDependencies.typescript = "^4.8.4"
 
         if (option['useReact']) {
             packageJSON.devDependencies['@types/react'] = "^17.0.2"
@@ -181,7 +180,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
             writeFileSyncFS(`${option['appName']}/source/global.d.ts`, 'declare let kintone: any;')
             tsConfigJSON['compilerOptions']['typeRoots'].push("./source/global.d.ts")
         }
-        
+
         writeFileSync(`${option['appName']}/tsconfig.json`, tsConfigJSON, {spaces: 4, EOL: "\r\n"})
 
         if (!option['useWebpack']) packageJSON.scripts[`build-${option['appName']}`] = `./node_modules/.bin/tsc --build ./${option['appName']}/tsconfig.json`
@@ -191,8 +190,8 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {}
         }
-        packageJSON.devDependencies['@kintone/plugin-packer'] = "^6.0.5"
-        packageJSON.devDependencies['@kintone/plugin-uploader'] = "7.0.1"
+        packageJSON.devDependencies['@kintone/plugin-packer'] = "^6.0.16"
+        packageJSON.devDependencies['@kintone/plugin-uploader'] = "7.1.5"
 
         manifestJSON['uploadConfig']['icon'] = `${option['appName']}/icon.png`
 
@@ -221,7 +220,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (option.useReact || (option.useTypescript && option.useWebpack)) manifestJSON['uploadConfig']['config']['js'] = [`${manifestJSON['appName']}/dist/config.min.js`]
     }
     else {
-        packageJSON.devDependencies["@kintone/customize-uploader"] = "^6.0.5"
+        packageJSON.devDependencies["@kintone/customize-uploader"] = "^6.0.17"
         writeFileSync(`package.json`,packageJSON,{spaces: 4, EOL: "\r\n"})
     }
 
@@ -265,8 +264,8 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {}
         }
-        packageJSON.devDependencies['eslint'] = '^8.19.0'
-        packageJSON.devDependencies['@cybozu/eslint-config'] = '>=17.0.2'
+        packageJSON.devDependencies['eslint'] = '^8.26.0'
+        packageJSON.devDependencies['@cybozu/eslint-config'] = '>=17.0.3'
         writeFileSync(`package.json`,packageJSON,{spaces:2, EOL: "\r\n"})
 
         // create .eslintrc.js file according to customization structure
