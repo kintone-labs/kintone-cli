@@ -153,7 +153,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         packageJSON.devDependencies.typescript = "^4.9.4"
 
         if (option['useReact']) {
-            packageJSON.devDependencies['@types/react'] = "^17.0.39"
+            packageJSON.devDependencies['@types/react'] = "^17.0.52"
             packageJSON.devDependencies["@types/react-dom"] = "^17.0.18"
         }
 

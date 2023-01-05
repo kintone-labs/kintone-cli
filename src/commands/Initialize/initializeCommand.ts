@@ -14,6 +14,7 @@ const spawnSync = spawn.sync
 const initializeCommand = (program: CommanderStatic) => {
     const latestUIComponentVersion = '^0.9.2';
     const latestKintoneRestApiClientVersion = '^3.2.3';
+    const defaultProjectVersion = '1.0.0';
 
     program
         .command('create-template')
@@ -277,7 +278,7 @@ const initializeCommand = (program: CommanderStatic) => {
             let packageInfo = {}
             if (cmd.quick) {
                 packageInfo['name'] = 'kintone-customization-project'
-                packageInfo['version'] = '0.0.1'
+                packageInfo['version'] = defaultProjectVersion
                 packageInfo['description'] = 'kintone customization project'
                 packageInfo['author'] = ''
                 packageInfo['license'] = 'MIT'
@@ -307,7 +308,7 @@ const initializeCommand = (program: CommanderStatic) => {
                     type: 'input',
                     name: 'version',
                     message: 'Version',
-                    default: '0.0.1',
+                    default: defaultProjectVersion,
                     when: !packageInfo['version']
                 },
                 {
