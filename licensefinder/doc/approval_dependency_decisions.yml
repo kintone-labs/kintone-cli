@@ -1,0 +1,14 @@
+# approval configuration file (for dependency)
+---
+  - - :permit
+    - MIT
+    - :who:
+      :why:
+      :versions: []
+      :when: 2021-10-11 03:22:18.970745000 Z
+  - - :permit
+    - NewBsd
+    - :who:
+      :why:
+      :versions: []
+      :when: 2021-10-11 03:25:18.970745000 Z
