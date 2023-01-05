@@ -68,15 +68,15 @@ const generateAppFolder = (option) => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {};
         }
-        packageJSON.devDependencies.webpack = "^5.74.0";
-        packageJSON.devDependencies['webpack-cli'] = "^4.10.0";
-        packageJSON.devDependencies['babel-loader'] = "^8.2.5";
+        packageJSON.devDependencies.webpack = "^5.75.0";
+        packageJSON.devDependencies['webpack-cli'] = "^5.0.1";
+        packageJSON.devDependencies['babel-loader'] = "^9.1.2";
         packageJSON.devDependencies['style-loader'] = "^3.3.1";
-        packageJSON.devDependencies['css-loader'] = "^6.7.1";
-        packageJSON.devDependencies['core-js'] = "^3.26.0";
-        packageJSON.devDependencies['regenerator-runtime'] = "^0.13.10";
-        packageJSON.devDependencies["@babel/core"] = "^7.19.6";
-        packageJSON.devDependencies["@babel/preset-env"] = "^7.19.4";
+        packageJSON.devDependencies['css-loader'] = "^6.7.3";
+        packageJSON.devDependencies['core-js'] = "^3.27.1";
+        packageJSON.devDependencies['regenerator-runtime'] = "^0.13.11";
+        packageJSON.devDependencies["@babel/core"] = "^7.20.12";
+        packageJSON.devDependencies["@babel/preset-env"] = "^7.20.2";
         packageJSON.devDependencies["@babel/plugin-proposal-class-properties"] = "^7.18.6";
         packageJSON.devDependencies["@babel/plugin-syntax-dynamic-import"] = "^7.8.3";
         if (!packageJSON.scripts) {
@@ -133,10 +133,10 @@ const generateAppFolder = (option) => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {};
         }
-        packageJSON.devDependencies.typescript = "^4.8.4";
+        packageJSON.devDependencies.typescript = "^4.9.4";
         if (option['useReact']) {
-            packageJSON.devDependencies['@types/react'] = "^17.0.2";
-            packageJSON.devDependencies["@types/react-dom"] = "^17.0.2";
+            packageJSON.devDependencies['@types/react'] = "^17.0.39";
+            packageJSON.devDependencies["@types/react-dom"] = "^17.0.18";
         }
         const tsConfigJSON = {
             "compilerOptions": {
@@ -167,8 +167,8 @@ const generateAppFolder = (option) => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {};
         }
-        packageJSON.devDependencies['@kintone/plugin-packer'] = "^6.0.16";
-        packageJSON.devDependencies['@kintone/plugin-uploader'] = "7.1.5";
+        packageJSON.devDependencies['@kintone/plugin-packer'] = "^6.0.20";
+        packageJSON.devDependencies['@kintone/plugin-uploader'] = "7.1.8";
         manifestJSON['uploadConfig']['icon'] = `${option['appName']}/icon.png`;
         (0, jsonfile_1.writeFileSync)(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
         (0, fs_1.writeFileSync)(`${option['appName']}/pluginConfig.html`, '');
@@ -193,7 +193,7 @@ const generateAppFolder = (option) => {
             manifestJSON['uploadConfig']['config']['js'] = [`${manifestJSON['appName']}/dist/config.min.js`];
     }
     else {
-        packageJSON.devDependencies["@kintone/customize-uploader"] = "^6.0.17";
+        packageJSON.devDependencies["@kintone/customize-uploader"] = "^6.0.22";
         (0, jsonfile_1.writeFileSync)(`package.json`, packageJSON, { spaces: 4, EOL: "\r\n" });
     }
     if (option['useReact']) {
@@ -236,8 +236,8 @@ const generateAppFolder = (option) => {
         if (!packageJSON.devDependencies) {
             packageJSON.devDependencies = {};
         }
-        packageJSON.devDependencies['eslint'] = '^8.26.0';
-        packageJSON.devDependencies['@cybozu/eslint-config'] = '>=17.0.3';
+        packageJSON.devDependencies['eslint'] = '^8.31.0';
+        packageJSON.devDependencies['@cybozu/eslint-config'] = '>=18.0.0';
         (0, jsonfile_1.writeFileSync)(`package.json`, packageJSON, { spaces: 2, EOL: "\r\n" });
         // create .eslintrc.js file according to customization structure
         let eslintRcTemplete = (0, eslintRcTemplate_1.buildEslintRcTemplate)(option);

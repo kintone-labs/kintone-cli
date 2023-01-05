@@ -1,6 +1,6 @@
 {
   "name": "kintone-cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   "dependencies": {
     "ansi-regex": "^6.0.1",
     "chalk": "^2.4.2",
-    "commander": "^2.19.0",
+    "commander": "^7.2.0",
     "cross-spawn": "^7.0.3",
     "inquirer": "^8.2.5",
     "jsonfile": "^6.1.0",
@@ -25,11 +25,11 @@
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
-    "@types/inquirer": "^8.2.4",
+    "@types/inquirer": "^8.2.5",
     "@types/jsonfile": "^6.1.0",
-    "@types/node": "^11.13.0",
+    "@types/node": "^18.11.18",
     "lodash": "^4.17.21",
-    "typescript": "^4.8.4"
+    "typescript": "^4.9.4"
   },
   "repository": {
     "type": "git",

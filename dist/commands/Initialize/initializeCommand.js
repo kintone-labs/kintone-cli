@@ -20,7 +20,7 @@ const string_1 = require("../../utils/string");
 const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
     const latestUIComponentVersion = '^0.9.2';
-    const latestKintoneRestApiClientVersion = '^3.1.16';
+    const latestKintoneRestApiClientVersion = '^3.2.3';
     program
         .command('create-template')
         .option('-q, --quick', 'Use default template')
