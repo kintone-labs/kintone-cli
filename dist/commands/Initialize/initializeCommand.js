@@ -20,7 +20,8 @@ const string_1 = require("../../utils/string");
 const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
     const latestUIComponentVersion = '^0.9.2';
-    const latestKintoneRestApiClientVersion = '^3.1.16';
+    const latestKintoneRestApiClientVersion = '^3.2.3';
+    const defaultProjectVersion = '1.0.0';
     program
         .command('create-template')
         .option('-q, --quick', 'Use default template')
@@ -277,7 +278,7 @@ const initializeCommand = (program) => {
         let packageInfo = {};
         if (cmd.quick) {
             packageInfo['name'] = 'kintone-customization-project';
-            packageInfo['version'] = '0.0.1';
+            packageInfo['version'] = defaultProjectVersion;
             packageInfo['description'] = 'kintone customization project';
             packageInfo['author'] = '';
             packageInfo['license'] = 'MIT';
@@ -305,7 +306,7 @@ const initializeCommand = (program) => {
                 type: 'input',
                 name: 'version',
                 message: 'Version',
-                default: '0.0.1',
+                default: defaultProjectVersion,
                 when: !packageInfo['version']
             },
             {
