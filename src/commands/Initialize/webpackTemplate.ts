@@ -107,12 +107,12 @@ const buildWebpackReactTemplate = ({entry, useTypescript, useReact, appName, typ
         ${pluginConfig}
 
         module.exports = (env, argv) => {
-            'use strict';
             if (argv.mode === 'development') {
                 config.devtool = 'source-map';
                 ${
-                    type === 'Plugin' &&
-                    `configPlugin.devtool='source-map';`
+                    type === 'Plugin' ?
+                    `configPlugin.devtool='source-map';`:
+                    ''
                 }
             }
 
