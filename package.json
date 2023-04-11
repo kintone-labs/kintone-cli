@@ -8,8 +8,8 @@
     "test:init": "node dist/index.js init --quick",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "prettier": "prettier --check './src/**/*.ts'",
-    "format": "prettier --write './src/**/*.ts'"
+    "format": "prettier --check './src/**/*.ts'",
+    "format:fix": "prettier --write './src/**/*.ts'"
   },
   "preferGlobal": true,
   "bin": {
