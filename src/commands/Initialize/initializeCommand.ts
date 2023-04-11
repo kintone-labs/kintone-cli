@@ -12,8 +12,8 @@ import { isDomain } from "../../utils/string";
 const spawnSync = spawn.sync
 
 const initializeCommand = (program: CommanderStatic) => {
-    const latestUIComponentVersion = '^0.9.2';
-    const latestKintoneRestApiClientVersion = '^3.2.3';
+    const latestUIComponentVersion = '^0.9.3';
+    const latestKintoneRestApiClientVersion = '^3.3.9';
     const defaultProjectVersion = '1.0.0';
 
     program

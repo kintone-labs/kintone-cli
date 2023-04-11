@@ -11,7 +11,7 @@ global['cliRoot'] = path.resolve(path.dirname(require.main.filename) + "/../");
 global['currentDir'] = process.cwd();
 
 program
-    .version('0.4.2')
+    .version('0.4.3')
     .description('kintone Node CLI');
 
 initializeCommand(program)
