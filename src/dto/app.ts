@@ -10,7 +10,7 @@ type AppOption = {
   password: string;
   type: 'Plugin' | 'Customization';
   appID: number;
-  proxy?: any;
+  proxy: string | undefined;
   useCybozuLint: boolean | undefined;
   scope: string | undefined;
 };
