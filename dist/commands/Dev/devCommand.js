@@ -20,7 +20,7 @@ const validator_1 = require("./validator");
 const readline = require('readline');
 const spawnSync = spawn.sync;
 const isURL = (str) => {
-    var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+    const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
         '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
         '(\\:\\d+)?(\\/[-a-z\\d%_.~@+]*)*' + // port and path
@@ -29,13 +29,13 @@ const isURL = (str) => {
     return !!pattern.test(str);
 };
 const getLoopBackAddress = (resp, localhost) => __awaiter(void 0, void 0, void 0, function* () {
-    if (resp.indexOf('Serving at') == -1) {
+    if (resp.indexOf('Serving at') === -1) {
         console.log(chalk_1.default.red(`${resp}`));
         return '';
     }
     const webServerInfo = resp.replace('Serving at', '');
     const loopbackAddress = webServerInfo.split(',');
-    let localAddress = [];
+    const localAddress = [];
     for (let index = 0; index < loopbackAddress.length; index++) {
         const url = loopbackAddress[index].trim();
         const address = (0, strip_ansi_1.default)(url);
@@ -52,16 +52,16 @@ const getLoopBackAddress = (resp, localhost) => __awaiter(void 0, void 0, void 0
             return LOCAL_ADDRESS_DEFAULT;
         return localAddress[localAddress.length - 1];
     }
-    let answer = yield (0, inquirer_1.prompt)([
+    const answer = yield (0, inquirer_1.prompt)([
         {
             type: 'list',
             name: 'localAddress',
             message: 'Please choose a loopback address',
             when: !localhost,
-            choices: localAddress,
+            choices: localAddress
         }
     ]);
-    return answer["localAddress"];
+    return answer.localAddress;
 });
 const readLineAsync = () => {
     const rl = readline.createInterface({
@@ -82,7 +82,7 @@ const devCommand = (program) => {
         .option('--app-name <appName>', 'Watch for changes in source code')
         .option('--localhost', 'Use localhost as link')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
-        let error = validator_1.default.devValidator(cmd);
+        const error = validator_1.default.devValidator(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
             return;
@@ -100,8 +100,8 @@ const devCommand = (program) => {
         const ws = spawn('npm', ['run', 'dev', '--', '--https']);
         ws.stderr.on('data', (data) => __awaiter(void 0, void 0, void 0, function* () {
             const resp = data.toString();
-            let serverAddr = yield getLoopBackAddress(resp, cmd.localhost);
-            let config = (0, jsonfile_1.readFileSync)(`${cmd['appName']}/config.json`);
+            const serverAddr = yield getLoopBackAddress(resp, cmd.localhost);
+            const config = (0, jsonfile_1.readFileSync)(`${cmd.appName}/config.json`);
             config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item) => {
                 if (!isURL(item))
                     return `${serverAddr}/${item}`;

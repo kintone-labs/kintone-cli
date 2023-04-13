@@ -51,18 +51,12 @@ const generateSample = ({ useTypescript, useReact }) => {
         if (useTypescript) {
             return tsxSample;
         }
-        else {
-            return jsxSample;
-        }
+        return jsxSample;
     }
-    else {
-        if (useTypescript) {
-            return tsSample;
-        }
-        else {
-            return jsSample;
-        }
+    if (useTypescript) {
+        return tsSample;
     }
+    return jsSample;
 };
 exports.generateSample = generateSample;
 exports.default = generateSample;
