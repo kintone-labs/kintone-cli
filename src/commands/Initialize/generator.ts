@@ -22,7 +22,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
     return 'package.json not found';
   }
   const packageJSON = readFileSync('package.json');
-  const manifestJSON = {};
+  const manifestJSON: any = {};
 
   if (option.appID) {
     manifestJSON.appID = option.appID;
@@ -42,7 +42,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
   mkdirSync(`${option.appName}/source/css`);
 
   if (option.setAuth) {
-    const authJSON = {
+    const authJSON: any = {
       username: option.username,
       password: option.password,
       domain: option.domain
@@ -192,7 +192,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
         noImplicitAny: false
       },
       include: ['source/**/*.ts', 'source/**/*.tsx']
-    };
+    } as any;
 
     if (option.useReact) {
       tsConfigJSON.compilerOptions.jsx = 'react';

@@ -4,7 +4,7 @@ import { unlinkSync, existsSync, mkdirSync } from 'fs';
 
 const spawnSync = spawn.sync;
 
-const deployCustomization = (option: object) => {
+const deployCustomization = (option: any) => {
   const customizeManifestJSON = {
     app: option.appID,
     scope: option.scope,
@@ -58,7 +58,7 @@ const deployCustomization = (option: object) => {
   unlinkSync(`${option.appName}/dist/customize-manifest.json`);
 };
 
-const deployPlugin = (option: object) => {
+const deployPlugin = (option: any) => {
   const authJSON = readFileSync(`${option.appName}/auth.json`);
   spawnSync(
     './node_modules/.bin/kintone-plugin-uploader',

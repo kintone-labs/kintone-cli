@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
 export default {
-  lintValidator: (params: object): boolean | string => {
+  lintValidator: (params: any): boolean | string => {
     if (!params.appName) {
       return 'App name missing';
     }

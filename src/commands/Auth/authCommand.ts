@@ -21,7 +21,7 @@ const authCommand = (program: CommanderStatic) => {
         console.log(chalk.red(error));
         return;
       }
-      let authJSON: object;
+      let authJSON: any;
       try {
         authJSON = readFileSync(`${cmd.appName}/auth.json`);
       } catch (err) {
@@ -99,7 +99,7 @@ const authCommand = (program: CommanderStatic) => {
           type: 'input',
           name: 'proxy',
           message: 'Specify your proxy full URL, including port number:',
-          when: (curAnswers: object) => {
+          when: (curAnswers: any) => {
             return (cmd.useProxy || curAnswers.useProxy) && !cmd.proxy;
           },
           validate: (input: any): any => {

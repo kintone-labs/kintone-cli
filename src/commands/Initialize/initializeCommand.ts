@@ -42,7 +42,7 @@ const initializeCommand = (program: CommanderStatic) => {
         return;
       }
       try {
-        let answer = {};
+        let answer: any = {};
         if (cmd.quick || cmd.yes) {
           cmd.setAuth = false;
           cmd.useProxy = false;
@@ -90,7 +90,7 @@ const initializeCommand = (program: CommanderStatic) => {
             type: 'input',
             name: 'domain',
             message: 'What is your kintone domain ?',
-            when: (curAnswers: object) => {
+            when: (curAnswers: any) => {
               return (cmd.setAuth || curAnswers.setAuth) && !cmd.domain;
             },
             validate: (input: any, curAnswer: object): any => {
@@ -106,7 +106,7 @@ const initializeCommand = (program: CommanderStatic) => {
             type: 'input',
             name: 'username',
             message: 'What is your kintone username ?',
-            when: (curAnswers: object) => {
+            when: (curAnswers: any) => {
               return (cmd.setAuth || curAnswers.setAuth) && !cmd.username;
             }
           },
@@ -114,7 +114,7 @@ const initializeCommand = (program: CommanderStatic) => {
             type: 'password',
             name: 'password',
             message: 'What is your kintone password ?',
-            when: (curAnswers: object) => {
+            when: (curAnswers: any) => {
               return (cmd.setAuth || curAnswers.setAuth) && !cmd.password;
             }
           },
@@ -123,7 +123,7 @@ const initializeCommand = (program: CommanderStatic) => {
             name: 'useProxy',
             message: 'Do you use proxy ?',
             default: false,
-            when: (curAnswers: object) => {
+            when: (curAnswers: any) => {
               return (cmd.setAuth || curAnswers.setAuth) && !cmd.proxy;
             }
           },
@@ -131,7 +131,7 @@ const initializeCommand = (program: CommanderStatic) => {
             type: 'input',
             name: 'proxy',
             message: 'Specify your proxy full URL, including port number:',
-            when: (curAnswers: object) => {
+            when: (curAnswers: any) => {
               return curAnswers.useProxy && !cmd.proxy;
             }
           },
@@ -157,7 +157,7 @@ const initializeCommand = (program: CommanderStatic) => {
             type: 'input',
             name: 'entry',
             message: 'What is the entry for webpack ?',
-            default: (curAnswers: object) => {
+            default: (curAnswers: any) => {
               let ext = '.js';
               const tempOption = { ...cmd, ...curAnswers };
               if (tempOption.useReact && tempOption.useTypescript) {
@@ -169,7 +169,7 @@ const initializeCommand = (program: CommanderStatic) => {
               }
               return `index${ext}`;
             },
-            when: (curAnswers: object) => {
+            when: (curAnswers: any) => {
               return (cmd.useWebpack || curAnswers.useWebpack) && !cmd.entry;
             }
           },
@@ -196,7 +196,7 @@ const initializeCommand = (program: CommanderStatic) => {
             type: 'number',
             name: 'appID',
             message: 'What is the app ID ?',
-            when: (curAnswers: object) => {
+            when: (curAnswers: any) => {
               return (
                 (cmd.setAuth || curAnswers.setAuth) &&
                 !cmd.appID &&
@@ -210,7 +210,7 @@ const initializeCommand = (program: CommanderStatic) => {
             name: 'scope',
             message: 'What is the scope of customization ?',
             choices: ['ALL', 'ADMIN', 'NONE'],
-            when: (curAnswers: object) => {
+            when: (curAnswers: any) => {
               return (
                 (cmd.type === 'Customization' ||
                   curAnswers.type === 'Customization') &&
@@ -281,7 +281,7 @@ const initializeCommand = (program: CommanderStatic) => {
     .option('-p, --project-name <projectName>', 'Project name')
     // eslint-disable-next-line max-statements
     .action(async (cmd) => {
-      let packageInfo = {};
+      let packageInfo: any = {};
       if (cmd.quick) {
         packageInfo.name = 'kintone-customization-project';
         packageInfo.version = defaultProjectVersion;

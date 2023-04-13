@@ -10,6 +10,9 @@ type AppOption = {
   password: string;
   type: 'Plugin' | 'Customization';
   appID: number;
+  proxy: any;
+  useCybozuLint: any;
+  scope: any;
 };
 
 type WebpackParams = {

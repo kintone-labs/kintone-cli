@@ -10,7 +10,7 @@ import {
 
 const spawnSync = spawn.sync;
 
-const buildUsingWebpack = (option: object) => {
+const buildUsingWebpack = (option: any) => {
   spawnSync('npm', ['run', `build-${option.appName}`], { stdio: 'inherit' });
 };
 
@@ -18,8 +18,8 @@ const buildVanillaJS = (option: object) => {
   // function body
 };
 
-const buildPlugin = (option: object) => {
-  const manifestJSON = {};
+const buildPlugin = (option: any) => {
+  const manifestJSON: any = {};
 
   manifestJSON.manifest_version = 1;
   manifestJSON.version = 1;

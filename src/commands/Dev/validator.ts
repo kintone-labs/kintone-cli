@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
 export default {
-  devValidator: (params: object): boolean | string => {
+  devValidator: (params: any): boolean | string => {
     if (!params.appName) {
       return 'App name missing';
     }

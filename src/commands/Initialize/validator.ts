@@ -1,6 +1,6 @@
 import * as url from 'url';
 export default {
-  appValidator: (params: object): boolean | string => {
+  appValidator: (params: any): boolean | string => {
     if (
       params.type &&
       params.type !== 'Customization' &&
