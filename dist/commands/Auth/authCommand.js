@@ -25,27 +25,27 @@ const authCommand = (program) => {
         .option('-r, --use-proxy', 'Use proxy or not')
         .option('-x, --proxy <proxy>', 'Proxy full URL, including port number')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
-        let error = validator_1.default.authValidator(cmd);
+        const error = validator_1.default.authValidator(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
             return;
         }
         let authJSON;
         try {
-            authJSON = (0, jsonfile_1.readFileSync)(`${cmd['appName']}/auth.json`);
+            authJSON = (0, jsonfile_1.readFileSync)(`${cmd.appName}/auth.json`);
         }
-        catch (error) {
+        catch (err) {
             authJSON = {};
         }
-        let configJSON = (0, jsonfile_1.readFileSync)(`${cmd['appName']}/config.json`);
-        let answer = yield (0, inquirer_1.prompt)([
+        const configJSON = (0, jsonfile_1.readFileSync)(`${cmd.appName}/config.json`);
+        const answer = yield (0, inquirer_1.prompt)([
             {
                 type: 'input',
                 name: 'domain',
                 message: 'What is your kintone domain ?',
                 when: !cmd.domain,
                 validate: (input) => {
-                    if (!input.startsWith("https://"))
+                    if (!input.startsWith('https://'))
                         return 'Domain has to start with https';
                     if (!(0, string_1.isDomain)(input)) {
                         return 'Please enter a valid domain';
@@ -60,7 +60,7 @@ const authCommand = (program) => {
                 when: !cmd.username,
                 validate: (input) => {
                     if (!input) {
-                        return 'Username can\'t be empty.';
+                        return "Username can't be empty.";
                     }
                     return true;
                 }
@@ -72,7 +72,7 @@ const authCommand = (program) => {
                 when: !cmd.password,
                 validate: (input) => {
                     if (!input) {
-                        return 'Password can\'t be empty.';
+                        return "Password can't be empty.";
                     }
                     return true;
                 }
@@ -84,9 +84,9 @@ const authCommand = (program) => {
                 when: !cmd.appID && !configJSON.appID,
                 validate: (input) => {
                     if (!input) {
-                        return 'App ID can\'t be empty.';
+                        return "App ID can't be empty.";
                     }
-                    let numberMatch = input.match(/(^-?\d+|^\d+\.\d*|^\d*\.\d+)(e\d+)?$/);
+                    const numberMatch = input.match(/(^-?\d+|^\d+\.\d*|^\d*\.\d+)(e\d+)?$/);
                     // If a number is found, return that input.
                     if (!numberMatch) {
                         return 'App ID must be a number.';
@@ -106,33 +106,39 @@ const authCommand = (program) => {
                 name: 'proxy',
                 message: 'Specify your proxy full URL, including port number:',
                 when: (curAnswers) => {
-                    return (cmd.useProxy || curAnswers['useProxy']) && !cmd.proxy;
+                    return (cmd.useProxy || curAnswers.useProxy) && !cmd.proxy;
                 },
                 validate: (input) => {
                     if (!input) {
-                        return 'Proxy URL can\'t be empty.';
+                        return "Proxy URL can't be empty.";
                     }
                     return true;
                 }
             }
         ]);
-        authJSON['domain'] = cmd['domain'] || answer['domain'];
-        authJSON['username'] = cmd['username'] || answer['username'];
-        authJSON['password'] = cmd['password'] || answer['password'];
-        if (cmd['proxy'] || answer['proxy'])
-            authJSON['proxy'] = cmd['proxy'] || answer['proxy'];
-        (0, jsonfile_1.writeFileSync)(`${cmd['appName']}/auth.json`, authJSON, { spaces: 4, EOL: "\r\n" });
-        if (!configJSON['appID'])
-            configJSON['appID'] = cmd['appID'] || answer['appID'];
-        (0, jsonfile_1.writeFileSync)(`${cmd['appName']}/config.json`, configJSON, { spaces: 4, EOL: "\r\n" });
+        authJSON.domain = cmd.domain || answer.domain;
+        authJSON.username = cmd.username || answer.username;
+        authJSON.password = cmd.password || answer.password;
+        if (cmd.proxy || answer.proxy)
+            authJSON.proxy = cmd.proxy || answer.proxy;
+        (0, jsonfile_1.writeFileSync)(`${cmd.appName}/auth.json`, authJSON, {
+            spaces: 4,
+            EOL: '\r\n'
+        });
+        if (!configJSON.appID)
+            configJSON.appID = cmd.appID || answer.appID;
+        (0, jsonfile_1.writeFileSync)(`${cmd.appName}/config.json`, configJSON, {
+            spaces: 4,
+            EOL: '\r\n'
+        });
         console.log(chalk_1.default.yellow('Set auth info complete.'));
         console.log(chalk_1.default.yellow('To start dev, use:'));
         console.log('');
-        console.log(chalk_1.default.greenBright(`     kintone-cli dev --app-name ${cmd['appName']}`));
+        console.log(chalk_1.default.greenBright(`     kintone-cli dev --app-name ${cmd.appName}`));
         console.log('');
         console.log(chalk_1.default.yellow('To deploy app, use:'));
         console.log('');
-        console.log(chalk_1.default.greenBright(`     kintone-cli deploy --app-name ${cmd['appName']}`));
+        console.log(chalk_1.default.greenBright(`     kintone-cli deploy --app-name ${cmd.appName}`));
         console.log('');
     }));
 };
