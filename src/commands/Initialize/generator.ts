@@ -16,6 +16,7 @@ const imageBase64 =
 
 const spawnSync = spawn.sync;
 
+// eslint-disable-next-line max-statements
 const generateAppFolder = (option: AppOption): string | boolean => {
   if (!existsSync('package.json')) {
     return 'package.json not found';

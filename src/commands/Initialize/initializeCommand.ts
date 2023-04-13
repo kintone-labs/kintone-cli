@@ -279,6 +279,7 @@ const initializeCommand = (program: CommanderStatic) => {
     .option('--install', 'Install dependencies or not')
     .option('--quick', 'Quickly create a kintone project')
     .option('-p, --project-name <projectName>', 'Project name')
+    // eslint-disable-next-line max-statements
     .action(async (cmd) => {
       let packageInfo = {};
       if (cmd.quick) {
