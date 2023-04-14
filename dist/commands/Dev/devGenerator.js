@@ -25,12 +25,16 @@ const devCustomize = (ws, config) => {
         console.log(chalk_1.default.yellow('All done. Happy customizing!'));
         console.log(chalk_1.default.yellow('Press Ctrl + C to stop local web server.'));
     }
-    else {
-        // watch for changes
-        if ((0, fs_1.existsSync)(`${config.appName}/webpack.config.js`)) {
-            console.log(chalk_1.default.yellow('Watching for changes...'));
-            spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch', '--mode', 'development'], { stdio: 'inherit' });
-        }
+    else if ((0, fs_1.existsSync)(`${config.appName}/webpack.config.js`)) {
+        console.log(chalk_1.default.yellow('Watching for changes...'));
+        spawnSync('npm', [
+            'run',
+            `build-${config.appName}`,
+            '--',
+            '--watch',
+            '--mode',
+            'development'
+        ], { stdio: 'inherit' });
     }
 };
 exports.devCustomize = devCustomize;
@@ -48,12 +52,16 @@ const devPlugin = (ws, config) => {
         console.log(chalk_1.default.yellow('All done. Happy customizing!'));
         console.log(chalk_1.default.yellow('Press Ctrl + C to stop local web server.'));
     }
-    else {
-        // watch for changes
-        if ((0, fs_1.existsSync)(`${config.appName}/webpack.config.js`)) {
-            console.log(chalk_1.default.yellow('Watching for changes...'));
-            spawnSync('npm', ['run', `build-${config.appName}`, '--', '--watch', '--mode', 'development'], { stdio: 'inherit' });
-        }
+    else if ((0, fs_1.existsSync)(`${config.appName}/webpack.config.js`)) {
+        console.log(chalk_1.default.yellow('Watching for changes...'));
+        spawnSync('npm', [
+            'run',
+            `build-${config.appName}`,
+            '--',
+            '--watch',
+            '--mode',
+            'development'
+        ], { stdio: 'inherit' });
     }
 };
 exports.devPlugin = devPlugin;

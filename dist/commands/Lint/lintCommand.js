@@ -19,7 +19,7 @@ const lintCommand = (program) => {
         .option('--fix', 'Auto fix eslint errors')
         .option('--app-name <appName>', 'Name of template folder to run eslint')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
-        let error = validator_1.default.lintValidator(cmd);
+        const error = validator_1.default.lintValidator(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
             return;
@@ -32,7 +32,9 @@ const lintCommand = (program) => {
             spawnSync('npm', ['run', `lint-${cmd.appName}${cmd.fix ? '-fix' : ''}`], { stdio: 'inherit' });
         }
         else {
-            spawnSync('npm', ['run', `lint-all${cmd.fix ? '-fix' : ''}`], { stdio: 'inherit' });
+            spawnSync('npm', ['run', `lint-all${cmd.fix ? '-fix' : ''}`], {
+                stdio: 'inherit'
+            });
         }
     }));
 };

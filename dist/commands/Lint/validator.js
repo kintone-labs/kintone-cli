@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 exports.default = {
     lintValidator: (params) => {
-        if (!params['appName']) {
+        if (!params.appName) {
             return 'App name missing';
         }
-        if (!(0, fs_1.existsSync)(params['appName'])) {
+        if (!(0, fs_1.existsSync)(params.appName)) {
             return 'App not existed';
         }
         return false;
