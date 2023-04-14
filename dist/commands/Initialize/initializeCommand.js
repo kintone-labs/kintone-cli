@@ -240,7 +240,7 @@ const initializeCommand = (program) => {
                 proxy: cmd.proxy || answer.proxy
             };
             if (answer.proxy === 'null')
-                appSetting.proxy = false;
+                appSetting.proxy = '';
             console.log(chalk_1.default.yellow('Creating app...'));
             const err = (0, generator_1.generateAppFolder)(appSetting);
             if (err && typeof err === 'string') {
