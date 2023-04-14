@@ -21,7 +21,7 @@
   "dependencies": {
     "ansi-regex": "^6.0.1",
     "chalk": "^2.4.2",
-    "commander": "^7.2.0",
+    "commander": "^10.0.0",
     "cross-spawn": "^7.0.3",
     "inquirer": "^8.2.5",
     "jsonfile": "^6.1.0",
