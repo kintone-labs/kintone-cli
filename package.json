@@ -23,14 +23,14 @@
     "chalk": "^2.4.2",
     "commander": "^7.2.0",
     "cross-spawn": "^7.0.3",
-    "inquirer": "^8.2.5",
+    "inquirer": "^9.1.5",
     "jsonfile": "^6.1.0",
     "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^18.0.3",
     "@types/cross-spawn": "^6.0.2",
-    "@types/inquirer": "^8.2.5",
+    "@types/inquirer": "^9.0.3",
     "@types/jsonfile": "^6.1.0",
     "@types/node": "^18.11.18",
     "eslint": "^8.38.0",
