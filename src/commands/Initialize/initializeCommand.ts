@@ -238,7 +238,7 @@ const initializeCommand = (program: CommanderStatic) => {
           proxy: cmd.proxy || answer.proxy
         };
 
-        if (answer.proxy === 'null') appSetting.proxy = false;
+        if (answer.proxy === 'null') appSetting.proxy = '';
 
         console.log(chalk.yellow('Creating app...'));
         const err = generateAppFolder(appSetting);
