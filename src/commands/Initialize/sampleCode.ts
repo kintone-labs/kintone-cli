@@ -1,5 +1,4 @@
 const jsSample = `(function() {
-    'use strict';
     kintone.events.on('app.record.index.show', function(event) {
         console.log('Hello from kintone CLI');
         return event;
@@ -21,7 +20,6 @@ const App = () => {
     });
 })();`;
 const tsSample = `(() => {
-    'use strict';
     kintone.events.on('app.record.index.show', event => {
         console.log('Hello from kintone CLI');
         return event;
