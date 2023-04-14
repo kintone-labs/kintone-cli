@@ -19,8 +19,8 @@ const generator_1 = require("./generator");
 const string_1 = require("../../utils/string");
 const spawnSync = spawn.sync;
 const initializeCommand = (program) => {
-    const latestUIComponentVersion = '^0.9.2';
-    const latestKintoneRestApiClientVersion = '^3.2.3';
+    const latestUIComponentVersion = '^0.9.3';
+    const latestKintoneRestApiClientVersion = '^3.3.9';
     const defaultProjectVersion = '1.0.0';
     program
         .command('create-template')
@@ -42,7 +42,7 @@ const initializeCommand = (program) => {
         .option('--proxy <proxyURL>', 'Proxy URL')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         cmd.appID = cmd.appId;
-        let error = validator_1.default.appValidator(cmd);
+        const error = validator_1.default.appValidator(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
             return;
@@ -97,10 +97,10 @@ const initializeCommand = (program) => {
                     name: 'domain',
                     message: 'What is your kintone domain ?',
                     when: (curAnswers) => {
-                        return (cmd.setAuth || curAnswers['setAuth']) && !cmd.domain;
+                        return (cmd.setAuth || curAnswers.setAuth) && !cmd.domain;
                     },
                     validate: (input, curAnswer) => {
-                        if (!input.startsWith("https://"))
+                        if (!input.startsWith('https://'))
                             return 'Domain has to start with https';
                         if (!(0, string_1.isDomain)(input)) {
                             return 'Please enter a valid domain';
@@ -113,7 +113,7 @@ const initializeCommand = (program) => {
                     name: 'username',
                     message: 'What is your kintone username ?',
                     when: (curAnswers) => {
-                        return (cmd.setAuth || curAnswers['setAuth']) && !cmd.username;
+                        return (cmd.setAuth || curAnswers.setAuth) && !cmd.username;
                     }
                 },
                 {
@@ -121,7 +121,7 @@ const initializeCommand = (program) => {
                     name: 'password',
                     message: 'What is your kintone password ?',
                     when: (curAnswers) => {
-                        return (cmd.setAuth || curAnswers['setAuth']) && !cmd.password;
+                        return (cmd.setAuth || curAnswers.setAuth) && !cmd.password;
                     }
                 },
                 {
@@ -130,7 +130,7 @@ const initializeCommand = (program) => {
                     message: 'Do you use proxy ?',
                     default: false,
                     when: (curAnswers) => {
-                        return (cmd.setAuth || curAnswers['setAuth']) && !cmd.proxy;
+                        return (cmd.setAuth || curAnswers.setAuth) && !cmd.proxy;
                     }
                 },
                 {
@@ -138,7 +138,7 @@ const initializeCommand = (program) => {
                     name: 'proxy',
                     message: 'Specify your proxy full URL, including port number:',
                     when: (curAnswers) => {
-                        return curAnswers['useProxy'] && !cmd.proxy;
+                        return curAnswers.useProxy && !cmd.proxy;
                     }
                 },
                 {
@@ -165,20 +165,20 @@ const initializeCommand = (program) => {
                     message: 'What is the entry for webpack ?',
                     default: (curAnswers) => {
                         let ext = '.js';
-                        let tempOption = Object.assign(Object.assign({}, cmd), curAnswers);
-                        if (tempOption['useReact'] && tempOption['useTypescript']) {
+                        const tempOption = Object.assign(Object.assign({}, cmd), curAnswers);
+                        if (tempOption.useReact && tempOption.useTypescript) {
                             ext = '.tsx';
                         }
-                        else if (tempOption['useReact']) {
+                        else if (tempOption.useReact) {
                             ext = '.jsx';
                         }
-                        else if (tempOption['useTypescript']) {
+                        else if (tempOption.useTypescript) {
                             ext = '.ts';
                         }
                         return `index${ext}`;
                     },
                     when: (curAnswers) => {
-                        return (cmd.useWebpack || curAnswers['useWebpack']) && !cmd.entry;
+                        return (cmd.useWebpack || curAnswers.useWebpack) && !cmd.entry;
                     }
                 },
                 {
@@ -204,11 +204,10 @@ const initializeCommand = (program) => {
                     name: 'appID',
                     message: 'What is the app ID ?',
                     when: (curAnswers) => {
-                        return ((cmd.setAuth || curAnswers['setAuth'])
-                            &&
-                                (!cmd.appID)
-                            &&
-                                (cmd.type === 'Customization' || curAnswers['type'] === 'Customization'));
+                        return ((cmd.setAuth || curAnswers.setAuth) &&
+                            !cmd.appID &&
+                            (cmd.type === 'Customization' ||
+                                curAnswers.type === 'Customization'));
                     }
                 },
                 {
@@ -217,33 +216,33 @@ const initializeCommand = (program) => {
                     message: 'What is the scope of customization ?',
                     choices: ['ALL', 'ADMIN', 'NONE'],
                     when: (curAnswers) => {
-                        return ((cmd.type === 'Customization' || curAnswers['type'] === 'Customization')
-                            &&
-                                (!cmd.scope));
+                        return ((cmd.type === 'Customization' ||
+                            curAnswers.type === 'Customization') &&
+                            !cmd.scope);
                     }
                 }
             ]);
             // Config for appConfig.json
-            let appSetting = {
-                setAuth: cmd.setAuth || answer['setAuth'],
-                useTypescript: cmd.useTypescript || answer['useTypescript'],
-                useWebpack: cmd.useWebpack || answer['useWebpack'],
-                entry: cmd.entry || answer['entry'],
-                useReact: cmd.useReact || answer['useReact'],
-                appName: (cmd.appName || answer['appName']).replace(" ", "-"),
-                domain: cmd.domain || answer['domain'],
-                username: cmd.username || answer['username'],
-                password: cmd.password || answer['password'],
-                type: cmd.type || answer['type'],
-                appID: cmd.appID || answer['appID'],
-                useCybozuLint: cmd.useCybozuLint || answer['useCybozuLint'],
-                scope: cmd.scope || answer['scope'],
-                proxy: cmd.proxy || answer['proxy']
+            const appSetting = {
+                setAuth: cmd.setAuth || answer.setAuth,
+                useTypescript: cmd.useTypescript || answer.useTypescript,
+                useWebpack: cmd.useWebpack || answer.useWebpack,
+                entry: cmd.entry || answer.entry,
+                useReact: cmd.useReact || answer.useReact,
+                appName: (cmd.appName || answer.appName).replace(' ', '-'),
+                domain: cmd.domain || answer.domain,
+                username: cmd.username || answer.username,
+                password: cmd.password || answer.password,
+                type: cmd.type || answer.type,
+                appID: cmd.appID || answer.appID,
+                useCybozuLint: cmd.useCybozuLint || answer.useCybozuLint,
+                scope: cmd.scope || answer.scope,
+                proxy: cmd.proxy || answer.proxy
             };
-            if (answer['proxy'] === 'null')
-                appSetting.proxy = false;
+            if (answer.proxy === 'null')
+                appSetting.proxy = '';
             console.log(chalk_1.default.yellow('Creating app...'));
-            let err = (0, generator_1.generateAppFolder)(appSetting);
+            const err = (0, generator_1.generateAppFolder)(appSetting);
             if (err && typeof err === 'string') {
                 console.log(chalk_1.default.red(err));
                 return;
@@ -264,8 +263,8 @@ const initializeCommand = (program) => {
                 console.log('');
             }
         }
-        catch (error) {
-            console.log(chalk_1.default.red(error));
+        catch (err) {
+            console.log(chalk_1.default.red(err));
         }
     }));
     program
@@ -274,24 +273,25 @@ const initializeCommand = (program) => {
         .option('--install', 'Install dependencies or not')
         .option('--quick', 'Quickly create a kintone project')
         .option('-p, --project-name <projectName>', 'Project name')
+        // eslint-disable-next-line max-statements
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         let packageInfo = {};
         if (cmd.quick) {
-            packageInfo['name'] = 'kintone-customization-project';
-            packageInfo['version'] = defaultProjectVersion;
-            packageInfo['description'] = 'kintone customization project';
-            packageInfo['author'] = '';
-            packageInfo['license'] = 'MIT';
-            packageInfo['dependencies'] = {};
-            packageInfo['dependencies']['@kintone/kintone-ui-component'] = true;
-            packageInfo['dependencies']['@kintone/rest-api-client'] = true;
+            packageInfo.name = 'kintone-customization-project';
+            packageInfo.version = defaultProjectVersion;
+            packageInfo.description = 'kintone customization project';
+            packageInfo.author = '';
+            packageInfo.license = 'MIT';
+            packageInfo.dependencies = {};
+            packageInfo.dependencies['@kintone/kintone-ui-component'] = true;
+            packageInfo.dependencies['@kintone/rest-api-client'] = true;
         }
         else {
             console.log(chalk_1.default.yellow('Welcome to kintone-cli!'));
             console.log(chalk_1.default.yellow('Please, input below information so we can get started!'));
         }
         if (cmd.projectName) {
-            packageInfo['name'] = cmd.projectName;
+            packageInfo.name = cmd.projectName;
         }
         // ask info about project
         const answer = yield (0, inquirer_1.prompt)([
@@ -300,91 +300,96 @@ const initializeCommand = (program) => {
                 name: 'name',
                 message: 'Project name',
                 default: 'kintone-customization-project',
-                when: !packageInfo['name']
+                when: !packageInfo.name
             },
             {
                 type: 'input',
                 name: 'version',
                 message: 'Version',
                 default: defaultProjectVersion,
-                when: !packageInfo['version']
+                when: !packageInfo.version
             },
             {
                 type: 'input',
                 name: 'description',
                 message: 'Description',
                 default: 'kintone customization project',
-                when: !packageInfo['description']
+                when: !packageInfo.description
             },
             {
                 type: 'input',
                 name: 'author',
                 message: 'Author',
                 default: '',
-                when: packageInfo['author'] === undefined
+                when: packageInfo.author === undefined
             },
             {
                 type: 'input',
                 name: 'license',
                 message: 'License',
                 default: 'MIT',
-                when: !packageInfo['license']
+                when: !packageInfo.license
             },
             {
                 type: 'confirm',
                 name: 'dependencies.@kintone/kintone-ui-component',
                 message: 'Do you want to use @kintone/kintone-ui-component?',
                 default: true,
-                when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/kintone-ui-component'] === undefined
+                when: packageInfo.dependencies &&
+                    packageInfo.dependencies['@kintone/kintone-ui-component'] ===
+                        undefined
             },
             {
                 type: 'confirm',
                 name: 'dependencies.@kintone/rest-api-client',
                 message: 'Do you want to use @kintone/rest-api-client?',
                 default: true,
-                when: packageInfo['dependencies'] && packageInfo['dependencies']['@kintone/rest-api-client'] === undefined
+                when: packageInfo.dependencies &&
+                    packageInfo.dependencies['@kintone/rest-api-client'] === undefined
             }
         ]);
         packageInfo = Object.assign(Object.assign({}, packageInfo), answer);
-        if (packageInfo['dependencies']['@kintone/kintone-ui-component'])
-            packageInfo['dependencies']['@kintone/kintone-ui-component'] = latestUIComponentVersion;
+        if (packageInfo.dependencies['@kintone/kintone-ui-component'])
+            packageInfo.dependencies['@kintone/kintone-ui-component'] =
+                latestUIComponentVersion;
         else
-            delete packageInfo['dependencies']['@kintone/kintone-ui-component'];
-        if (packageInfo['dependencies']['@kintone/rest-api-client'])
-            packageInfo['dependencies']['@kintone/rest-api-client'] = latestKintoneRestApiClientVersion;
+            delete packageInfo.dependencies['@kintone/kintone-ui-component'];
+        if (packageInfo.dependencies['@kintone/rest-api-client'])
+            packageInfo.dependencies['@kintone/rest-api-client'] =
+                latestKintoneRestApiClientVersion;
         else
-            delete packageInfo['dependencies']['@kintone/rest-api-client'];
+            delete packageInfo.dependencies['@kintone/rest-api-client'];
         // create project folder
-        const projectFolder = global['currentDir'] + '/' + packageInfo['name'];
+        const projectFolder = global.currentDir + '/' + packageInfo.name;
         if ((0, fs_1.existsSync)(projectFolder)) {
             console.error(chalk_1.default.red('Project folder already exists! Please, run the cli again and choose another project name.'));
             process.exit(-1);
         }
         (0, fs_1.mkdirSync)(projectFolder);
         // write project info object to package.json
-        if (!packageInfo['devDependencies']) {
-            packageInfo['devDependencies'] = {};
+        if (!packageInfo.devDependencies) {
+            packageInfo.devDependencies = {};
         }
-        packageInfo['devDependencies']['local-web-server'] = '^2.6.1';
-        if (!packageInfo['scripts']) {
-            packageInfo['scripts'] = {};
+        packageInfo.devDependencies['local-web-server'] = '^2.6.1';
+        if (!packageInfo.scripts) {
+            packageInfo.scripts = {};
         }
-        packageInfo['scripts']['dev'] = 'ws';
+        packageInfo.scripts.dev = 'ws';
         const packageJsonPath = projectFolder + '/package.json';
         (0, jsonfile_1.writeFileSync)(packageJsonPath, packageInfo, { spaces: 2, EOL: '\r\n' });
         process.chdir(projectFolder);
-        spawnSync('git', ['init'], { stdio: "inherit" });
+        spawnSync('git', ['init'], { stdio: 'inherit' });
         (0, fs_1.writeFileSync)(`${projectFolder}/.gitignore`, 'node_modules');
         // if install is specified run npm install
         if (cmd.install) {
             console.log(chalk_1.default.yellow('Installing dependencies...'));
-            spawnSync('npm', ['i'], { stdio: "inherit", windowsHide: true });
+            spawnSync('npm', ['i'], { stdio: 'inherit', windowsHide: true });
         }
         console.log('');
         console.log(chalk_1.default.yellow('Project created!'));
         console.log(chalk_1.default.yellow('To create new app, use:'));
         console.log('');
-        console.log(chalk_1.default.green(`   cd ${packageInfo['name']}`));
+        console.log(chalk_1.default.green(`   cd ${packageInfo.name}`));
         console.log('');
         console.log(chalk_1.default.green('   kintone-cli create-template'));
         console.log('');

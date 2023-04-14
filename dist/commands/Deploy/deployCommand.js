@@ -19,14 +19,14 @@ const deployCommand = (program) => {
         .command('deploy')
         .option('--app-name <appName>', 'App name')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
-        let error = validator_1.default.deployValidator(cmd);
+        const error = validator_1.default.deployValidator(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
             return;
         }
         try {
-            let config = (0, jsonfile_1.readFileSync)(`${cmd['appName']}/config.json`);
-            if ((0, fs_1.existsSync)(`${cmd['appName']}/webpack.config.js`)) {
+            const config = (0, jsonfile_1.readFileSync)(`${cmd.appName}/config.json`);
+            if ((0, fs_1.existsSync)(`${cmd.appName}/webpack.config.js`)) {
                 config.useWebpack = true;
             }
             if (config.type === 'Customization') {
@@ -36,8 +36,8 @@ const deployCommand = (program) => {
                 (0, deployer_1.deployPlugin)(config);
             }
         }
-        catch (error) {
-            console.log(error);
+        catch (err) {
+            console.log(err);
         }
     }));
 };

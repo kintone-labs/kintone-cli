@@ -8,7 +8,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
     if (useTypescript) {
         configEntry = 'config.ts';
         jsRules = `{
-                test: /\.ts?$/,
+                test: /.ts?$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
@@ -19,7 +19,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
             },`;
         if (useReact) {
             jsRules += `{
-                test: /\.tsx?$/,
+                test: /.tsx?$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
@@ -34,7 +34,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
     else {
         configEntry = 'config.js';
         jsRules = `{
-                test: /\.js?$/,
+                test: /.js?$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader'
@@ -42,7 +42,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
             },`;
         if (useReact) {
             jsRules += `{
-                    test: /\.jsx?$/,
+                    test: /.jsx?$/,
                     exclude: /node_modules/,
                     use: {
                         loader: 'babel-loader',
@@ -69,7 +69,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
                 rules: [
                     ${jsRules}
                     {
-                        test: /\.css$/,
+                        test: /.css$/,
                         use: ['style-loader', 'css-loader']
                     }
                 ]
@@ -95,7 +95,7 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
                 rules: [
                     ${jsRules}
                     {
-                        test: /\.css$/,
+                        test: /.css$/,
                         use: ['style-loader', 'css-loader']
                     }
                 ]
@@ -109,19 +109,17 @@ const buildWebpackReactTemplate = ({ entry, useTypescript, useReact, appName, ty
         ${pluginConfig}
 
         module.exports = (env, argv) => {
-            'use strict';
             if (argv.mode === 'development') {
                 config.devtool = 'source-map';
-                ${type === 'Plugin' &&
-        `configPlugin.devtool='source-map';`}
+                ${type === 'Plugin' ? `configPlugin.devtool='source-map';` : ''}
             }
 
             if (argv.mode === 'production') {
               //...
             }
-            ${type === 'Plugin' ?
-        'return [config, configPlugin];' :
-        'return [config];'}
+            ${type === 'Plugin'
+        ? 'return [config, configPlugin];'
+        : 'return [config];'}
         };`;
 };
 exports.buildWebpackReactTemplate = buildWebpackReactTemplate;

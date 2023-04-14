@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     authValidator: (params) => {
-        if (!params['appName']) {
+        if (!params.appName) {
             return 'App name missing';
         }
         return false;
