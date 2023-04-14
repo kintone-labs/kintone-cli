@@ -25,7 +25,7 @@
     "cross-spawn": "^7.0.3",
     "inquirer": "^8.2.5",
     "jsonfile": "^6.1.0",
-    "strip-ansi": "^5.2.0"
+    "strip-ansi": "^7.0.1"
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^18.0.3",
