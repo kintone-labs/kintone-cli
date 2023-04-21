@@ -47,11 +47,11 @@ If --quick flag is specified, Kintone CLI will init a project with default param
 
 Ask if user wants to create-template after finishing init project.
 ### 2. Create customization / plugin template
-Go to the project forder
+Go to the project forder.
 ```
 cd {project name}
 ```
-Create a JS customization|plugin folder structure in project folder.
+Create a JS customization or a plugin project structure under the project folder.
 ```
 kintone-cli create-template
     [--quick]
