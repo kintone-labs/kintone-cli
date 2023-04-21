@@ -48,6 +48,7 @@ If --quick flag is specified, Kintone CLI will init a project with default param
 Ask if user wants to create-template after finishing init project.
 ### 2. Create customization / plugin template
 ```
+cd {projectName}
 kintone-cli create-template
     [--quick]
     [--preset React|ReactTS]
