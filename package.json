@@ -33,7 +33,7 @@
     "@types/inquirer": "^8.2.5",
     "@types/jsonfile": "^6.1.0",
     "@types/node": "^18.11.18",
-    "eslint": "^8.38.0",
+    "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "lodash": "^4.17.21",
