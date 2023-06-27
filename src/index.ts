@@ -10,7 +10,7 @@ import * as path from 'path';
 global.cliRoot = path.resolve(path.dirname(require.main.filename) + '/../');
 global.currentDir = process.cwd();
 
-program.version('0.4.3').description('kintone Node CLI');
+program.version('0.5.0').description('kintone Node CLI');
 
 initializeCommand(program);
 buildCommand(program);

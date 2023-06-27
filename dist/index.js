@@ -11,7 +11,7 @@ const authCommand_1 = require("./commands/Auth/authCommand");
 const path = require("path");
 global.cliRoot = path.resolve(path.dirname(require.main.filename) + '/../');
 global.currentDir = process.cwd();
-program.version('0.4.3').description('kintone Node CLI');
+program.version('0.5.0').description('kintone Node CLI');
 (0, initializeCommand_1.default)(program);
 (0, buildCommand_1.default)(program);
 (0, deployCommand_1.default)(program);
