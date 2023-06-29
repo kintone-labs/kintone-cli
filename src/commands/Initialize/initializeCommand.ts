@@ -18,6 +18,7 @@ const initializeCommand = (program: CommanderStatic) => {
 
   program
     .command('create-template')
+    .description('Create customization/plugin template')
     .option('-q, --quick', 'Use default template')
     .option('--yes', 'Use default template')
     .option('--preset <preset>', 'Preset for generating template')

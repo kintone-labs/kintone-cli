@@ -16,6 +16,7 @@ const spawnSync = spawn.sync;
 const lintCommand = (program) => {
     program
         .command('lint')
+        .description('Check/fix code using @cybozu/eslint-config')
         .option('--fix', 'Auto fix eslint errors')
         .option('--app-name <appName>', 'Name of template folder to run eslint')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
