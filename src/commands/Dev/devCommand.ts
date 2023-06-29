@@ -76,7 +76,7 @@ const devCommand = (program: CommanderStatic) => {
   program
     .command('dev')
     .option('--watch', 'Watch for changes in source code')
-    .option('--app-name <appName>', 'Watch for changes in source code')
+    .option('--app-name <appName>', 'App name')
     .option('--localhost', 'Use localhost as link')
     .action(async (cmd) => {
       const error = validator.devValidator(cmd);
