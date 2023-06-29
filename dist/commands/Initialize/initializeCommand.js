@@ -26,7 +26,6 @@ const initializeCommand = (program) => {
         .command('create-template')
         .description('Create customization/plugin template')
         .option('-q, --quick', 'Use default template')
-        .option('--yes', 'Use default template')
         .option('--preset <preset>', 'Preset for generating template')
         .option('-t, --type <type>', 'Set app type')
         .option('-a, --set-auth', 'Set authentication credentials')
@@ -50,7 +49,7 @@ const initializeCommand = (program) => {
         }
         try {
             let answer = {};
-            if (cmd.quick || cmd.yes) {
+            if (cmd.quick) {
                 cmd.setAuth = false;
                 cmd.useProxy = false;
                 cmd.useTypescript = false;
