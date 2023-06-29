@@ -8,6 +8,7 @@ import { buildUsingWebpack, buildVanillaJS, buildPlugin } from './builder';
 const buildCommand = (program: CommanderStatic) => {
   program
     .command('build')
+    .description('Build customization/plugin')
     .option('--app-name <appName>', 'App name')
     .action(async (cmd) => {
       const error = validator.buildValidator(cmd);

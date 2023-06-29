@@ -24,6 +24,7 @@ const initializeCommand = (program) => {
     const defaultProjectVersion = '1.0.0';
     program
         .command('create-template')
+        .description('Create customization/plugin template')
         .option('-q, --quick', 'Use default template')
         .option('--preset <preset>', 'Preset for generating template')
         .option('-t, --type <type>', 'Set app type')

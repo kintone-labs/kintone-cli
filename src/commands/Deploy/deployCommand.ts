@@ -8,6 +8,7 @@ import { existsSync } from 'fs';
 const deployCommand = (program: CommanderStatic) => {
   program
     .command('deploy')
+    .description('Deploy customization/plugin for production')
     .option('--app-name <appName>', 'App name')
     .action(async (cmd) => {
       const error = validator.deployValidator(cmd);
