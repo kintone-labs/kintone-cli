@@ -1,4 +1,4 @@
-import { CommanderStatic, description } from 'commander';
+import { CommanderStatic } from 'commander';
 import chalk from 'chalk';
 import validator from './validator';
 import { readFileSync } from 'jsonfile';
