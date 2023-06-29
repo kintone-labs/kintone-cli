@@ -19,7 +19,6 @@ const initializeCommand = (program: CommanderStatic) => {
   program
     .command('create-template')
     .option('-q, --quick', 'Use default template')
-    .option('--yes', 'Use default template')
     .option('--preset <preset>', 'Preset for generating template')
     .option('-t, --type <type>', 'Set app type')
     .option('-a, --set-auth', 'Set authentication credentials')
@@ -43,7 +42,7 @@ const initializeCommand = (program: CommanderStatic) => {
       }
       try {
         let answer: any = {};
-        if (cmd.quick || cmd.yes) {
+        if (cmd.quick) {
           cmd.setAuth = false;
           cmd.useProxy = false;
           cmd.useTypescript = false;
