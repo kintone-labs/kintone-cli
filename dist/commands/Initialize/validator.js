@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const scopes = ['ALL', 'ADMIN', 'NONE'];
 exports.default = {
     appValidator: (params) => {
         if (params.type &&
@@ -12,12 +13,8 @@ exports.default = {
             params.preset !== 'ReactTS') {
             return 'Invalid Preset';
         }
-        if (params.scope &&
-            params.scope !== 'ALL' &&
-            params.scope !== 'ADMIN' &&
-            params.scope !== 'NONE') {
+        if (scopes.indexOf(params.scope) === -1)
             return 'Invalid Scope';
-        }
         return false;
     }
 };
