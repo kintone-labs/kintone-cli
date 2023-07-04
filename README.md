@@ -76,6 +76,9 @@ kintone-cli create-template
     [--app-name <appName>]
     [--app-id <App ID (for Customization) >]
 ```
+
+The --scope flag is for setting the scope of customization; therefore, setting the value of --scope when creating a plugin template will have no effect to the app.
+
 If the flag --quick is present, CLI will set default values for the following options:
 ```
 --type: 'Customization'
