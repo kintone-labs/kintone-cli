@@ -12,6 +12,12 @@ exports.default = {
             params.preset !== 'ReactTS') {
             return 'Invalid Preset';
         }
+        if (params.scope &&
+            params.scope !== 'ALL' &&
+            params.scope !== 'ADMIN' &&
+            params.scope !== 'NONE') {
+            return 'Invalid Scope';
+        }
         /* if (params['domain']) {
                 try {
                     let result = url.parse(params['domain']);

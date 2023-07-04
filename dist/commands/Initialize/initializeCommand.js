@@ -27,6 +27,7 @@ const initializeCommand = (program) => {
         .option('-q, --quick', 'Use default template')
         .option('--preset <preset>', 'Preset for generating template')
         .option('-t, --type <type>', 'Set app type')
+        .option('--scope <scope>', 'Set scope of customization')
         .option('-a, --set-auth', 'Set authentication credentials')
         .option('-d, --domain <domain>', 'Set kintone domain')
         .option('-u, --username <username>', 'Set username')
