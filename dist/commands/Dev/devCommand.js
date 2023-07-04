@@ -78,8 +78,9 @@ const readLineAsync = () => {
 const devCommand = (program) => {
     program
         .command('dev')
+        .description('Deploy customization/plugin for development')
         .option('--watch', 'Watch for changes in source code')
-        .option('--app-name <appName>', 'Watch for changes in source code')
+        .option('--app-name <appName>', 'App name')
         .option('--localhost', 'Use localhost as link')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         const error = validator_1.default.devValidator(cmd);

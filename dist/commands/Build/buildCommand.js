@@ -17,6 +17,7 @@ const builder_1 = require("./builder");
 const buildCommand = (program) => {
     program
         .command('build')
+        .description('Build customization/plugin')
         .option('--app-name <appName>', 'App name')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         const error = validator_1.default.buildValidator(cmd);

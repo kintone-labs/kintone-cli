@@ -17,7 +17,8 @@ const string_1 = require("../../utils/string");
 const authCommand = (program) => {
     program
         .command('auth')
-        .option('-a, --app-name <appName>', 'Kintone domain')
+        .description('Set authentication credentials')
+        .option('-a, --app-name <appName>', 'App name')
         .option('-d, --domain <domain>', 'Kintone domain')
         .option('-u, --username <username>', 'Kintone username')
         .option('-p, --password <password>', 'Kintone password')
