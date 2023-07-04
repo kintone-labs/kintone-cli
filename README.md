@@ -47,7 +47,7 @@ If --quick flag is specified, Kintone CLI will init a project with the following
 ```
 --project-name: 'kintone-customization-project'
 ```
-In addition, this boolean option will set to ``true``:
+In addition, this boolean option will be set to ``true``:
 ```
 --install
 ```
@@ -77,7 +77,7 @@ kintone-cli create-template
     [--app-id <App ID (for Customization) >]
 ```
 
-The --scope flag is for setting the scope of customization; therefore, setting the value of --scope when creating a plugin template will have no effect to the app.
+The --scope flag is for setting the scope of customization; therefore, setting the value of --scope when creating a plugin template will have no effect on the app.
 
 If the flag --quick is present, CLI will set default values for the following options:
 ```
@@ -86,7 +86,7 @@ If the flag --quick is present, CLI will set default values for the following op
 --scope: 'ALL'
 ``` 
 
-In addition, the below boolean options will set to ``false``:
+In addition, the below boolean options will be set to ``false``:
 ```
 --set-auth
 --use-typescript
