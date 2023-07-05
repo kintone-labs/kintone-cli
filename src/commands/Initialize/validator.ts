@@ -16,7 +16,8 @@ export default {
     ) {
       return 'Invalid Preset';
     }
-    if (scopes.indexOf(params.scope) === -1) return 'Invalid Scope';
+    if (params.scope && scopes.indexOf(params.scope) === -1)
+      return 'Invalid Scope';
 
     return false;
   }

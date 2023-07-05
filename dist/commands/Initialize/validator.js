@@ -13,7 +13,7 @@ exports.default = {
             params.preset !== 'ReactTS') {
             return 'Invalid Preset';
         }
-        if (scopes.indexOf(params.scope) === -1)
+        if (params.scope && scopes.indexOf(params.scope) === -1)
             return 'Invalid Scope';
         return false;
     }
