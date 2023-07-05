@@ -1,3 +1,5 @@
+const scopes = ['ALL', 'ADMIN', 'NONE'];
+
 export default {
   appValidator: (params: any): boolean | string => {
     if (
@@ -14,6 +16,8 @@ export default {
     ) {
       return 'Invalid Preset';
     }
+    if (params.scope && scopes.indexOf(params.scope) === -1)
+      return 'Invalid Scope';
 
     return false;
   }
