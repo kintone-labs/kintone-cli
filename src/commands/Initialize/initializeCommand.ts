@@ -259,23 +259,23 @@ const createProjectFolder = (packageInfo) => {
 async function processProjectInfo(packageInfo) {
   const prompts = getPromptsInit(packageInfo);
   const answers = await prompt(prompts);
-  packageInfo = { ...packageInfo, ...answers };
+  const updatedPackageInfo = { ...packageInfo, ...answers };
 
-  if (packageInfo.dependencies['@kintone/kintone-ui-component']) {
-    packageInfo.dependencies['@kintone/kintone-ui-component'] =
+  if (updatedPackageInfo.dependencies['@kintone/kintone-ui-component']) {
+    updatedPackageInfo.dependencies['@kintone/kintone-ui-component'] =
       latestUIComponentVersion;
   } else {
-    delete packageInfo.dependencies['@kintone/kintone-ui-component'];
+    delete updatedPackageInfo.dependencies['@kintone/kintone-ui-component'];
   }
 
-  if (packageInfo.dependencies['@kintone/rest-api-client']) {
-    packageInfo.dependencies['@kintone/rest-api-client'] =
+  if (updatedPackageInfo.dependencies['@kintone/rest-api-client']) {
+    updatedPackageInfo.dependencies['@kintone/rest-api-client'] =
       latestKintoneRestApiClientVersion;
   } else {
-    delete packageInfo.dependencies['@kintone/rest-api-client'];
+    delete updatedPackageInfo.dependencies['@kintone/rest-api-client'];
   }
 
-  return packageInfo;
+  return updatedPackageInfo;
 }
 
 const spawnSync = spawn.sync;
