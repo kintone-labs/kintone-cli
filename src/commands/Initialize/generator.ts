@@ -10,17 +10,17 @@ import * as spawn from 'cross-spawn';
 import { AppOption, EslintRcParams, WebpackParams } from '../../dto/app';
 import { buildEslintRcTemplate } from './eslintRcTemplate';
 import { generateSample } from './sampleCode';
+import {
+  PLUGIN_CONFIG_HTML_TEMPLATE,
+  APP_FOLDER_EXISTED,
+  PACKAGE_JSON_NOT_FOUND,
+  DECLARE_KINTONE,
+  WRITE_FILE_OPTIONS,
+  DEPENDENCIES
+} from '../../constant';
 
 const imageBase64 =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAYAAACohjseAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABVtJREFUeNrcm0tsG1UUhs+MZ/x2HLutKZQ+ojSpiqKItEWIR6SAhJC6aSPURaUuaiSgGyIQEosuYEUEC0RUWHTVdAcFiRIJUbFoE1F1UYgUhBKgSkrSFrWxUWM7tvFr7HDP9YwZz4wd2/E83F+6sWd8PTNfzrnn3Dl3zEAdHTm/eJy8HCNthLR9YC2tkDZD2tTsmb7vanViaoAh0KQFoerBhgnojPIDVgPuM/Iy3UFwIF7rtHjttS1IOqDVTkNn6yKxZFhlQZG+0+FQp+WWZGRjbhoeLb2EY1Ky4KRVrmow5IDeAN+OQ1EmRkwFl80GQ6gPXgzCYx4bXJm/D5/ejAPn6d7qYUc5Mc+Zqld63PDes2WYVE6ACzduQy6RodtbhDzGiUncNJ055Ifj/Z7K9jezd2BVhMs9/HurkCOsmflu9ICnCg7B0HpyIaSQjoPXzsKHw8Fmx+c+1sxg8taQv2rf+JUFzb4IebKfg+d2OeHdwx4o5bMNn4c1b9y5VPseiK6p1E6/C14b2E7f79/uhmx0uWFI0wCff9Kp2nd04AnNvmePDlTeL0aTsFEqNgxpGqCHV5/6xJG90BfyVe0b7gvB0O5AZXuJAKIaheTMAoykizTnyeV1cHDu5DMwd3eNgjy9J1gFh8LPJEmQzlAPsHantQD/ihdUgBIkWg2bUpgjcRIg12aQprno5Vvppr+DOVJL9dzVNMDfojlIZPIN90frfV0DsB6kaYBvPsVCgSRwQRAa6j/+wzyFrCctSFMAhx9naFtPpiASeQDJ5DoUi0XNvji7GftqFq4vRhs6thLS8CCz18dQ6/2byUAylQIM+gKBy2YzkCsx8O1CDHwk0GDSx0i6KKaFZiRBOnbsMRbQTc529hBxTeKW60n1hX/04xLMr6baci4KGVk21kURzmnbgLVYHEqljTK0y0XbhZv32wZnSpA51c9S94wROGm88TwH3f4umF5ag+9//0eX87JGBZVXdzNkzKUhly+nBpZlYFswCMtrGWo9vcQaEVTQetlcjgYVSQiXKZTgk6srkM4XOxMQg8o7gyzwIEA8kajs93f5gOc4ChdN5XX9B+sKiHBBxwaFkwcVj9sNl36N6BJUDANEtzwYYChcoSBUgkoXsd7PdxNwaW7VkOCmC+DhHf8HlWw2Vwkqwe5uuBPLwufX7xmWmlg9ggrOVJRBBeGyJJZ8QeD0DCq6AmJQeeMgAw6mqAoqdrudWg7TgpFqKyBaDi1os9nA5/XSfU6noxJUcOwZrZbnoliNxsIR1lZ6A2RynBRgl0uAHHHNQiFPoTAVcDwPCyRaGhVU2gKIBVisUcq1P2gnf+3gcrkpYCpVnkxjnvuY5Duz1LSLnhrwqeCU4nk7BALboMjadZ+ptBUQy+dYbm+4v9cHGfPYmgdEy2nVM2sCkhvX11/o7RxADCxN30lolP8sG2QGQ/aq7ckbt2HuXqwcZEI+GHv5gKYVOwIQV4PkwiKQfKlLqjhrQXaMi0rC8t25a7dU+7EwqyztbVbqsySgfBVWKWUVrNFyn+kuimsJ2NyMoFqFlTSkWCyhlr76Z2cApvIleP/aQ7DFa9/qvC0bfwg39uUvlnDRlWYg486dmqs48rU9Ca6Vom2btYKAM818g2FtqqUqeULHtHHi/E9WgEPNoItOQZPPqEmQ0hqA18nTwIPlduX6ncmakp5VW4YWHidpZq3cDPf8Y3y0R0oT4VaOoOWuFlK4kgfFJ2UnHiHICWI9Glva9kCshdz1IoELa85kxCdlO9mSE3I4lQVllhyBFh9KN8mSmMvDkltuCigDbelnBQZBrog5fIqA1fxZwX8CDABQJHv904sMOAAAAABJRU5ErkJggg==';
-const PLUGIN_CONFIG_HTML_TEMPLATE = `<span>Hello from kintone CLI</span>`;
-const APP_FOLDER_EXISTED = 'App folder existed';
-const PACKAGE_JSON_NOT_FOUND = 'package.json not found';
-const DECLARE_KINTONE = 'declare let kintone: any;';
-const WRITE_FILE_OPTIONS = {
-  spaces: 4,
-  EOL: '\r\n'
-};
 
 const spawnSync = spawn.sync;
 
@@ -67,26 +67,30 @@ function configureWebpack(option: AppOption, packageJSON, manifestJSON) {
   ensurePropertyExists(packageJSON, 'devDependencies');
   const devDependencies = packageJSON.devDependencies;
 
-  devDependencies.webpack = '^5.78.0';
-  devDependencies['webpack-cli'] = '^5.0.1';
-  devDependencies['babel-loader'] = '^9.1.2';
-  devDependencies['style-loader'] = '^3.3.2';
-  devDependencies['css-loader'] = '^6.7.3';
-  devDependencies['core-js'] = '^3.30.0';
-  devDependencies['regenerator-runtime'] = '^0.13.11';
-  devDependencies['@babel/core'] = '^7.21.4';
-  devDependencies['@babel/preset-env'] = '^7.21.4';
-  devDependencies['@babel/plugin-proposal-class-properties'] = '^7.18.6';
-  devDependencies['@babel/plugin-syntax-dynamic-import'] = '^7.8.3';
+  devDependencies.webpack = DEPENDENCIES.webpack;
+  devDependencies['webpack-cli'] = DEPENDENCIES['webpack-cli'];
+  devDependencies['babel-loader'] = DEPENDENCIES['babel-loader'];
+  devDependencies['style-loader'] = DEPENDENCIES['style-loader'];
+  devDependencies['css-loader'] = DEPENDENCIES['css-loader'];
+  devDependencies['core-js'] = DEPENDENCIES['core-js'];
+  devDependencies['regenerator-runtime'] = DEPENDENCIES['regenerator-runtime'];
+  devDependencies['@babel/core'] = DEPENDENCIES['@babel/core'];
+  devDependencies['@babel/preset-env'] = DEPENDENCIES['@babel/preset-env'];
+  devDependencies['@babel/plugin-proposal-class-properties'] =
+    DEPENDENCIES['@babel/plugin-proposal-class-properties'];
+  devDependencies['@babel/plugin-syntax-dynamic-import'] =
+    DEPENDENCIES['@babel/plugin-syntax-dynamic-import'];
 
   ensurePropertyExists(packageJSON, 'scripts');
   const scripts = packageJSON.scripts;
 
   if (option.useTypescript) {
-    devDependencies['@babel/preset-typescript'] = '^7.21.4';
+    devDependencies['@babel/preset-typescript'] =
+      DEPENDENCIES['@babel/preset-typescript'];
   }
   if (option.useReact) {
-    devDependencies['@babel/preset-react'] = '^7.18.6';
+    devDependencies['@babel/preset-react'] =
+      DEPENDENCIES['@babel/preset-react'];
   }
 
   scripts[
@@ -168,11 +172,12 @@ const createTsConfigJSON = (option: AppOption) => {
 
 function configureTypescript(option: AppOption, packageJSON) {
   ensurePropertyExists(packageJSON, 'devDependencies');
+  const devDependencies = packageJSON.devDependencies;
 
-  packageJSON.devDependencies.typescript = '^4.9.5';
+  devDependencies.typescript = DEPENDENCIES.typescript;
   if (option.useReact) {
-    packageJSON.devDependencies['@types/react'] = '^17.0.56';
-    packageJSON.devDependencies['@types/react-dom'] = '^17.0.19';
+    devDependencies['@types/react'] = DEPENDENCIES['@types/react'];
+    devDependencies['@types/react-dom'] = DEPENDENCIES['@types/react-dom'];
   }
 
   const tsConfigJSON = createTsConfigJSON(option);
@@ -239,8 +244,9 @@ function configureCybozuLint(option: AppOption, packageJSON) {
 function ensureDevDependenciesCybozuLint(packageJSON) {
   ensurePropertyExists(packageJSON, 'devDependencies');
   const devDependencies = packageJSON.devDependencies;
-  devDependencies.eslint = '^8.38.0';
-  devDependencies['@cybozu/eslint-config'] = '>=18.0.3';
+  devDependencies.eslint = DEPENDENCIES.eslint;
+  devDependencies['@cybozu/eslint-config'] =
+    DEPENDENCIES['@cybozu/eslint-config'];
   writeFileSync(`package.json`, packageJSON, { spaces: 2, EOL: '\r\n' });
 }
 
@@ -254,16 +260,18 @@ function createEslintRcFile(option: AppOption, appName) {
 
 function configureReact(packageJSON) {
   ensurePropertyExists(packageJSON, 'dependencies');
-  packageJSON.dependencies.react = '^17.0.2';
-  packageJSON.dependencies['react-dom'] = '^17.0.2';
+  packageJSON.dependencies.react = DEPENDENCIES.react;
+  packageJSON.dependencies['react-dom'] = DEPENDENCIES['react-dom'];
   writeFileSync(`package.json`, packageJSON, WRITE_FILE_OPTIONS);
 }
 
 function ensureDevDependenciesPlugin(packageJSON) {
   ensurePropertyExists(packageJSON, 'devDependencies');
   const devDependencies = packageJSON.devDependencies;
-  devDependencies['@kintone/plugin-packer'] = '^6.0.32';
-  devDependencies['@kintone/plugin-uploader'] = '7.1.10';
+  devDependencies['@kintone/plugin-packer'] =
+    DEPENDENCIES['@kintone/plugin-packer'];
+  devDependencies['@kintone/plugin-uploader'] =
+    DEPENDENCIES['@kintone/plugin-uploader'];
   writeFileSync(`package.json`, packageJSON, WRITE_FILE_OPTIONS);
 }
 
@@ -379,7 +387,8 @@ const generateAppFolder = (option: AppOption): string | boolean => {
   if (option.type === 'Plugin') {
     configurePlugin(option, packageJSON, manifestJSON);
   } else {
-    packageJSON.devDependencies['@kintone/customize-uploader'] = '^6.0.33';
+    packageJSON.devDependencies['@kintone/customize-uploader'] =
+      DEPENDENCIES['@kintone/customize-uploader'];
     writeFileSync(`package.json`, packageJSON, WRITE_FILE_OPTIONS);
   }
 
