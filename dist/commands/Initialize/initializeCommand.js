@@ -16,10 +16,8 @@ const validator_1 = require("./validator");
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const generator_1 = require("./generator");
+const constant_1 = require("../../constant");
 const string_1 = require("../../utils/string");
-const latestUIComponentVersion = '^0.9.3';
-const latestKintoneRestApiClientVersion = '^3.3.9';
-const defaultProjectVersion = '1.0.0';
 const getPromptsCreateTemplate = (cmd) => {
     return [
         {
@@ -178,7 +176,7 @@ const getPromptsInit = (packageInfo) => {
             type: 'input',
             name: 'version',
             message: 'Version',
-            default: defaultProjectVersion,
+            default: constant_1.DEFAULT_PROJECT_VERSION,
             when: !packageInfo.version
         },
         {
@@ -257,14 +255,14 @@ function processProjectInfo(packageInfo) {
         const updatedPackageInfo = Object.assign(Object.assign({}, packageInfo), answers);
         if (updatedPackageInfo.dependencies['@kintone/kintone-ui-component']) {
             updatedPackageInfo.dependencies['@kintone/kintone-ui-component'] =
-                latestUIComponentVersion;
+                constant_1.DEPENDENCIES['@kintone/kintone-ui-component'];
         }
         else {
             delete updatedPackageInfo.dependencies['@kintone/kintone-ui-component'];
         }
         if (updatedPackageInfo.dependencies['@kintone/rest-api-client']) {
             updatedPackageInfo.dependencies['@kintone/rest-api-client'] =
-                latestKintoneRestApiClientVersion;
+                constant_1.DEPENDENCIES['@kintone/rest-api-client'];
         }
         else {
             delete updatedPackageInfo.dependencies['@kintone/rest-api-client'];
@@ -354,7 +352,7 @@ const initializeCommand = (program) => {
         let packageInfo = {};
         if (cmd.quick) {
             packageInfo.name = 'kintone-customization-project';
-            packageInfo.version = defaultProjectVersion;
+            packageInfo.version = constant_1.DEFAULT_PROJECT_VERSION;
             packageInfo.description = 'kintone customization project';
             packageInfo.author = '';
             packageInfo.license = 'MIT';
