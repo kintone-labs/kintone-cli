@@ -7,11 +7,9 @@ import { writeFileSync } from 'jsonfile';
 import { mkdirSync, existsSync, writeFileSync as writeFileSyncFS } from 'fs';
 
 import { generateAppFolder } from './generator';
-import { isDomain } from '../../utils/string';
 
-const latestUIComponentVersion = '^0.9.3';
-const latestKintoneRestApiClientVersion = '^3.3.9';
-const defaultProjectVersion = '1.0.0';
+import { DEFAULT_PROJECT_VERSION, DEPENDENCIES } from '../../constant';
+import { isDomain } from '../../utils/string';
 
 const getPromptsCreateTemplate = (cmd: any) => {
   return [
@@ -174,7 +172,7 @@ const getPromptsInit = (packageInfo) => {
       type: 'input',
       name: 'version',
       message: 'Version',
-      default: defaultProjectVersion,
+      default: DEFAULT_PROJECT_VERSION,
       when: !packageInfo.version
     },
     {
@@ -263,14 +261,14 @@ async function processProjectInfo(packageInfo) {
 
   if (updatedPackageInfo.dependencies['@kintone/kintone-ui-component']) {
     updatedPackageInfo.dependencies['@kintone/kintone-ui-component'] =
-      latestUIComponentVersion;
+      DEPENDENCIES['@kintone/kintone-ui-component'];
   } else {
     delete updatedPackageInfo.dependencies['@kintone/kintone-ui-component'];
   }
 
   if (updatedPackageInfo.dependencies['@kintone/rest-api-client']) {
     updatedPackageInfo.dependencies['@kintone/rest-api-client'] =
-      latestKintoneRestApiClientVersion;
+      DEPENDENCIES['@kintone/rest-api-client'];
   } else {
     delete updatedPackageInfo.dependencies['@kintone/rest-api-client'];
   }
@@ -363,7 +361,7 @@ const initializeCommand = (program: CommanderStatic) => {
       let packageInfo: any = {};
       if (cmd.quick) {
         packageInfo.name = 'kintone-customization-project';
-        packageInfo.version = defaultProjectVersion;
+        packageInfo.version = DEFAULT_PROJECT_VERSION;
         packageInfo.description = 'kintone customization project';
         packageInfo.author = '';
         packageInfo.license = 'MIT';

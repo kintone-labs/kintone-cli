@@ -7,9 +7,11 @@ import {
 } from 'fs';
 import { buildWebpackReactTemplate } from './webpackTemplate';
 import * as spawn from 'cross-spawn';
-import { AppOption, EslintRcParams, WebpackParams } from '../../dto/app';
+
 import { buildEslintRcTemplate } from './eslintRcTemplate';
 import { generateSample } from './sampleCode';
+
+import { AppOption, EslintRcParams, WebpackParams } from '../../dto/app';
 import {
   PLUGIN_CONFIG_HTML_TEMPLATE,
   APP_FOLDER_EXISTED,

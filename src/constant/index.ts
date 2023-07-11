@@ -2,6 +2,7 @@ export const PLUGIN_CONFIG_HTML_TEMPLATE = `<span>Hello from kintone CLI</span>`
 export const APP_FOLDER_EXISTED = 'App folder existed';
 export const PACKAGE_JSON_NOT_FOUND = 'package.json not found';
 export const DECLARE_KINTONE = 'declare let kintone: any;';
+export const DEFAULT_PROJECT_VERSION = '1.0.0';
 export const WRITE_FILE_OPTIONS = {
   spaces: 4,
   EOL: '\r\n'
@@ -30,5 +31,7 @@ export const DEPENDENCIES = {
   'react-dom': '^17.0.2',
   '@kintone/plugin-packer': '^6.0.32',
   '@kintone/plugin-uploader': '7.1.10',
-  '@kintone/customize-uploader': '^6.0.33'
+  '@kintone/customize-uploader': '^6.0.33',
+  '@kintone/kintone-ui-component': '^0.9.3',
+  '@kintone/rest-api-client': '^3.3.9'
 };
