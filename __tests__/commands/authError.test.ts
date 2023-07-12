@@ -1,5 +1,3 @@
-import path from 'path';
-
 import chalk from 'chalk';
 import { program, CommanderStatic } from 'commander';
 import {
@@ -12,8 +10,12 @@ import {
 } from '@jest/globals';
 
 import authCommand from '../../dist/commands/Auth/authCommand';
-import initCommand from '../../dist/commands/Initialize/initializeCommand';
-import { createTempDir, removeTempDir } from '../helpers';
+import {
+  createTempDir,
+  createTemplate,
+  initProject,
+  removeTempDir
+} from '../test-helpers';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = process.cwd();
@@ -25,8 +27,8 @@ describe('auth command: errors', () => {
   beforeAll(async () => {
     createTempDir(TEMP_DIR);
 
-    await _initProject();
-    await _createTemplate();
+    await initProject(TEMP_DIR, PROJECT_NAME);
+    await createTemplate(TEMP_DIR, PROJECT_NAME);
   });
 
   afterAll(() => {
@@ -42,37 +44,3 @@ describe('auth command: errors', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith(chalk.red('App name missing'));
   });
 });
-
-async function _initProject() {
-  process.chdir(path.join(TEMP_DIR));
-  global.currentDir = process.cwd();
-
-  initCommand(program);
-  process.argv = [
-    'node',
-    'dist',
-    'init',
-    '--quick',
-    '--project-name',
-    PROJECT_NAME
-  ];
-  await program.parseAsync(process.argv);
-}
-
-async function _createTemplate() {
-  process.chdir(TEMP_DIR + '/' + PROJECT_NAME);
-  global.currentDir = process.cwd();
-
-  initCommand(program);
-  process.argv = [
-    'node',
-    'dist',
-    'create-template',
-    '--quick',
-    '--app-name',
-    'test-app',
-    '--app-id',
-    '100'
-  ];
-  await program.parseAsync(process.argv);
-}
