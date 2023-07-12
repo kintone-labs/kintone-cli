@@ -14,11 +14,10 @@ import { generateSample } from './sampleCode';
 import { AppOption, EslintRcParams, WebpackParams } from '../../dto/app';
 import {
   PLUGIN_CONFIG_HTML_TEMPLATE,
-  APP_FOLDER_EXISTED,
-  PACKAGE_JSON_NOT_FOUND,
   DECLARE_KINTONE,
   WRITE_FILE_OPTIONS,
-  DEPENDENCIES
+  DEPENDENCIES,
+  ERRORS
 } from '../../constant';
 
 const imageBase64 =
@@ -346,7 +345,7 @@ function configureEntry(option: AppOption) {
 
 const generateAppFolder = (option: AppOption): string | boolean => {
   if (!existsSync('package.json')) {
-    return PACKAGE_JSON_NOT_FOUND;
+    return ERRORS.PACKAGE_JSON_NOT_FOUND;
   }
   const packageJSON = readFileSync('package.json');
   const manifestJSON: any = {};
@@ -360,7 +359,7 @@ const generateAppFolder = (option: AppOption): string | boolean => {
   manifestJSON.scope = option.scope;
 
   if (existsSync(option.appName)) {
-    return APP_FOLDER_EXISTED;
+    return ERRORS.APP_FOLDER_EXISTED;
   }
 
   mkdirSync(option.appName);

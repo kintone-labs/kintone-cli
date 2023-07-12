@@ -8,36 +8,44 @@ import { mkdirSync, existsSync, writeFileSync as writeFileSyncFS } from 'fs';
 
 import { generateAppFolder } from './generator';
 
-import { DEFAULT_PROJECT_VERSION, DEPENDENCIES } from '../../constant';
+import {
+  ERRORS,
+  DEFAULT_PROJECT_VERSION,
+  DEPENDENCIES,
+  MESSAGES
+} from '../../constant';
 import { isDomain } from '../../utils/string';
+import { AppType, CustomizationScope } from '../../dto/app';
 
 const getPromptsCreateTemplate = (cmd: any) => {
+  const appTypes: AppType[] = ['Customization', 'Plugin'];
+  const customizationScope: CustomizationScope[] = ['ALL', 'ADMIN', 'NONE'];
   return [
     {
       type: 'list',
       name: 'type',
-      message: 'What type of app you want to create ?',
-      choices: ['Customization', 'Plugin'],
+      message: MESSAGES.TYPE_OF_APP_PROMPT,
+      choices: appTypes,
       when: cmd.type === undefined
     },
     {
       type: 'confirm',
       name: 'setAuth',
-      message: 'Do you want to set authentication credentials ?',
+      message: MESSAGES.AUTHENTICATION_CREDENTIALS_PROMPT,
       when: cmd.setAuth === undefined
     },
     {
       type: 'input',
       name: 'domain',
-      message: 'What is your kintone domain ?',
+      message: MESSAGES.KINTONE_DOMAIN_PROMPT,
       when: (curAnswers: any) => {
         return (cmd.setAuth || curAnswers.setAuth) && !cmd.domain;
       },
       validate: (input: any, curAnswer: object): any => {
         if (!input.startsWith('https://'))
-          return 'Domain has to start with https';
+          return ERRORS.DOMAIN_STARTS_WITH_HTTPS;
         if (!isDomain(input)) {
-          return 'Please enter a valid domain';
+          return ERRORS.VALID_DOMAIN;
         }
         return true;
       }
@@ -45,7 +53,7 @@ const getPromptsCreateTemplate = (cmd: any) => {
     {
       type: 'input',
       name: 'username',
-      message: 'What is your kintone username ?',
+      message: MESSAGES.KINTONE_USERNAME_PROMPT,
       when: (curAnswers: any) => {
         return (cmd.setAuth || curAnswers.setAuth) && !cmd.username;
       }
@@ -53,7 +61,7 @@ const getPromptsCreateTemplate = (cmd: any) => {
     {
       type: 'password',
       name: 'password',
-      message: 'What is your kintone password ?',
+      message: MESSAGES.KINTONE_PASSWORD_PROMPT,
       when: (curAnswers: any) => {
         return (cmd.setAuth || curAnswers.setAuth) && !cmd.password;
       }
@@ -61,7 +69,7 @@ const getPromptsCreateTemplate = (cmd: any) => {
     {
       type: 'confirm',
       name: 'useProxy',
-      message: 'Do you use proxy ?',
+      message: MESSAGES.USE_PROXY_PROMPT,
       default: false,
       when: (curAnswers: any) => {
         return (cmd.setAuth || curAnswers.setAuth) && !cmd.proxy;
@@ -70,7 +78,7 @@ const getPromptsCreateTemplate = (cmd: any) => {
     {
       type: 'input',
       name: 'proxy',
-      message: 'Specify your proxy full URL, including port number:',
+      message: MESSAGES.PROXY_URL_PROMPT,
       when: (curAnswers: any) => {
         return curAnswers.useProxy && !cmd.proxy;
       }
@@ -78,25 +86,25 @@ const getPromptsCreateTemplate = (cmd: any) => {
     {
       type: 'confirm',
       name: 'useReact',
-      message: 'Do you want to use React ?',
+      message: MESSAGES.USE_REACT_PROMPT,
       when: cmd.useReact === undefined
     },
     {
       type: 'confirm',
       name: 'useTypescript',
-      message: 'Do you want to use TypeScript ?',
+      message: MESSAGES.USE_TYPESCRIPT_PROMPT,
       when: cmd.useTypescript === undefined
     },
     {
       type: 'confirm',
       name: 'useWebpack',
-      message: 'Do you want to use webpack ?',
+      message: MESSAGES.USE_WEBPACK_PROMPT,
       when: cmd.useWebpack === undefined
     },
     {
       type: 'input',
       name: 'entry',
-      message: 'What is the entry for webpack ?',
+      message: MESSAGES.WEBPACK_ENTRY_PROMPT,
       default: (curAnswers: any) => {
         let ext = '.js';
         const tempOption = { ...cmd, ...curAnswers };
@@ -116,17 +124,17 @@ const getPromptsCreateTemplate = (cmd: any) => {
     {
       type: 'confirm',
       name: 'useCybozuLint',
-      message: 'Do you want to use @cybozu/eslint-config for syntax checking ?',
+      message: MESSAGES.USE_ESLINT_CONFIG_PROMPT,
       when: cmd.useCybozuLint === undefined
     },
     {
       type: 'input',
       name: 'appName',
-      message: 'What is the app name ?',
+      message: MESSAGES.APP_NAME_PROMPT,
       when: cmd.appName === undefined,
       validate: (input) => {
         if (!input) {
-          return 'Missing app name';
+          return ERRORS.MISSING_APP_NAME;
         }
         return true;
       }
@@ -134,7 +142,7 @@ const getPromptsCreateTemplate = (cmd: any) => {
     {
       type: 'number',
       name: 'appID',
-      message: 'What is the app ID ?',
+      message: MESSAGES.APP_ID_PROMPT,
       when: (curAnswers: any) => {
         return (
           (cmd.setAuth || curAnswers.setAuth) &&
@@ -146,8 +154,8 @@ const getPromptsCreateTemplate = (cmd: any) => {
     {
       type: 'list',
       name: 'scope',
-      message: 'What is the scope of customization ?',
-      choices: ['ALL', 'ADMIN', 'NONE'],
+      message: MESSAGES.CUSTOMIZATION_SCOPE_PROMPT,
+      choices: customizationScope,
       when: (curAnswers: any) => {
         return (
           (cmd.type === 'Customization' ||
@@ -199,7 +207,7 @@ const getPromptsInit = (packageInfo) => {
     {
       type: 'confirm',
       name: 'dependencies.@kintone/kintone-ui-component',
-      message: 'Do you want to use @kintone/kintone-ui-component?',
+      message: MESSAGES.USE_KINTONE_UI_COMPONENT_PROMPT,
       default: true,
       when:
         packageInfo.dependencies &&
@@ -208,7 +216,7 @@ const getPromptsInit = (packageInfo) => {
     {
       type: 'confirm',
       name: 'dependencies.@kintone/rest-api-client',
-      message: 'Do you want to use @kintone/rest-api-client?',
+      message: MESSAGES.USE_REST_API_CLIENT_PROMPT,
       default: true,
       when:
         packageInfo.dependencies &&
@@ -243,11 +251,7 @@ const getAppSetting = (cmd, answer) => {
 const createProjectFolder = (packageInfo) => {
   const projectFolder = global.currentDir + '/' + packageInfo.name;
   if (existsSync(projectFolder)) {
-    console.error(
-      chalk.red(
-        'Project folder already exists! Please, run the cli again and choose another project name.'
-      )
-    );
+    console.error(chalk.red(ERRORS.PROJECT_FOLDER_EXISTS));
     process.exit(-1);
   }
   mkdirSync(projectFolder);
@@ -336,13 +340,13 @@ const initializeCommand = (program: CommanderStatic) => {
         // Config for appConfig.json
         const appSetting = getAppSetting(cmd, answer);
 
-        console.log(chalk.yellow('Creating app...'));
+        console.log(chalk.yellow(MESSAGES.CREATE_APP_MESSAGE));
         const err = generateAppFolder(appSetting);
         if (err && typeof err === 'string') {
           console.log(chalk.red(err));
           return;
         }
-        console.log(chalk.yellow('Installing dependencies...'));
+        console.log(chalk.yellow(MESSAGES.INSTALLING_DEPENDENCIES_MESSAGE));
         spawnSync('npm', ['install'], { stdio: 'inherit', windowsHide: true });
         console.log('');
         printAppDevelopmentInstructions(appSetting);
@@ -369,10 +373,8 @@ const initializeCommand = (program: CommanderStatic) => {
         packageInfo.dependencies['@kintone/kintone-ui-component'] = true;
         packageInfo.dependencies['@kintone/rest-api-client'] = true;
       } else {
-        console.log(chalk.yellow('Welcome to kintone-cli!'));
-        console.log(
-          chalk.yellow('Please, input below information so we can get started!')
-        );
+        console.log(chalk.yellow(MESSAGES.WELCOME_MESSAGE));
+        console.log(chalk.yellow(MESSAGES.GET_STARTED_MESSAGE));
       }
 
       if (cmd.projectName) {
@@ -401,7 +403,7 @@ const initializeCommand = (program: CommanderStatic) => {
 
       // if install is specified run npm install
       if (cmd.install) {
-        console.log(chalk.yellow('Installing dependencies...'));
+        console.log(chalk.yellow(MESSAGES.INSTALLING_DEPENDENCIES_MESSAGE));
         spawnSync('npm', ['i'], { stdio: 'inherit', windowsHide: true });
       }
       printProjectCreationMessage(packageInfo);
@@ -410,7 +412,7 @@ const initializeCommand = (program: CommanderStatic) => {
 
 const printAppDevelopmentInstructions = (appSetting) => {
   if (!appSetting.setAuth) {
-    console.log(chalk.yellow('To set auth info, use:'));
+    console.log(chalk.yellow(MESSAGES.SET_AUTH_INFO_MESSAGE));
     console.log('');
     console.log(
       chalk.greenBright(
@@ -419,7 +421,7 @@ const printAppDevelopmentInstructions = (appSetting) => {
     );
     console.log('');
   } else {
-    console.log(chalk.yellow('To start developing app, use:'));
+    console.log(chalk.yellow(MESSAGES.START_DEVELOPING_APP_MESSAGE));
     console.log('');
     console.log(
       chalk.greenBright(
@@ -432,8 +434,8 @@ const printAppDevelopmentInstructions = (appSetting) => {
 
 const printProjectCreationMessage = (packageInfo) => {
   console.log('');
-  console.log(chalk.yellow('Project created!'));
-  console.log(chalk.yellow('To create a new app, use:'));
+  console.log(chalk.yellow(MESSAGES.PROJECT_CREATED_MESSAGE));
+  console.log(chalk.yellow(MESSAGES.CREATE_NEW_APP_MESSAGE));
   console.log('');
   console.log(chalk.green(`   cd ${packageInfo.name}`));
   console.log('');
