@@ -8,10 +8,6 @@ export function createTempDir(TEMP_DIR: string) {
 
 export function removeTempDir(TEMP_DIR: string) {
   if (fs.existsSync(TEMP_DIR)) {
-    fs.rmdir(TEMP_DIR, { recursive: true }, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
+    fs.rmdirSync(TEMP_DIR, { recursive: true });
   }
 }
