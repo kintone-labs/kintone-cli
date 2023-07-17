@@ -6,7 +6,7 @@ import { prompt } from 'inquirer';
 import { isDomain } from '../../utils/string';
 
 const authCommand = (program: CommanderStatic) => {
-  program
+  return program
     .command('auth')
     .description('Set authentication credentials')
     .option('-a, --app-name <appName>', 'App name')

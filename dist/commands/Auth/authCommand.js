@@ -15,7 +15,7 @@ const jsonfile_1 = require("jsonfile");
 const inquirer_1 = require("inquirer");
 const string_1 = require("../../utils/string");
 const authCommand = (program) => {
-    program
+    return program
         .command('auth')
         .description('Set authentication credentials')
         .option('-a, --app-name <appName>', 'App name')
