@@ -15,7 +15,7 @@ const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const builder_1 = require("./builder");
 const buildCommand = (program) => {
-    program
+    const programBuild = program
         .command('build')
         .description('Build customization/plugin')
         .option('--app-name <appName>', 'App name')
@@ -59,6 +59,8 @@ const buildCommand = (program) => {
             console.log(err);
         }
     }));
+
+    return programBuild;
 };
 exports.default = buildCommand;
 //# sourceMappingURL=buildCommand.js.map
