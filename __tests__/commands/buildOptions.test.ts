@@ -11,8 +11,8 @@ import buildCommand from '../../dist/commands/Build/buildCommand';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = process.cwd();
-const TEMP_DIR = ORIGINAL_CWD + '/__tests__/authOptionsTemp';
-const OPTIONS = ['node', 'auth', '--app-name', 'test-app_436*#$  32903{D}DSF'];
+const TEMP_DIR = ORIGINAL_CWD + '/__tests__/buildOptionsTemp';
+const OPTIONS = ['node', 'build', '--app-name', 'test-app_436*#$  32903{D}DSF'];
 
 describe('build command: errors', () => {
   let mainProgram: CommanderStatic;
