@@ -56,7 +56,7 @@ export const flatArr = (arr: any) => Object.values(arr).flat(1);
 export const sliceLinkDir = (linkDir) => {
   const testSearch = '__tests__';
   const linkDirArr = linkDir.split('/');
-  const index = linkDirArr.find((item: string) => item === testSearch);
+  const index = linkDirArr.findIndex((item: string) => item === testSearch);
   if (index) linkDirArr.splice(index, 3);
 
   return linkDirArr.join('/');
