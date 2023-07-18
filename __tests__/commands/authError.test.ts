@@ -54,73 +54,73 @@ describe('auth command: errors', () => {
       chalk.red(ERRORS.APP_NAME_MISSING)
     );
   });
+});
 
-  test(`The name app missing -> ${ERRORS.APP_NAME_MISSING}`, async () => {
+describe('auth command: validator', () => {
+  test(`The name app missing -> ${ERRORS.APP_NAME_MISSING}`, () => {
     const input = '';
-    await expect(authValidator(input)).resolves.toBe(ERRORS.APP_NAME_MISSING);
+    expect(authValidator(input)).resolves.toBe(ERRORS.APP_NAME_MISSING);
   });
 
-  test(`Domain validator: missing https -> ${ERRORS.DOMAIN_STARTS_WITH_HTTPS}`, async () => {
+  test(`Domain validator: missing https -> ${ERRORS.DOMAIN_STARTS_WITH_HTTPS}`, () => {
     const input = 'domain.kintone.com';
-    await expect(domainValidator(input)).resolves.toBe(
+    expect(domainValidator(input)).resolves.toBe(
       ERRORS.DOMAIN_STARTS_WITH_HTTPS
     );
   });
 
-  test(`Domain validator: valid domain -> ${ERRORS.VALID_DOMAIN}`, async () => {
+  test(`Domain validator: valid domain -> ${ERRORS.VALID_DOMAIN}`, () => {
     const input = 'https://%*@(&#$#).k#intone.%com';
-    await expect(domainValidator(input)).resolves.toBe(ERRORS.VALID_DOMAIN);
+    expect(domainValidator(input)).resolves.toBe(ERRORS.VALID_DOMAIN);
   });
 
-  test(`Domain validator: true -> ${ERRORS.VALID_DOMAIN}`, async () => {
+  test(`Domain validator: true -> ${ERRORS.VALID_DOMAIN}`, () => {
     const input = 'https://domain.kintone.com';
-    await expect(domainValidator(input)).resolves.toBe(true);
+    expect(domainValidator(input)).resolves.toBe(true);
   });
 
-  test(`Username validator -> ${ERRORS.USER_NAME_EMPTY}`, async () => {
+  test(`Username validator -> ${ERRORS.USER_NAME_EMPTY}`, () => {
     const input = '';
-    await expect(usernameValidator(input)).resolves.toBe(
-      ERRORS.USER_NAME_EMPTY
-    );
+    expect(usernameValidator(input)).resolves.toBe(ERRORS.USER_NAME_EMPTY);
   });
 
-  test(`Username validator -> true`, async () => {
+  test(`Username validator -> true`, () => {
     const input = 'tester';
-    await expect(usernameValidator(input)).resolves.toBe(true);
+    expect(usernameValidator(input)).resolves.toBe(true);
   });
 
-  test(`Password validator -> ${ERRORS.PASSWORD_EMPTY}`, async () => {
+  test(`Password validator -> ${ERRORS.PASSWORD_EMPTY}`, () => {
     const input = '';
-    await expect(passwordValidator(input)).resolves.toBe(ERRORS.PASSWORD_EMPTY);
+    expect(passwordValidator(input)).resolves.toBe(ERRORS.PASSWORD_EMPTY);
   });
 
-  test(`Password validator -> true`, async () => {
+  test(`Password validator -> true`, () => {
     const input = 'passwordtest';
-    await expect(passwordValidator(input)).resolves.toBe(true);
+    expect(passwordValidator(input)).resolves.toBe(true);
   });
 
-  test(`AppID validator -> ${ERRORS.APP_ID_EMPTY}`, async () => {
+  test(`AppID validator -> ${ERRORS.APP_ID_EMPTY}`, () => {
     const input = '';
-    await expect(appIDValidator(input)).resolves.toBe(ERRORS.APP_ID_EMPTY);
+    expect(appIDValidator(input)).resolves.toBe(ERRORS.APP_ID_EMPTY);
   });
 
-  test(`AppID validator -> ${ERRORS.APP_ID_NUMBER}`, async () => {
+  test(`AppID validator -> ${ERRORS.APP_ID_NUMBER}`, () => {
     const input = '%#$testttt';
-    await expect(appIDValidator(input)).resolves.toBe(ERRORS.APP_ID_NUMBER);
+    expect(appIDValidator(input)).resolves.toBe(ERRORS.APP_ID_NUMBER);
   });
 
-  test(`AppID validator -> true`, async () => {
+  test(`AppID validator -> true`, () => {
     const input = '546';
-    await expect(appIDValidator(input)).resolves.toBe(true);
+    expect(appIDValidator(input)).resolves.toBe(true);
   });
 
-  test(`Proxy validator -> ${ERRORS.PROXY_EMPTY}`, async () => {
+  test(`Proxy validator -> ${ERRORS.PROXY_EMPTY}`, () => {
     const input = '';
-    await expect(proxyValidator(input)).resolves.toBe(ERRORS.PROXY_EMPTY);
+    expect(proxyValidator(input)).resolves.toBe(ERRORS.PROXY_EMPTY);
   });
 
-  test(`Proxy validator -> true`, async () => {
+  test(`Proxy validator -> true`, () => {
     const input = '546';
-    await expect(proxyValidator(input)).resolves.toBe(true);
+    expect(proxyValidator(input)).resolves.toBe(true);
   });
 });
