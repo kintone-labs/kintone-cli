@@ -55,69 +55,69 @@ describe('auth command: errors', () => {
     );
   });
 
-  test(`The name app missing -> ${ERRORS.APP_NAME_MISSING}`, () => {
+  test(`The name app missing -> ${ERRORS.APP_NAME_MISSING}`, async () => {
     const input = '';
     expect(authValidator(input)).resolves.toBe(ERRORS.APP_NAME_MISSING);
   });
 
-  test(`Domain validator: missing https -> ${ERRORS.DOMAIN_STARTS_WITH_HTTPS}`, () => {
+  test(`Domain validator: missing https -> ${ERRORS.DOMAIN_STARTS_WITH_HTTPS}`, async () => {
     const input = 'domain.kintone.com';
     expect(domainValidator(input)).resolves.toBe(
       ERRORS.DOMAIN_STARTS_WITH_HTTPS
     );
   });
 
-  test(`Domain validator: valid domain -> ${ERRORS.VALID_DOMAIN}`, () => {
+  test(`Domain validator: valid domain -> ${ERRORS.VALID_DOMAIN}`, async () => {
     const input = 'https://%*@(&#$#).k#intone.%com';
     expect(domainValidator(input)).resolves.toBe(ERRORS.VALID_DOMAIN);
   });
 
-  test(`Domain validator: true -> ${ERRORS.VALID_DOMAIN}`, () => {
+  test(`Domain validator: true -> ${ERRORS.VALID_DOMAIN}`, async () => {
     const input = 'https://domain.kintone.com';
     expect(domainValidator(input)).resolves.toBe(true);
   });
 
-  test(`Username validator -> ${ERRORS.USER_NAME_EMPTY}`, () => {
+  test(`Username validator -> ${ERRORS.USER_NAME_EMPTY}`, async () => {
     const input = '';
     expect(usernameValidator(input)).resolves.toBe(ERRORS.USER_NAME_EMPTY);
   });
 
-  test(`Username validator -> true`, () => {
+  test(`Username validator -> true`, async () => {
     const input = 'tester';
     expect(usernameValidator(input)).resolves.toBe(true);
   });
 
-  test(`Password validator -> ${ERRORS.PASSWORD_EMPTY}`, () => {
+  test(`Password validator -> ${ERRORS.PASSWORD_EMPTY}`, async () => {
     const input = '';
     expect(passwordValidator(input)).resolves.toBe(ERRORS.PASSWORD_EMPTY);
   });
 
-  test(`Password validator -> true`, () => {
+  test(`Password validator -> true`, async () => {
     const input = 'passwordtest';
     expect(passwordValidator(input)).resolves.toBe(true);
   });
 
-  test(`AppID validator -> ${ERRORS.APP_ID_EMPTY}`, () => {
+  test(`AppID validator -> ${ERRORS.APP_ID_EMPTY}`, async () => {
     const input = '';
     expect(appIDValidator(input)).resolves.toBe(ERRORS.APP_ID_EMPTY);
   });
 
-  test(`AppID validator -> ${ERRORS.APP_ID_NUMBER}`, () => {
+  test(`AppID validator -> ${ERRORS.APP_ID_NUMBER}`, async () => {
     const input = '%#$testttt';
     expect(appIDValidator(input)).resolves.toBe(ERRORS.APP_ID_NUMBER);
   });
 
-  test(`AppID validator -> true`, () => {
+  test(`AppID validator -> true`, async () => {
     const input = '546';
     expect(appIDValidator(input)).resolves.toBe(true);
   });
 
-  test(`Proxy validator -> ${ERRORS.PROXY_EMPTY}`, () => {
+  test(`Proxy validator -> ${ERRORS.PROXY_EMPTY}`, async () => {
     const input = '';
     expect(proxyValidator(input)).resolves.toBe(ERRORS.PROXY_EMPTY);
   });
 
-  test(`Proxy validator -> true`, () => {
+  test(`Proxy validator -> true`, async () => {
     const input = '546';
     expect(proxyValidator(input)).resolves.toBe(true);
   });
