@@ -4,7 +4,7 @@ import { readFileSync } from 'jsonfile';
 import * as spawn from 'cross-spawn';
 import stripAnsi from 'strip-ansi';
 import { existsSync } from 'fs';
-import inquirer from 'inquirer';
+import { prompt } from 'inquirer';
 import { devCustomize, devPlugin } from './devGenerator';
 import validator from './validator';
 const readline = require('readline');
@@ -47,7 +47,7 @@ const getLoopBackAddress = async (resp: any, localhost: boolean) => {
       return LOCAL_ADDRESS_DEFAULT;
     return localAddress[localAddress.length - 1];
   }
-  const answer = await inquirer.prompt([
+  const answer = await prompt([
     {
       type: 'list',
       name: 'localAddress',

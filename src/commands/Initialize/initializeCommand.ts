@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import * as spawn from 'cross-spawn';
-import inquirer from 'inquirer';
+import { prompt } from 'inquirer';
 import validator from './validator';
 import { writeFileSync } from 'jsonfile';
 import { mkdirSync, existsSync, writeFileSync as writeFileSyncFS } from 'fs';
@@ -260,7 +260,7 @@ const createProjectFolder = (packageInfo) => {
 
 async function processProjectInfo(packageInfo) {
   const prompts = getPromptsInit(packageInfo);
-  const answers = await inquirer.prompt(prompts);
+  const answers = await prompt(prompts);
   const updatedPackageInfo = { ...packageInfo, ...answers };
 
   if (updatedPackageInfo.dependencies['@kintone/kintone-ui-component']) {
@@ -335,7 +335,7 @@ const initializeCommand = (program: Command) => {
           }
         }
         const prompts = getPromptsCreateTemplate(cmd);
-        answer = await inquirer.prompt(prompts);
+        answer = await prompt(prompts);
 
         // Config for appConfig.json
         const appSetting = getAppSetting(cmd, answer);

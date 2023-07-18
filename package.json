@@ -2,7 +2,7 @@
   "name": "kintone-cli",
   "version": "0.5.0",
   "description": "",
-  "main": "dist/index.js",
+  "exports": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "test:init": "node dist/index.js init --quick",
@@ -21,17 +21,17 @@
   ],
   "dependencies": {
     "ansi-regex": "^6.0.1",
-    "chalk": "^5.0.3",
+    "chalk": "^2.4.2",
     "commander": "^11.0.0",
     "cross-spawn": "^7.0.3",
-    "inquirer": "^9.2.8",
+    "inquirer": "^8.2.5",
     "jsonfile": "^6.1.0",
-    "strip-ansi": "^7.1.0"
+    "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
     "@cybozu/eslint-config": "^20.0.1",
     "@types/cross-spawn": "^6.0.2",
-    "@types/inquirer": "^9.0.3",
+    "@types/inquirer": "^8.2.5",
     "@types/jsonfile": "^6.1.1",
     "@types/node": "^20.4.2",
     "eslint": "^8.45.0",

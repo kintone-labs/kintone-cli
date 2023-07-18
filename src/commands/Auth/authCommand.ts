@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import validator from './validator';
 import chalk from 'chalk';
 import { readFileSync, writeFileSync } from 'jsonfile';
-import inquirer from 'inquirer';
+import { prompt } from 'inquirer';
 import { isDomain } from '../../utils/string';
 
 const authCommand = (program: Command) => {
@@ -31,7 +31,7 @@ const authCommand = (program: Command) => {
 
       const configJSON = readFileSync(`${cmd.appName}/config.json`);
 
-      const answer = await inquirer.prompt([
+      const answer = await prompt([
         {
           type: 'input',
           name: 'domain',
