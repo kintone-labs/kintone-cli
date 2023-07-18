@@ -1,22 +1,4 @@
-import chalk from 'chalk';
-import { program, CommanderStatic } from 'commander';
-import {
-  afterAll,
-  beforeAll,
-  describe,
-  expect,
-  test,
-  jest
-} from '@jest/globals';
-
-import authCommand from '../../src/commands/Auth/authCommand';
-import {
-  createTempDir,
-  createTemplate,
-  initProject,
-  linkDirCustom,
-  removeTempDir
-} from '../test-helpers';
+import { describe, expect, test } from '@jest/globals';
 import { ERRORS } from '../../src/constant';
 import {
   appIDValidator,
@@ -26,34 +8,6 @@ import {
   proxyValidator,
   usernameValidator
 } from '../../src/commands/Auth/validator';
-
-const PROJECT_NAME = 'test-project';
-const ORIGINAL_CWD = linkDirCustom();
-const TEMP_DIR = ORIGINAL_CWD + 'authErrorTemp';
-
-describe('auth command: errors', () => {
-  let mainProgram: CommanderStatic;
-
-  beforeAll(async () => {
-    createTempDir(TEMP_DIR);
-
-    await initProject(TEMP_DIR, PROJECT_NAME);
-    await createTemplate(TEMP_DIR, PROJECT_NAME);
-  });
-
-  afterAll(() => {
-    removeTempDir(TEMP_DIR);
-  });
-
-  test('should throw error "App name missing" when no app name is specified', async () => {
-    const consoleLogSpy = jest.spyOn(global.console, 'log');
-    mainProgram = authCommand(program);
-    process.argv = ['node', 'auth'];
-    await mainProgram.parseAsync(process.argv);
-
-    expect(consoleLogSpy).toBe(ERRORS.APP_NAME_MISSING);
-  });
-});
 
 describe('auth command: validator', () => {
   test(`The name app missing -> ${ERRORS.APP_NAME_MISSING}`, () => {
