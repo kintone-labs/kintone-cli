@@ -5,12 +5,13 @@ import {
   createTempDir,
   createTemplate,
   initProject,
+  linkDirCustom,
   removeTempDir
 } from '../test-helpers';
 
 const PROJECT_NAME = 'test-project';
-const ORIGINAL_CWD = process.cwd();
-const TEMP_DIR = ORIGINAL_CWD + '/__tests__/authOptionsTemp';
+const ORIGINAL_CWD = linkDirCustom();
+const TEMP_DIR = ORIGINAL_CWD + 'authOptionsTemp';
 const AUTH_OPTIONS = [
   'node',
   'auth',

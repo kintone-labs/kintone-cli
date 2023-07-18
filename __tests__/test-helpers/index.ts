@@ -52,3 +52,8 @@ export async function createTemplate(TEMP_DIR: string, PROJECT_NAME: string) {
 }
 
 export const flatArr = (arr: any) => Object.values(arr).flat(1);
+
+export const linkDirCustom = () => {
+  const linkDir = __dirname;
+  return linkDir.replace('commands', '');
+};
