@@ -25,7 +25,6 @@ import {
   proxyValidator,
   usernameValidator
 } from '../../src/commands/Auth/validator';
-import { dirname } from 'path';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = process.cwd();
@@ -58,9 +57,7 @@ describe('auth command: errors', () => {
 });
 
 describe('auth command: validator', () => {
-  test(`The name app missing -> ${dirname('__tests__')} ${
-    ERRORS.APP_NAME_MISSING
-  }`, () => {
+  test(`The name app missing -> ${ERRORS.APP_NAME_MISSING}`, () => {
     const input = '';
     expect(authValidator(input)).toBe(ERRORS.APP_NAME_MISSING);
   });

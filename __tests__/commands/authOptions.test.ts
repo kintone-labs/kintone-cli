@@ -7,6 +7,7 @@ import {
   initProject,
   removeTempDir
 } from '../test-helpers';
+import { dirname } from 'path';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = process.cwd();
@@ -47,7 +48,9 @@ describe('auth command: options', () => {
     removeTempDir(TEMP_DIR);
   });
 
-  test('should have appName as "test-app"', async () => {
+  test(`should have appName as "test-app" ${dirname(
+    '__tests__'
+  )} `, async () => {
     expect(mainProgram.opts().appName).toBe('test-app');
   });
 
