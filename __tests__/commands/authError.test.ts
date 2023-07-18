@@ -9,13 +9,22 @@ import {
   jest
 } from '@jest/globals';
 
-import authCommand from '../../dist/commands/Auth/authCommand';
+import authCommand from '../../src/commands/Auth/authCommand';
 import {
   createTempDir,
   createTemplate,
   initProject,
   removeTempDir
 } from '../test-helpers';
+import { ERRORS } from '../../src/constant';
+import {
+  appIDValidator,
+  authValidator,
+  domainValidator,
+  passwordValidator,
+  proxyValidator,
+  usernameValidator
+} from '../../src/commands/Auth/validator';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = process.cwd();
@@ -41,6 +50,75 @@ describe('auth command: errors', () => {
     process.argv = ['node', 'auth'];
     await mainProgram.parseAsync(process.argv);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith(chalk.red('App name missing'));
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      chalk.red(ERRORS.APP_NAME_MISSING)
+    );
+  });
+
+  test(`The name app missing -> ${ERRORS.APP_NAME_MISSING}`, () => {
+    const input = '';
+    expect(authValidator(input)).resolves.toBe(ERRORS.APP_NAME_MISSING);
+  });
+
+  test(`Domain validator: missing https -> ${ERRORS.DOMAIN_STARTS_WITH_HTTPS}`, () => {
+    const input = 'domain.kintone.com';
+    expect(domainValidator(input)).resolves.toBe(
+      ERRORS.DOMAIN_STARTS_WITH_HTTPS
+    );
+  });
+
+  test(`Domain validator: valid domain -> ${ERRORS.VALID_DOMAIN}`, () => {
+    const input = 'https://%*@(&#$#).k#intone.%com';
+    expect(domainValidator(input)).resolves.toBe(ERRORS.VALID_DOMAIN);
+  });
+
+  test(`Domain validator: true -> ${ERRORS.VALID_DOMAIN}`, () => {
+    const input = 'https://domain.kintone.com';
+    expect(domainValidator(input)).resolves.toBe(true);
+  });
+
+  test(`Username validator -> ${ERRORS.USER_NAME_EMPTY}`, () => {
+    const input = '';
+    expect(usernameValidator(input)).resolves.toBe(ERRORS.USER_NAME_EMPTY);
+  });
+
+  test(`Username validator -> true`, () => {
+    const input = 'tester';
+    expect(usernameValidator(input)).resolves.toBe(true);
+  });
+
+  test(`Password validator -> ${ERRORS.PASSWORD_EMPTY}`, () => {
+    const input = '';
+    expect(passwordValidator(input)).resolves.toBe(ERRORS.PASSWORD_EMPTY);
+  });
+
+  test(`Password validator -> true`, () => {
+    const input = 'passwordtest';
+    expect(passwordValidator(input)).resolves.toBe(true);
+  });
+
+  test(`AppID validator -> ${ERRORS.APP_ID_EMPTY}`, () => {
+    const input = '';
+    expect(appIDValidator(input)).resolves.toBe(ERRORS.APP_ID_EMPTY);
+  });
+
+  test(`AppID validator -> ${ERRORS.APP_ID_NUMBER}`, () => {
+    const input = '%#$testttt';
+    expect(appIDValidator(input)).resolves.toBe(ERRORS.APP_ID_NUMBER);
+  });
+
+  test(`AppID validator -> true`, () => {
+    const input = '546';
+    expect(appIDValidator(input)).resolves.toBe(true);
+  });
+
+  test(`Proxy validator -> ${ERRORS.PROXY_EMPTY}`, () => {
+    const input = '';
+    expect(proxyValidator(input)).resolves.toBe(ERRORS.PROXY_EMPTY);
+  });
+
+  test(`Proxy validator -> true`, () => {
+    const input = '546';
+    expect(proxyValidator(input)).resolves.toBe(true);
   });
 });

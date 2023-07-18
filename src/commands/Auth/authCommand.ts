@@ -1,11 +1,19 @@
-import { CommanderStatic } from 'commander';
-import validator from './validator';
 import chalk from 'chalk';
 import { readFileSync, writeFileSync } from 'jsonfile';
 import { prompt } from 'inquirer';
-import { isDomain } from '../../utils/string';
+import {
+  appIDValidator,
+  authValidator,
+  domainValidator,
+  passwordValidator,
+  proxyValidator,
+  proxyWhenValidator,
+  useProxyValidator,
+  usernameValidator
+} from './validator';
+import { MESSAGES } from '../../constant';
 
-const authCommand = (program: CommanderStatic) => {
+const authCommand = (program: any) => {
   return program
     .command('auth')
     .description('Set authentication credentials')
@@ -17,7 +25,7 @@ const authCommand = (program: CommanderStatic) => {
     .option('-r, --use-proxy', 'Use proxy or not')
     .option('-x, --proxy <proxy>', 'Proxy full URL, including port number')
     .action(async (cmd) => {
-      const error = validator.authValidator(cmd);
+      const error = authValidator(cmd);
       if (error && typeof error === 'string') {
         console.log(chalk.red(error));
         return;
@@ -35,80 +43,44 @@ const authCommand = (program: CommanderStatic) => {
         {
           type: 'input',
           name: 'domain',
-          message: 'What is your kintone domain ?',
+          message: MESSAGES.KINTONE_DOMAIN_PROMPT,
           when: !cmd.domain,
-          validate: (input: any): any => {
-            if (!input.startsWith('https://'))
-              return 'Domain has to start with https';
-            if (!isDomain(input)) {
-              return 'Please enter a valid domain';
-            }
-            return true;
-          }
+          validate: (input: any): any => domainValidator(input)
         },
         {
           type: 'input',
           name: 'username',
-          message: 'What is your kintone username ?',
+          message: MESSAGES.KINTONE_USERNAME_PROMPT,
           when: !cmd.username,
-          validate: (input: any): any => {
-            if (!input) {
-              return "Username can't be empty.";
-            }
-            return true;
-          }
+          validate: (input: any): any => usernameValidator(input)
         },
         {
           type: 'password',
           name: 'password',
-          message: 'What is your kintone password ?',
+          message: MESSAGES.KINTONE_PASSWORD_PROMPT,
           when: !cmd.password,
-          validate: (input: any): any => {
-            if (!input) {
-              return "Password can't be empty.";
-            }
-            return true;
-          }
+          validate: (input: any): any => passwordValidator(input)
         },
         {
           type: 'input',
           name: 'appID',
-          message: 'What is the app ID ?',
+          message: MESSAGES.APP_ID_PROMPT,
           when: !cmd.appID && !configJSON.appID,
-          validate: (input: any): any => {
-            if (!input) {
-              return "App ID can't be empty.";
-            }
-            const numberMatch = input.match(
-              /(^-?\d+|^\d+\.\d*|^\d*\.\d+)(e\d+)?$/
-            );
-            // If a number is found, return that input.
-            if (!numberMatch) {
-              return 'App ID must be a number.';
-            }
-            return true;
-          }
+          validate: (input: any): any => appIDValidator(input)
         },
         {
           type: 'confirm',
           name: 'useProxy',
-          message: 'Do you use proxy ?',
+          message: MESSAGES.USE_PROXY_PROMT,
           default: false,
-          when: !cmd.useProxy && !cmd.proxy
+          when: useProxyValidator(cmd)
         },
         {
           type: 'input',
           name: 'proxy',
-          message: 'Specify your proxy full URL, including port number:',
-          when: (curAnswers: any) => {
-            return (cmd.useProxy || curAnswers.useProxy) && !cmd.proxy;
-          },
-          validate: (input: any): any => {
-            if (!input) {
-              return "Proxy URL can't be empty.";
-            }
-            return true;
-          }
+          message: MESSAGES.PROXY_URL_PROMPT,
+          when: (curAnswers: any) => proxyWhenValidator(cmd, curAnswers),
+          validate: (input: any): any => proxyValidator(input)
         }
       ]);
 
