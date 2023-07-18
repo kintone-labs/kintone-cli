@@ -45,28 +45,28 @@ const authCommand = (program: any) => {
           name: 'domain',
           message: MESSAGES.KINTONE_DOMAIN_PROMPT,
           when: !cmd.domain,
-          validate: (input: any): any => domainValidator(input)
+          validate: domainValidator
         },
         {
           type: 'input',
           name: 'username',
           message: MESSAGES.KINTONE_USERNAME_PROMPT,
           when: !cmd.username,
-          validate: (input: any): any => usernameValidator(input)
+          validate: usernameValidator
         },
         {
           type: 'password',
           name: 'password',
           message: MESSAGES.KINTONE_PASSWORD_PROMPT,
           when: !cmd.password,
-          validate: (input: any): any => passwordValidator(input)
+          validate: passwordValidator
         },
         {
           type: 'input',
           name: 'appID',
           message: MESSAGES.APP_ID_PROMPT,
           when: !cmd.appID && !configJSON.appID,
-          validate: (input: any): any => appIDValidator(input)
+          validate: appIDValidator
         },
         {
           type: 'confirm',
@@ -80,7 +80,7 @@ const authCommand = (program: any) => {
           name: 'proxy',
           message: MESSAGES.PROXY_URL_PROMPT,
           when: (curAnswers: any) => proxyWhenValidator(cmd, curAnswers),
-          validate: (input: any): any => proxyValidator(input)
+          validate: proxyValidator
         }
       ]);
 
