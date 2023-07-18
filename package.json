@@ -2,7 +2,7 @@
   "name": "kintone-cli",
   "version": "0.5.0",
   "description": "",
-  "exports": "./dist/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "test:init": "node dist/index.js init --quick",
