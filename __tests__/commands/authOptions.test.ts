@@ -5,12 +5,13 @@ import {
   createTempDir,
   createTemplate,
   initProject,
-  removeTempDir
+  removeTempDir,
+  sliceLinkDir
 } from '../test-helpers';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = process.cwd();
-const TEMP_DIR = ORIGINAL_CWD + '/__tests__/authOptionsTemp';
+const TEMP_DIR = sliceLinkDir(ORIGINAL_CWD) + '/__tests__/authOptionsTemp';
 const AUTH_OPTIONS = [
   'node',
   'auth',

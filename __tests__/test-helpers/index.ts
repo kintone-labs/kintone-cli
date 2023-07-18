@@ -52,3 +52,12 @@ export async function createTemplate(TEMP_DIR: string, PROJECT_NAME: string) {
 }
 
 export const flatArr = (arr: any) => Object.values(arr).flat(1);
+
+export const sliceLinkDir = (linkDir) => {
+  const testSearch = '__tests__';
+  const linkDirArr = linkDir.split('/');
+  const index = linkDirArr.find((item: string) => item === testSearch);
+  if (index) linkDirArr.splice(index, 3);
+
+  return linkDirArr.join('/');
+};

@@ -14,7 +14,8 @@ import {
   createTempDir,
   createTemplate,
   initProject,
-  removeTempDir
+  removeTempDir,
+  sliceLinkDir
 } from '../test-helpers';
 import { ERRORS } from '../../src/constant';
 import {
@@ -28,7 +29,7 @@ import {
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = process.cwd();
-const TEMP_DIR = ORIGINAL_CWD + '/__tests__/authErrorTemp';
+const TEMP_DIR = sliceLinkDir(ORIGINAL_CWD) + '/__tests__/authErrorTemp';
 
 describe('auth command: errors', () => {
   let mainProgram: CommanderStatic;
