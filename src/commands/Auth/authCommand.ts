@@ -1,11 +1,11 @@
-import { CommanderStatic } from 'commander';
+import { Command } from 'commander';
 import validator from './validator';
 import chalk from 'chalk';
 import { readFileSync, writeFileSync } from 'jsonfile';
-import { prompt } from 'inquirer';
+import inquirer from 'inquirer';
 import { isDomain } from '../../utils/string';
 
-const authCommand = (program: CommanderStatic) => {
+const authCommand = (program: Command) => {
   program
     .command('auth')
     .description('Set authentication credentials')
@@ -31,7 +31,7 @@ const authCommand = (program: CommanderStatic) => {
 
       const configJSON = readFileSync(`${cmd.appName}/config.json`);
 
-      const answer = await prompt([
+      const answer = await inquirer.prompt([
         {
           type: 'input',
           name: 'domain',

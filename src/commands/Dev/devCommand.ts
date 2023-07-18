@@ -1,10 +1,10 @@
-import { CommanderStatic } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import { readFileSync } from 'jsonfile';
 import * as spawn from 'cross-spawn';
 import stripAnsi from 'strip-ansi';
 import { existsSync } from 'fs';
-import { prompt } from 'inquirer';
+import inquirer from 'inquirer';
 import { devCustomize, devPlugin } from './devGenerator';
 import validator from './validator';
 const readline = require('readline');
@@ -47,7 +47,7 @@ const getLoopBackAddress = async (resp: any, localhost: boolean) => {
       return LOCAL_ADDRESS_DEFAULT;
     return localAddress[localAddress.length - 1];
   }
-  const answer = await prompt([
+  const answer = await inquirer.prompt([
     {
       type: 'list',
       name: 'localAddress',
@@ -72,7 +72,7 @@ const readLineAsync = () => {
   });
 };
 
-const devCommand = (program: CommanderStatic) => {
+const devCommand = (program: Command) => {
   program
     .command('dev')
     .description('Deploy customization/plugin for development')

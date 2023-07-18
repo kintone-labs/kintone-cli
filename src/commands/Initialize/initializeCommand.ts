@@ -1,7 +1,7 @@
-import { CommanderStatic } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import * as spawn from 'cross-spawn';
-import { prompt } from 'inquirer';
+import inquirer from 'inquirer';
 import validator from './validator';
 import { writeFileSync } from 'jsonfile';
 import { mkdirSync, existsSync, writeFileSync as writeFileSyncFS } from 'fs';
@@ -260,7 +260,7 @@ const createProjectFolder = (packageInfo) => {
 
 async function processProjectInfo(packageInfo) {
   const prompts = getPromptsInit(packageInfo);
-  const answers = await prompt(prompts);
+  const answers = await inquirer.prompt(prompts);
   const updatedPackageInfo = { ...packageInfo, ...answers };
 
   if (updatedPackageInfo.dependencies['@kintone/kintone-ui-component']) {
@@ -282,7 +282,7 @@ async function processProjectInfo(packageInfo) {
 
 const spawnSync = spawn.sync;
 
-const initializeCommand = (program: CommanderStatic) => {
+const initializeCommand = (program: Command) => {
   program
     .command('create-template')
     .description('Create customization/plugin template')
@@ -335,7 +335,7 @@ const initializeCommand = (program: CommanderStatic) => {
           }
         }
         const prompts = getPromptsCreateTemplate(cmd);
-        answer = await prompt(prompts);
+        answer = await inquirer.prompt(prompts);
 
         // Config for appConfig.json
         const appSetting = getAppSetting(cmd, answer);
