@@ -51,9 +51,7 @@ describe('auth command: errors', () => {
     process.argv = ['node', 'auth'];
     await mainProgram.parseAsync(process.argv);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith(
-      chalk.red(ERRORS.APP_NAME_MISSING)
-    );
+    expect(consoleLogSpy).toBe(ERRORS.APP_NAME_MISSING);
   });
 });
 

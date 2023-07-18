@@ -48,7 +48,7 @@ describe('auth command: options', () => {
     removeTempDir(TEMP_DIR);
   });
 
-  test(`should have appName as "test-app" ${__dirname} `, async () => {
+  test('should have appName as "test-app"', async () => {
     expect(mainProgram.opts().appName).toBe('test-app');
   });
 
@@ -56,7 +56,7 @@ describe('auth command: options', () => {
     expect(mainProgram.opts().domain).toBe('https://domain.kintone.com');
   });
 
-  test(`should have username as "user" ${__dirname}`, async () => {
+  test('should have username as "user"', async () => {
     expect(mainProgram.opts().username).toBe('user');
   });
 
