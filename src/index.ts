@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// import { program, CommanderStatic } from 'commander';
 import * as program from 'commander';
 import initializeCommand from './commands/Initialize/initializeCommand';
 import buildCommand from './commands/Build/buildCommand';
