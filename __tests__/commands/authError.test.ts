@@ -28,7 +28,7 @@ import {
 } from '../../src/commands/Auth/validator';
 
 const PROJECT_NAME = 'test-project';
-const ORIGINAL_CWD = process.cwd();
+const ORIGINAL_CWD = process.env.PWD;
 const TEMP_DIR = sliceLinkDir(ORIGINAL_CWD) + '/__tests__/authErrorTemp';
 
 describe('auth command: errors', () => {
