@@ -7,7 +7,6 @@ import {
   initProject,
   removeTempDir
 } from '../test-helpers';
-import { dirname } from 'path';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = process.cwd();
@@ -48,9 +47,7 @@ describe('auth command: options', () => {
     removeTempDir(TEMP_DIR);
   });
 
-  test(`should have appName as "test-app" ${dirname(
-    '__tests__'
-  )} `, async () => {
+  test(`should have appName as "test-app" ${__dirname} `, async () => {
     expect(mainProgram.opts().appName).toBe('test-app');
   });
 
@@ -58,7 +55,7 @@ describe('auth command: options', () => {
     expect(mainProgram.opts().domain).toBe('https://domain.kintone.com');
   });
 
-  test('should have username as "user"', async () => {
+  test(`should have username as "user" ${__dirname}`, async () => {
     expect(mainProgram.opts().username).toBe('user');
   });
 
