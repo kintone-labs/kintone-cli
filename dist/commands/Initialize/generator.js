@@ -256,7 +256,7 @@ function configureEntry(option) {
 }
 const generateAppFolder = (option) => {
     if (!(0, fs_1.existsSync)('package.json')) {
-        return constant_1.PACKAGE_JSON_NOT_FOUND;
+        return constant_1.ERRORS.PACKAGE_JSON_NOT_FOUND;
     }
     const packageJSON = (0, jsonfile_1.readFileSync)('package.json');
     const manifestJSON = {};
@@ -267,7 +267,7 @@ const generateAppFolder = (option) => {
     manifestJSON.type = option.type;
     manifestJSON.scope = option.scope;
     if ((0, fs_1.existsSync)(option.appName)) {
-        return constant_1.APP_FOLDER_EXISTED;
+        return constant_1.ERRORS.APP_FOLDER_EXISTED;
     }
     (0, fs_1.mkdirSync)(option.appName);
     (0, fs_1.mkdirSync)(`${option.appName}/source`);

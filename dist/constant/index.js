@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEPENDENCIES = exports.WRITE_FILE_OPTIONS = exports.DEFAULT_PROJECT_VERSION = exports.DECLARE_KINTONE = exports.PACKAGE_JSON_NOT_FOUND = exports.APP_FOLDER_EXISTED = exports.PLUGIN_CONFIG_HTML_TEMPLATE = void 0;
+exports.ERRORS = exports.MESSAGES = exports.DEPENDENCIES = exports.WRITE_FILE_OPTIONS = exports.DEFAULT_PROJECT_VERSION = exports.DECLARE_KINTONE = exports.PLUGIN_CONFIG_HTML_TEMPLATE = void 0;
+const message_1 = require("./message");
+Object.defineProperty(exports, "MESSAGES", { enumerable: true, get: function () { return message_1.MESSAGES; } });
+const error_1 = require("./error");
+Object.defineProperty(exports, "ERRORS", { enumerable: true, get: function () { return error_1.ERRORS; } });
 exports.PLUGIN_CONFIG_HTML_TEMPLATE = `<span>Hello from kintone CLI</span>`;
-exports.APP_FOLDER_EXISTED = 'App folder existed';
-exports.PACKAGE_JSON_NOT_FOUND = 'package.json not found';
 exports.DECLARE_KINTONE = 'declare let kintone: any;';
 exports.DEFAULT_PROJECT_VERSION = '1.0.0';
 exports.WRITE_FILE_OPTIONS = {
