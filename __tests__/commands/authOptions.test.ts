@@ -1,7 +1,6 @@
 import { program, CommanderStatic } from 'commander';
 import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
-
-import authCommand from '../../dist/commands/Auth/authCommand';
+import authCommand from '../../src/commands/Auth/authCommand';
 import {
   createTempDir,
   createTemplate,

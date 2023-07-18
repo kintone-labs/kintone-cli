@@ -8,7 +8,7 @@ type AppOption = {
   domain: string;
   username: string;
   password: string;
-  type: 'Plugin' | 'Customization';
+  type: AppType;
   appID: number;
   proxy: string | undefined;
   useCybozuLint: boolean;
@@ -29,4 +29,13 @@ type EslintRcParams = {
   useReact: boolean;
 };
 
-export { AppOption, WebpackParams, EslintRcParams };
+type AppType = 'Customization' | 'Plugin';
+type CustomizationScope = 'ALL' | 'ADMIN' | 'NONE';
+
+export {
+  AppOption,
+  WebpackParams,
+  EslintRcParams,
+  AppType,
+  CustomizationScope
+};
