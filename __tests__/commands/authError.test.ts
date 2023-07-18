@@ -25,10 +25,11 @@ import {
   proxyValidator,
   usernameValidator
 } from '../../src/commands/Auth/validator';
+import { dirname } from 'path';
 
 const PROJECT_NAME = 'test-project';
-const ORIGINAL_CWD = process.cwd();
-const TEMP_DIR = ORIGINAL_CWD + '/__tests__/authErrorTemp';
+const ORIGINAL_CWD = dirname('__tests__');
+const TEMP_DIR = ORIGINAL_CWD + '/authErrorTemp';
 
 describe('auth command: errors', () => {
   let mainProgram: CommanderStatic;
