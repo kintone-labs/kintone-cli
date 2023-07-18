@@ -9,7 +9,7 @@ import {
 } from '../test-helpers';
 
 const PROJECT_NAME = 'test-project';
-const ORIGINAL_CWD = process.execPath;
+const ORIGINAL_CWD = process.cwd();
 const TEMP_DIR = ORIGINAL_CWD + '/__tests__/authOptionsTemp';
 const AUTH_OPTIONS = [
   'node',
