@@ -28,8 +28,8 @@ import {
 import { dirname } from 'path';
 
 const PROJECT_NAME = 'test-project';
-const ORIGINAL_CWD = dirname('__tests__');
-const TEMP_DIR = ORIGINAL_CWD + '/authErrorTemp';
+const ORIGINAL_CWD = process.cwd();
+const TEMP_DIR = ORIGINAL_CWD + '/__tests__/authErrorTemp';
 
 describe('auth command: errors', () => {
   let mainProgram: CommanderStatic;
@@ -58,7 +58,7 @@ describe('auth command: errors', () => {
 });
 
 describe('auth command: validator', () => {
-  test(`The name app missing -> ${ERRORS.APP_NAME_MISSING}`, () => {
+  test(`The name app missing -> ${dirname('__tests__')} ${ERRORS.APP_NAME_MISSING}`, () => {
     const input = '';
     expect(authValidator(input)).toBe(ERRORS.APP_NAME_MISSING);
   });
