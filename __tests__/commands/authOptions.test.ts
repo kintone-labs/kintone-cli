@@ -1,17 +1,17 @@
 import { program, CommanderStatic } from 'commander';
 import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
-
-import authCommand from '../../dist/commands/Auth/authCommand';
+import authCommand from '../../src/commands/Auth/authCommand';
 import {
   createTempDir,
   createTemplate,
   initProject,
+  linkDirCustom,
   removeTempDir
 } from '../test-helpers';
 
 const PROJECT_NAME = 'test-project';
-const ORIGINAL_CWD = process.cwd();
-const TEMP_DIR = ORIGINAL_CWD + '/__tests__/authOptionsTemp';
+const ORIGINAL_CWD = linkDirCustom();
+const TEMP_DIR = ORIGINAL_CWD + '/authOptionsTemp';
 const AUTH_OPTIONS = [
   'node',
   'auth',
