@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
-import * as spawn from 'cross-spawn';
+import spawn from 'cross-spawn';
 import validator from './validator';
 
 const spawnSync = spawn.sync;

@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { readFileSync } from 'jsonfile';
-import * as spawn from 'cross-spawn';
+import spawn from 'cross-spawn';
 import stripAnsi from 'strip-ansi';
 import { existsSync } from 'fs';
 import { prompt } from 'inquirer';
