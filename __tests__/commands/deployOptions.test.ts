@@ -22,13 +22,23 @@ const OPTIONS = [
 ];
 
 describe('deploy command: errors', () => {
-  test('readAndDeployFile validator: ', async () => {
-    const appName = 'test';
-    expect(readAndDeployFile(appName)).toBe(true);
+  let mainProgram: CommanderStatic;
+  beforeAll(async () => {
+    createTempDir(TEMP_DIR);
+
+    await initProject(TEMP_DIR, PROJECT_NAME);
+    await createTemplate(TEMP_DIR, PROJECT_NAME);
+
+    mainProgram = deployCommand(program);
+    process.argv = OPTIONS;
+    await mainProgram.parseAsync(process.argv);
   });
 
-  test('readAndDeployFile validator: ', async () => {
-    const appName = '';
-    expect(readAndDeployFile(appName)).toHaveBeenCalledWith(1);
+  afterAll(() => {
+    removeTempDir(TEMP_DIR);
+  });
+
+  test('should have appName as "test-app_436*#$  32903{D}DSF"', async () => {
+    expect(mainProgram.opts().appName).toBe('test-app_436*#$  32903{D}DSF');
   });
 });

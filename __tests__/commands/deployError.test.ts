@@ -13,9 +13,10 @@ import {
   buildCommandImplement,
   deployValidatorResult,
   mkdirSyncCheck,
+  readAndDeployFile,
   readAndDeployFileResult
 } from '../../src/commands/Deploy/validator';
-import { ERRORS } from '../../dist/constant';
+import { ERRORS } from '../../src/constant';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = linkDirCustom();
@@ -40,7 +41,7 @@ describe('deploy command: errors', () => {
     process.argv = ['node', 'deploy', '--app-name', "app-name-existn't"];
     await mainProgram.parseAsync(process.argv);
 
-    expect(mainProgram.opts().appName).toBe(false);
+    expect(mainProgram.opts().appName).toBe("app-name-existn't");
   });
 });
 
@@ -104,5 +105,10 @@ describe('deploy command: validator', () => {
     };
 
     expect(buildCommandImplement(OPTIONS)).toBe(true);
+  });
+
+  test('readAndDeployFile validator: ', async () => {
+    const appName = 'test';
+    expect(readAndDeployFile(appName)).toBe(true);
   });
 });

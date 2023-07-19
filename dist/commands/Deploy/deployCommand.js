@@ -9,39 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = require("chalk");
 const validator_1 = require("./validator");
-const jsonfile_1 = require("jsonfile");
-const deployer_1 = require("./deployer");
-const fs_1 = require("fs");
 const deployCommand = (program) => {
-    const programBuild = program
+    return program
         .command('deploy')
         .description('Deploy customization/plugin for production')
         .option('--app-name <appName>', 'App name')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
-        const error = validator_1.default.deployValidator(cmd);
+        const error = (0, validator_1.deployValidator)(cmd);
         if (error && typeof error === 'string') {
-            console.log(chalk_1.default.red(error));
             return;
         }
-        try {
-            const config = (0, jsonfile_1.readFileSync)(`${cmd.appName}/config.json`);
-            if ((0, fs_1.existsSync)(`${cmd.appName}/webpack.config.js`)) {
-                config.useWebpack = true;
-            }
-            if (config.type === 'Customization') {
-                (0, deployer_1.deployCustomization)(config);
-            }
-            else {
-                (0, deployer_1.deployPlugin)(config);
-            }
-        }
-        catch (err) {
-            console.log(err);
-        }
-        }));
-    return programBuild;
+        (0, validator_1.readAndDeployFile)(cmd.appName);
+    }));
 };
 exports.default = deployCommand;
 //# sourceMappingURL=deployCommand.js.map

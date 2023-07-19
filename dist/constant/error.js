@@ -13,6 +13,7 @@ exports.ERRORS = {
     PASSWORD_EMPTY: "Password can't be empty",
     APP_ID_EMPTY: "App ID can't be empty.",
     APP_ID_NUMBER: 'App ID must be a number.',
-    PROXY_EMPTY: "Proxy URL can't be empty."
+    PROXY_EMPTY: "Proxy URL can't be empty.",
+    APP_EXISTED: 'App not existed'
 };
 //# sourceMappingURL=error.js.map
