@@ -11,7 +11,7 @@ import {
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = linkDirCustom();
-const TEMP_DIR = ORIGINAL_CWD + 'authOptionsTemp';
+const TEMP_DIR = ORIGINAL_CWD + '/authOptionsTemp';
 const AUTH_OPTIONS = [
   'node',
   'auth',
