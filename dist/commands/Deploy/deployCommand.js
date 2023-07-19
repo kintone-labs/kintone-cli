@@ -17,10 +17,10 @@ const deployCommand = (program) => {
         .option('--app-name <appName>', 'App name')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         const error = (0, validator_1.deployValidator)(cmd);
-        if (error && typeof error === 'string') {
-            return;
-        }
-        (0, validator_1.readAndDeployFile)(cmd.appName);
+        (0, validator_1.deployCommandImplement)({
+            error: error && typeof error === 'string',
+            appName: cmd.appName
+        });
     }));
 };
 exports.default = deployCommand;

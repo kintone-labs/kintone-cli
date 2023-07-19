@@ -12,7 +12,6 @@ import deployCommand from '../../src/commands/Deploy/deployCommand';
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = linkDirCustom();
 const TEMP_DIR = ORIGINAL_CWD + '/deployOptionsTemp';
-const TEST_DIR = ORIGINAL_CWD + '/test';
 const OPTIONS = ['node', 'deploy', '--app-name', PROJECT_NAME];
 
 describe('deploy command: errors', () => {
@@ -30,7 +29,6 @@ describe('deploy command: errors', () => {
 
   afterAll(() => {
     removeTempDir(TEMP_DIR);
-    removeTempDir(TEST_DIR);
   });
 
   test(`should have appName as ${PROJECT_NAME}`, async () => {

@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildCommandImplement = exports.mkdirSyncCheck = exports.addParamArrItem = exports.readAndDeployFile = exports.readAndDeployFileResult = exports.deployValidator = exports.deployValidatorResult = void 0;
+exports.readAndDeployFileImplement = exports.deployCommandImplement = exports.buildCommandImplement = exports.mkdirSyncCheck = exports.addParamArrItem = exports.readAndDeployFile = exports.deployValidator = exports.deployValidatorResult = void 0;
 const spawn = require("cross-spawn");
 const fs_1 = require("fs");
 const constant_1 = require("../../constant");
-const jsonfile_1 = require("jsonfile");
 const deployer_1 = require("./deployer");
 const spawnSync = spawn.sync;
 const deployValidatorResult = (appName, isExistsFileSync) => {
@@ -19,7 +18,7 @@ const deployValidatorResult = (appName, isExistsFileSync) => {
 exports.deployValidatorResult = deployValidatorResult;
 const deployValidator = (params) => (0, exports.deployValidatorResult)(params.appName, (0, fs_1.existsSync)(params.appName));
 exports.deployValidator = deployValidator;
-const readAndDeployFileResult = (params) => {
+const readAndDeployFile = (params) => {
     try {
         const config = params.config;
         if (params.isExistsSync) {
@@ -36,11 +35,6 @@ const readAndDeployFileResult = (params) => {
         console.log(err);
     }
 };
-exports.readAndDeployFileResult = readAndDeployFileResult;
-const readAndDeployFile = (appName) => (0, exports.readAndDeployFileResult)({
-    isExistsSync: (0, fs_1.existsSync)(`${appName}/webpack.config.js`),
-    config: (0, jsonfile_1.readFileSync)(`${appName}/config.json`)
-});
 exports.readAndDeployFile = readAndDeployFile;
 const addParamArrItem = ({ authJSON, paramArr }) => {
     if (authJSON.domain) {
@@ -65,16 +59,18 @@ const addParamArrItem = ({ authJSON, paramArr }) => {
     }
 };
 exports.addParamArrItem = addParamArrItem;
-const mkdirSyncCheck = ({ isMkdir, mkdirSyncCallback }) => {
-    if (!isMkdir) {
-        mkdirSyncCallback();
-    }
-};
+const mkdirSyncCheck = ({ isMkdir, mkdirSyncCallback }) => !isMkdir && mkdirSyncCallback();
 exports.mkdirSyncCheck = mkdirSyncCheck;
 const buildCommandImplement = ({ appName, isExistsFile }) => {
-    if (isExistsFile) {
+    isExistsFile &&
         spawnSync('npm', ['run', `build-${appName}`, '--', '--mode', 'production'], { stdio: ['ignore', 'ignore', process.stderr] });
-    }
 };
 exports.buildCommandImplement = buildCommandImplement;
+const deployCommandImplement = ({ error, appName }) => !error && (0, exports.readAndDeployFileImplement)(appName);
+exports.deployCommandImplement = deployCommandImplement;
+const readAndDeployFileImplement = (appName) => (0, exports.readAndDeployFile)({
+    isExistsSync: (0, fs_1.existsSync)(`${appName}/webpack.config.js`),
+    config: (0, fs_1.readFileSync)(`${appName}/config.json`)
+});
+exports.readAndDeployFileImplement = readAndDeployFileImplement;
 //# sourceMappingURL=validator.js.map

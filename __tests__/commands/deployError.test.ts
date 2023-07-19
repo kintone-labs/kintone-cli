@@ -5,7 +5,6 @@ import {
   deployCommandImplement,
   deployValidatorResult,
   mkdirSyncCheck,
-  mkdirSyncImplement,
   readAndDeployFile
 } from '../../src/commands/Deploy/validator';
 import { ERRORS } from '../../src/constant';
