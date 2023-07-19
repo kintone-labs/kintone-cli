@@ -17,3 +17,8 @@ type buildCommandImplementProps = {
   appName: string;
   isExistsFile: boolean;
 };
+
+type deployCommandImplementProps = {
+  error: boolean;
+  appName: string;
+};

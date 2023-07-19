@@ -1,56 +1,14 @@
-import { CommanderStatic, program } from 'commander';
-import {
-  afterAll,
-  beforeAll,
-  describe,
-  expect,
-  jest,
-  test
-} from '@jest/globals';
-import {
-  createTempDir,
-  createTemplate,
-  initProject,
-  linkDirCustom,
-  removeTempDir
-} from '../test-helpers';
-import deployCommand from '../../src/commands/Deploy/deployCommand';
+import { describe, expect, jest, test } from '@jest/globals';
 import {
   addParamArrItem,
   buildCommandImplement,
+  deployCommandImplement,
   deployValidatorResult,
   mkdirSyncCheck,
-  readAndDeployFile,
-  readAndDeployFileResult
+  mkdirSyncImplement,
+  readAndDeployFile
 } from '../../src/commands/Deploy/validator';
 import { ERRORS } from '../../src/constant';
-
-const PROJECT_NAME = 'test-project';
-const ORIGINAL_CWD = linkDirCustom();
-const TEMP_DIR = ORIGINAL_CWD + 'deployErrorTemp';
-
-describe('deploy command: errors', () => {
-  let mainProgram: CommanderStatic;
-
-  beforeAll(async () => {
-    createTempDir(TEMP_DIR);
-
-    await initProject(TEMP_DIR, PROJECT_NAME);
-    await createTemplate(TEMP_DIR, PROJECT_NAME);
-  });
-
-  afterAll(() => {
-    removeTempDir(TEMP_DIR);
-  });
-
-  test('should throw error "App not existed" when no app is exist', async () => {
-    mainProgram = deployCommand(program);
-    process.argv = ['node', 'deploy', '--app-name', "app-name-existn't"];
-    await mainProgram.parseAsync(process.argv);
-
-    expect(mainProgram.opts().appName).toBe("app-name-existn't");
-  });
-});
 
 describe('deploy command: validator', () => {
   test(`deployValidator func -> ${ERRORS.APP_NAME_MISSING}`, async () => {
@@ -68,16 +26,16 @@ describe('deploy command: validator', () => {
     expect(input).toBe(false);
   });
 
-  test("readAndDeployFileResult func: config.type === 'Customization' -> undefined", async () => {
-    const input = readAndDeployFileResult({
+  test("readAndDeployFile func: config.type === 'Customization' -> undefined", async () => {
+    const input = readAndDeployFile({
       isExistsSync: true,
       config: { type: 'Customization' }
     });
     expect(input).toBe(undefined);
   });
 
-  test("readAndDeployFileResult func: config.type !== 'Customization' -> undefined", async () => {
-    const input = readAndDeployFileResult({
+  test('readAndDeployFile func -> undefined', async () => {
+    const input = readAndDeployFile({
       isExistsSync: false,
       config: { type: 'Plugin' }
     });
@@ -116,8 +74,14 @@ describe('deploy command: validator', () => {
     ).toBe(undefined);
   });
 
-  test('readAndDeployFile validator: ', async () => {
-    const appName = 'test';
-    expect(readAndDeployFile(appName)).toBe(true);
+  test('deployCommandImplement func -> false', async () => {
+    const funcMock = jest.fn();
+
+    expect(
+      deployCommandImplement({
+        error: true,
+        readAndDeployFileCallback: funcMock
+      })
+    ).toBe(false);
   });
 });

@@ -1,7 +1,6 @@
 import * as spawn from 'cross-spawn';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync } from 'fs';
 import { ERRORS } from '../../constant';
-import { readFileSync } from 'jsonfile';
 import { deployCustomization, deployPlugin } from './deployer';
 
 const spawnSync = spawn.sync;
@@ -22,9 +21,7 @@ export const deployValidatorResult = (
 export const deployValidator = (params: any): boolean | string =>
   deployValidatorResult(params.appName, existsSync(params.appName));
 
-export const readAndDeployFileResult = (
-  params: readAndDeployFileResultProps
-) => {
+export const readAndDeployFile = (params: readAndDeployFileResultProps) => {
   try {
     const config = params.config;
     if (params.isExistsSync) {
@@ -40,12 +37,6 @@ export const readAndDeployFileResult = (
     console.log(err);
   }
 };
-
-export const readAndDeployFile = (appName: string) =>
-  readAndDeployFileResult({
-    isExistsSync: existsSync(`${appName}/webpack.config.js`),
-    config: readFileSync(`${appName}/config.json`)
-  });
 
 export const addParamArrItem = ({
   authJSON,
@@ -76,21 +67,28 @@ export const addParamArrItem = ({
 export const mkdirSyncCheck = ({
   isMkdir,
   mkdirSyncCallback
-}: mkdirSyncCheckProps) => {
-  if (!isMkdir) {
-    mkdirSyncCallback();
-  }
-};
+}: mkdirSyncCheckProps) => !isMkdir && mkdirSyncCallback();
 
 export const buildCommandImplement = ({
   appName,
   isExistsFile
 }: buildCommandImplementProps) => {
-  if (isExistsFile) {
+  isExistsFile &&
     spawnSync(
       'npm',
       ['run', `build-${appName}`, '--', '--mode', 'production'],
       { stdio: ['ignore', 'ignore', process.stderr] }
     );
-  }
 };
+
+export const deployCommandImplement = ({
+  error,
+  appName
+}: deployCommandImplementProps) =>
+  !error && readAndDeployFileImplement(appName);
+
+export const readAndDeployFileImplement = (appName: string) =>
+  readAndDeployFile({
+    isExistsSync: existsSync(`${appName}/webpack.config.js`),
+    config: readFileSync(`${appName}/config.json`)
+  });

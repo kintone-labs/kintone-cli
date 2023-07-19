@@ -55,5 +55,7 @@ export const flatArr = (arr: any) => Object.values(arr).flat(1);
 
 export const linkDirCustom = () => {
   const linkDir = __dirname;
-  return linkDir.replace('commands', '');
+  linkDir.replace('commands', '');
+  linkDir.replace('test-helpers', '');
+  return linkDir;
 };

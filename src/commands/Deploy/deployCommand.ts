@@ -1,4 +1,4 @@
-import { deployValidator, readAndDeployFile } from './validator';
+import { deployCommandImplement, deployValidator } from './validator';
 
 const deployCommand = (program: any) => {
   return program
@@ -7,10 +7,11 @@ const deployCommand = (program: any) => {
     .option('--app-name <appName>', 'App name')
     .action(async (cmd) => {
       const error = deployValidator(cmd);
-      if (error && typeof error === 'string') {
-        return;
-      }
-      readAndDeployFile(cmd.appName);
+
+      deployCommandImplement({
+        error: error && typeof error === 'string',
+        appName: cmd.appName
+      });
     });
 };
 

@@ -1,6 +1,5 @@
 import { program, CommanderStatic } from 'commander';
 import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
-
 import {
   createTempDir,
   createTemplate,
@@ -9,17 +8,12 @@ import {
   removeTempDir
 } from '../test-helpers';
 import deployCommand from '../../src/commands/Deploy/deployCommand';
-import { readAndDeployFile } from '../../src/commands/Deploy/validator';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = linkDirCustom();
-const TEMP_DIR = ORIGINAL_CWD + 'deployOptionsTemp';
-const OPTIONS = [
-  'node',
-  'deploy',
-  '--app-name',
-  'test-app_436*#$  32903{D}DSF'
-];
+const TEMP_DIR = ORIGINAL_CWD + '/deployOptionsTemp';
+const TEST_DIR = ORIGINAL_CWD + '/test';
+const OPTIONS = ['node', 'deploy', '--app-name', PROJECT_NAME];
 
 describe('deploy command: errors', () => {
   let mainProgram: CommanderStatic;
@@ -36,9 +30,10 @@ describe('deploy command: errors', () => {
 
   afterAll(() => {
     removeTempDir(TEMP_DIR);
+    removeTempDir(TEST_DIR);
   });
 
-  test('should have appName as "test-app_436*#$  32903{D}DSF"', async () => {
-    expect(mainProgram.opts().appName).toBe('test-app_436*#$  32903{D}DSF');
+  test(`should have appName as ${PROJECT_NAME}`, async () => {
+    expect(mainProgram.opts().appName).toBe(PROJECT_NAME);
   });
 });
