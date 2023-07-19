@@ -65,9 +65,9 @@ const addParamArrItem = ({ authJSON, paramArr }) => {
     }
 };
 exports.addParamArrItem = addParamArrItem;
-const mkdirSyncCheck = ({ appName, isMkdir }) => {
+const mkdirSyncCheck = ({ isMkdir, mkdirSyncCallback }) => {
     if (!isMkdir) {
-        (0, fs_1.mkdirSync)(`${appName}/dist`);
+        mkdirSyncCallback();
     }
 };
 exports.mkdirSyncCheck = mkdirSyncCheck;

@@ -1,6 +1,6 @@
 import * as spawn from 'cross-spawn';
 import { writeFileSync, readFileSync } from 'jsonfile';
-import { unlinkSync, existsSync } from 'fs';
+import { unlinkSync, existsSync, mkdirSync } from 'fs';
 import {
   addParamArrItem,
   buildCommandImplement,
@@ -26,8 +26,8 @@ const deployCustomization = (option: any) => {
   });
 
   mkdirSyncCheck({
-    appName: option.appName,
-    isMkdir: existsSync(`${option.appName}/dist`)
+    isMkdir: existsSync(`${option.appName}/dist`),
+    mkdirSyncCallback: () => mkdirSync(`${option.appName}/dist`)
   });
 
   buildCommandImplement({

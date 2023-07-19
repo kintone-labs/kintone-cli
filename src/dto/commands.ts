@@ -9,7 +9,7 @@ type addParamArrItemProps = {
 };
 
 type mkdirSyncCheckProps = {
-  appName: string;
+  mkdirSyncCallback: any;
   isMkdir: boolean;
 };
 

@@ -73,9 +73,12 @@ export const addParamArrItem = ({
   }
 };
 
-export const mkdirSyncCheck = ({ appName, isMkdir }: mkdirSyncCheckProps) => {
+export const mkdirSyncCheck = ({
+  isMkdir,
+  mkdirSyncCallback
+}: mkdirSyncCheckProps) => {
   if (!isMkdir) {
-    mkdirSync(`${appName}/dist`);
+    mkdirSyncCallback();
   }
 };
 

@@ -20,8 +20,8 @@ const deployCustomization = (option) => {
         paramArr
     });
     (0, validator_1.mkdirSyncCheck)({
-        appName: option.appName,
-        isMkdir: (0, fs_1.existsSync)(`${option.appName}/dist`)
+        isMkdir: (0, fs_1.existsSync)(`${option.appName}/dist`),
+        mkdirSyncCallback: () => (0, fs_1.mkdirSync)(`${option.appName}/dist`)
     });
     (0, validator_1.buildCommandImplement)({
         appName: option.appName,

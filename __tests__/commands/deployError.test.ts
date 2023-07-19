@@ -1,5 +1,12 @@
 import { CommanderStatic, program } from 'commander';
-import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
+import {
+  afterAll,
+  beforeAll,
+  describe,
+  expect,
+  jest,
+  test
+} from '@jest/globals';
 import {
   createTempDir,
   createTemplate,
@@ -61,23 +68,23 @@ describe('deploy command: validator', () => {
     expect(input).toBe(false);
   });
 
-  test("readAndDeployFileResult func -> config.type === 'Customization'", async () => {
+  test("readAndDeployFileResult func: config.type === 'Customization' -> undefined", async () => {
     const input = readAndDeployFileResult({
       isExistsSync: true,
       config: { type: 'Customization' }
     });
-    expect(input).toBe(true);
+    expect(input).toBe(undefined);
   });
 
-  test("readAndDeployFileResult func -> config.type === 'Customization'", async () => {
+  test("readAndDeployFileResult func: config.type !== 'Customization' -> undefined", async () => {
     const input = readAndDeployFileResult({
       isExistsSync: false,
       config: { type: 'Plugin' }
     });
-    expect(input).toBe(true);
+    expect(input).toBe(undefined);
   });
 
-  test('addParamArrItem func -> true', async () => {
+  test('addParamArrItem func -> undefined', async () => {
     const OPTIONS = {
       domain: 'https://domain.kintone.com',
       username: 'test-app',
@@ -86,25 +93,27 @@ describe('deploy command: validator', () => {
     };
     const paramArr = [];
 
-    expect(addParamArrItem({ authJSON: OPTIONS, paramArr })).toBe(true);
+    expect(addParamArrItem({ authJSON: OPTIONS, paramArr })).toBe(undefined);
   });
 
-  test('mkdirSyncCheck func -> true', async () => {
-    const OPTIONS = {
-      appName: 'test-app',
-      isMkdir: false
-    };
-
-    expect(mkdirSyncCheck(OPTIONS)).toBe(true);
-  });
-
-  test('addParamArrItem func -> true', async () => {
+  test('addParamArrItem func -> undefined', async () => {
     const OPTIONS = {
       appName: 'test-app',
       isExistsFile: true
     };
 
-    expect(buildCommandImplement(OPTIONS)).toBe(true);
+    expect(buildCommandImplement(OPTIONS)).toBe(undefined);
+  });
+
+  test('mkdirSyncCheck func -> undefined', async () => {
+    const funcMock = jest.fn();
+
+    expect(
+      mkdirSyncCheck({
+        isMkdir: false,
+        mkdirSyncCallback: funcMock
+      })
+    ).toBe(undefined);
   });
 
   test('readAndDeployFile validator: ', async () => {
