@@ -26,5 +26,6 @@ export const MESSAGES = {
   USE_TYPESCRIPT_PROMPT: 'Do you want to use TypeScript?',
   USE_WEBPACK_PROMPT: 'Do you want to use webpack?',
   WELCOME_MESSAGE: 'Welcome to kintone-cli!',
-  WEBPACK_ENTRY_PROMPT: 'What is the entry for webpack?'
+  WEBPACK_ENTRY_PROMPT: 'What is the entry for webpack?',
+  USE_PROXY_PROMT: 'Do you use proxy?'
 };

@@ -6,12 +6,11 @@
   "scripts": {
     "build": "tsc",
     "test:init": "node dist/index.js init --quick",
-    "test": "echo \"Running unit tests...\" && exit 0",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --check './src/**/*.ts'",
     "format:fix": "prettier --write './src/**/*.ts'",
-    "test": "jest"
+    "test": "jest --silent"
   },
   "preferGlobal": true,
   "bin": {
