@@ -8,11 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = require("chalk");
-const spawn = require("cross-spawn");
+const chalk_1 = __importDefault(require("chalk"));
+const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const inquirer_1 = require("inquirer");
-const validator_1 = require("./validator");
+const validator_1 = __importDefault(require("./validator"));
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const generator_1 = require("./generator");
@@ -272,7 +275,7 @@ function processProjectInfo(packageInfo) {
         return updatedPackageInfo;
     });
 }
-const spawnSync = spawn.sync;
+const spawnSync = cross_spawn_1.default.sync;
 const initializeCommand = (program) => {
     program
         .command('create-template')
