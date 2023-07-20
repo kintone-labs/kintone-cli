@@ -1,6 +1,6 @@
 import { deployCustomization, deployPlugin } from '../Deploy/deployer';
 import { existsSync } from 'fs';
-import * as spawn from 'cross-spawn';
+import spawn from 'cross-spawn';
 import { ChildProcessWithoutNullStreams } from 'child_process';
 import chalk from 'chalk';
 import { buildPlugin } from '../Build/builder';
