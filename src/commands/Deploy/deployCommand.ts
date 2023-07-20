@@ -5,7 +5,7 @@ import { readFileSync } from 'jsonfile';
 import { deployCustomization, deployPlugin } from './deployer';
 import { existsSync } from 'fs';
 
-const deployCommand = (program: Command) => {
+const deployCommand = (program: any) => {
   program
     .command('deploy')
     .description('Deploy customization/plugin for production')

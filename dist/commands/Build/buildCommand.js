@@ -13,57 +13,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = __importDefault(require("chalk"));
-const validator_1 = __importDefault(require("./validator"));
-const jsonfile_1 = require("jsonfile");
-const fs_1 = require("fs");
-const builder_1 = require("./builder");
+const validator_1 = require("./validator");
+const helper_1 = require("./helper");
 const buildCommand = (program) => {
-    const programBuild = program
+    return program
         .command('build')
         .description('Build customization/plugin')
         .option('--app-name <appName>', 'App name')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
-        const error = validator_1.default.buildValidator(cmd);
+        const error = (0, validator_1.buildValidator)(cmd);
         if (error && typeof error === 'string') {
             console.log(chalk_1.default.red(error));
             return;
         }
-        try {
-            const config = (0, jsonfile_1.readFileSync)(`${cmd.appName}/config.json`);
-            if ((0, fs_1.existsSync)(`${config.appName}/webpack.config.js`)) {
-                (0, builder_1.buildUsingWebpack)(config);
-            }
-            else {
-                if (config.type === 'Customization') {
-                    console.log(chalk_1.default.red('No webpack.config.js'));
-                    return;
-                }
-                (0, builder_1.buildVanillaJS)(config);
-            }
-            if (config.type === 'Plugin') {
-                (0, builder_1.buildPlugin)(config);
-            }
-            console.log('');
-            console.log(chalk_1.default.yellow('Build app complete.'));
-            if (!(0, fs_1.existsSync)(`${config.appName}/auth.json`)) {
-                console.log(chalk_1.default.yellow('To set auth info, use:'));
-                console.log('');
-                console.log(chalk_1.default.greenBright(`     kintone-cli auth --app-name ${config.appName}`));
-                console.log('');
-            }
-            else {
-                console.log(chalk_1.default.yellow('To deploy app, use:'));
-                console.log('');
-                console.log(chalk_1.default.greenBright(`     kintone-cli deploy --app-name ${config.appName}`));
-                console.log('');
-            }
-        }
-        catch (err) {
-            console.log(err);
-        }
+        (0, helper_1.buildCommandImplement)(cmd);
     }));
-
-    return programBuild;
 };
 exports.default = buildCommand;
 //# sourceMappingURL=buildCommand.js.map

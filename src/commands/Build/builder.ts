@@ -7,6 +7,7 @@ import {
   renameSync,
   readFileSync
 } from 'fs';
+import { updateManifestJSON } from './helper';
 
 const spawnSync = spawn.sync;
 
@@ -28,57 +29,59 @@ const buildPlugin = (option: any) => {
   manifestJSON.name = {
     en: option.appName
   };
-  if (option.uploadConfig && option.uploadConfig.name)
-    manifestJSON.name = option.uploadConfig.name;
 
-  manifestJSON.description = {
-    en: 'Kintone Plugin'
-  };
-  if (option.uploadConfig && option.uploadConfig.description)
-    manifestJSON.description = option.uploadConfig.description;
-
-  if (option.uploadConfig && option.uploadConfig.version)
-    manifestJSON.version = option.uploadConfig.version;
-
-  manifestJSON.desktop = option.uploadConfig.desktop;
-  manifestJSON.mobile = option.uploadConfig.mobile;
-  manifestJSON.config = option.uploadConfig.config;
-
-  if (
-    manifestJSON.config.required_params &&
-    manifestJSON.config.required_params.length === 0
-  )
-    delete manifestJSON.config.required_params;
-  if (manifestJSON.config && manifestJSON.config.html) {
-    const htmlContent = readFileSync(manifestJSON.config.html, 'utf-8');
-    if (!htmlContent) delete manifestJSON.config;
-  }
+  updateManifestJSON({
+    manifestJSON,
+    option
+  });
 
   writeFileSync(`manifest.json`, manifestJSON, { spaces: 4, EOL: '\r\n' });
 
   const paramArr = ['./', '--out', `${option.appName}/dist/plugin.zip`];
-  if (existsSync(`${option.appName}/dist/private.ppk`)) {
-    paramArr.push('--ppk');
-    paramArr.push(`${option.appName}/dist/private.ppk`);
-  }
+  paramArrUpdate({
+    paramArr,
+    isUpdate: existsSync(`${option.appName}/dist/private.ppk`),
+    appName: option.appName
+  });
 
   spawnSync('./node_modules/.bin/kintone-plugin-packer', paramArr, {
     stdio: 'inherit'
   });
 
-  if (!existsSync(`${option.appName}/dist/private.ppk`)) {
-    const keyFileName = readdirSync(`${option.appName}/dist`).filter(
+  renameSyncImplement({
+    appName: option.appName,
+    isRenameSync: !existsSync(`${option.appName}/dist/private.ppk`)
+  });
+
+  unlinkSync(`manifest.json`);
+};
+
+const paramArrUpdate = ({
+  paramArr,
+  isUpdate,
+  appName
+}: paramArrUpdateProps) => {
+  if (isUpdate) {
+    paramArr.push('--ppk');
+    paramArr.push(`${appName}/dist/private.ppk`);
+  }
+};
+
+const renameSyncImplement = ({
+  appName,
+  isRenameSync
+}: renameSyncImplementProps) => {
+  if (isRenameSync) {
+    const keyFileName = readdirSync(`${appName}/dist`).filter(
       (name: string) => {
         return /.ppk$/.test(name);
       }
     );
     renameSync(
-      `${option.appName}/dist/${keyFileName[0]}`,
-      `${option.appName}/dist/private.ppk`
+      `${appName}/dist/${keyFileName[0]}`,
+      `${appName}/dist/private.ppk`
     );
   }
-
-  unlinkSync(`manifest.json`);
 };
 
 const builder = {
@@ -88,4 +91,10 @@ const builder = {
 };
 
 export default builder;
-export { buildUsingWebpack, buildVanillaJS, buildPlugin };
+export {
+  buildUsingWebpack,
+  buildVanillaJS,
+  buildPlugin,
+  paramArrUpdate,
+  renameSyncImplement
+};
