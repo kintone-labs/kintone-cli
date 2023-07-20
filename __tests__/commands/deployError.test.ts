@@ -14,35 +14,35 @@ export const ERRORS = {
 };
 
 describe('deploy command: validator', () => {
-  test(`Should have deployValidatorResult as ${ERRORS.APP_NAME_MISSING}`, async () => {
-    const input = deployValidatorResult('', false);
-    expect(input).toBe(ERRORS.APP_NAME_MISSING);
+  test(`Should have deployValidatorResult as 'App name missing'`, async () => {
+    const missingAppname = deployValidatorResult('', false);
+    expect(missingAppname).toBe('App name missing');
   });
 
-  test(`Should have deployValidatorResult as ${ERRORS.APP_EXISTED}`, async () => {
-    const input = deployValidatorResult('%#$FFD', false);
-    expect(input).toBe(ERRORS.APP_EXISTED);
+  test(`Should have deployValidatorResult as 'App not existed'`, async () => {
+    const notExistApp = deployValidatorResult('%#$FFD', false);
+    expect(notExistApp).toBe('App not existed');
   });
 
   test('Should have deployValidatorResult as false', async () => {
-    const input = deployValidatorResult('%#$FFD', true);
-    expect(input).toBe(false);
+    const deployFalse = deployValidatorResult('%#$FFD', true);
+    expect(deployFalse).toBe(false);
   });
 
   test('Should have readAndDeployFile as undefined', async () => {
-    const input = readAndDeployFile({
+    const readAndDeployFileSuccessWithCustomization = readAndDeployFile({
       isExistsSync: true,
       config: { type: 'Customization' }
     });
-    expect(input).toBe(undefined);
+    expect(readAndDeployFileSuccessWithCustomization).toBe(undefined);
   });
 
   test('Should have readAndDeployFile as undefined', async () => {
-    const input = readAndDeployFile({
+    const readAndDeployFileSuccessWithPlugin = readAndDeployFile({
       isExistsSync: false,
       config: { type: 'Plugin' }
     });
-    expect(input).toBe(undefined);
+    expect(readAndDeployFileSuccessWithPlugin).toBe(undefined);
   });
 
   test('Should have addParamArrItem as undefined', async () => {
@@ -67,23 +67,23 @@ describe('deploy command: validator', () => {
   });
 
   test('Should have mkdirSyncCheck as undefined', async () => {
-    const funcMock = jest.fn();
+    const mkdirSyncCallbackMock = jest.fn();
 
     expect(
       mkdirSyncCheck({
         isMkdir: false,
-        mkdirSyncCallback: funcMock
+        mkdirSyncCallback: mkdirSyncCallbackMock
       })
     ).toBe(undefined);
   });
 
   test('Should have deployCommandImplement as false', async () => {
-    const funcMock = jest.fn();
+    const readAndDeployFileCallbackMock = jest.fn();
 
     expect(
       deployCommandImplement({
         error: true,
-        readAndDeployFileCallback: funcMock
+        readAndDeployFileCallback: readAndDeployFileCallbackMock
       })
     ).toBe(false);
   });
