@@ -1,12 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.devPlugin = exports.devCustomize = void 0;
 const deployer_1 = require("../Deploy/deployer");
 const fs_1 = require("fs");
-const spawn = require("cross-spawn");
-const chalk_1 = require("chalk");
+const cross_spawn_1 = __importDefault(require("cross-spawn"));
+const chalk_1 = __importDefault(require("chalk"));
 const builder_1 = require("../Build/builder");
-const spawnSync = spawn.sync;
+const spawnSync = cross_spawn_1.default.sync;
 const cleanExit = (ws) => {
     ws.kill();
     process.exit();

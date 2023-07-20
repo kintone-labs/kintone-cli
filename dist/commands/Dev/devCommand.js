@@ -8,17 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = require("chalk");
+const chalk_1 = __importDefault(require("chalk"));
 const jsonfile_1 = require("jsonfile");
-const spawn = require("cross-spawn");
-const strip_ansi_1 = require("strip-ansi");
+const cross_spawn_1 = __importDefault(require("cross-spawn"));
+const strip_ansi_1 = __importDefault(require("strip-ansi"));
 const fs_1 = require("fs");
 const inquirer_1 = require("inquirer");
 const devGenerator_1 = require("./devGenerator");
-const validator_1 = require("./validator");
+const validator_1 = __importDefault(require("./validator"));
 const readline = require('readline');
-const spawnSync = spawn.sync;
+const spawnSync = cross_spawn_1.default.sync;
 const isURL = (str) => {
     const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -98,7 +101,7 @@ const devCommand = (program) => {
             spawnSync('npm', ['run', `build-${cmd.appName}`, '--', '--mode', 'development'], { stdio: ['ignore', 'ignore', process.stderr] });
         }
         console.log(chalk_1.default.yellow('Starting local webserver...'));
-        const ws = spawn('npm', ['run', 'dev', '--', '--https']);
+        const ws = (0, cross_spawn_1.default)('npm', ['run', 'dev', '--', '--https']);
         ws.stderr.on('data', (data) => __awaiter(void 0, void 0, void 0, function* () {
             const resp = data.toString();
             const serverAddr = yield getLoopBackAddress(resp, cmd.localhost);
