@@ -7,25 +7,29 @@ import {
   mkdirSyncCheck,
   readAndDeployFile
 } from '../../src/commands/Deploy/validator';
-import { ERRORS } from '../../src/constant';
+
+export const ERRORS = {
+  APP_NAME_MISSING: 'App name missing',
+  APP_EXISTED: 'App not existed'
+};
 
 describe('deploy command: validator', () => {
-  test(`deployValidator func -> ${ERRORS.APP_NAME_MISSING}`, async () => {
+  test(`Should have deployValidatorResult as ${ERRORS.APP_NAME_MISSING}`, async () => {
     const input = deployValidatorResult('', false);
     expect(input).toBe(ERRORS.APP_NAME_MISSING);
   });
 
-  test(`deployValidator func -> ${ERRORS.APP_EXISTED}`, async () => {
+  test(`Should have deployValidatorResult as ${ERRORS.APP_EXISTED}`, async () => {
     const input = deployValidatorResult('%#$FFD', false);
     expect(input).toBe(ERRORS.APP_EXISTED);
   });
 
-  test('deployValidator func -> false', async () => {
+  test('Should have deployValidatorResult as false', async () => {
     const input = deployValidatorResult('%#$FFD', true);
     expect(input).toBe(false);
   });
 
-  test("readAndDeployFile func: config.type === 'Customization' -> undefined", async () => {
+  test('Should have readAndDeployFile as undefined', async () => {
     const input = readAndDeployFile({
       isExistsSync: true,
       config: { type: 'Customization' }
@@ -33,7 +37,7 @@ describe('deploy command: validator', () => {
     expect(input).toBe(undefined);
   });
 
-  test('readAndDeployFile func -> undefined', async () => {
+  test('Should have readAndDeployFile as undefined', async () => {
     const input = readAndDeployFile({
       isExistsSync: false,
       config: { type: 'Plugin' }
@@ -41,7 +45,7 @@ describe('deploy command: validator', () => {
     expect(input).toBe(undefined);
   });
 
-  test('addParamArrItem func -> undefined', async () => {
+  test('Should have addParamArrItem as undefined', async () => {
     const OPTIONS = {
       domain: 'https://domain.kintone.com',
       username: 'test-app',
@@ -53,7 +57,7 @@ describe('deploy command: validator', () => {
     expect(addParamArrItem({ authJSON: OPTIONS, paramArr })).toBe(undefined);
   });
 
-  test('addParamArrItem func -> undefined', async () => {
+  test('Should have buildCommandImplement as undefined', async () => {
     const OPTIONS = {
       appName: 'test-app',
       isExistsFile: true
@@ -62,7 +66,7 @@ describe('deploy command: validator', () => {
     expect(buildCommandImplement(OPTIONS)).toBe(undefined);
   });
 
-  test('mkdirSyncCheck func -> undefined', async () => {
+  test('Should have mkdirSyncCheck as undefined', async () => {
     const funcMock = jest.fn();
 
     expect(
@@ -73,7 +77,7 @@ describe('deploy command: validator', () => {
     ).toBe(undefined);
   });
 
-  test('deployCommandImplement func -> false', async () => {
+  test('Should have deployCommandImplement as false', async () => {
     const funcMock = jest.fn();
 
     expect(
