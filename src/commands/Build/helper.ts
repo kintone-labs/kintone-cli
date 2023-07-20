@@ -1,4 +1,11 @@
-import { existsSync, readFileSync } from 'fs';
+import { writeFileSync } from 'jsonfile';
+import {
+  existsSync,
+  readFileSync,
+  readdirSync,
+  renameSync,
+  unlinkSync
+} from 'fs';
 import { buildPlugin, buildUsingWebpack, buildVanillaJS } from './builder';
 import chalk from 'chalk';
 import { appFileCheck } from './validator';
@@ -8,7 +15,13 @@ export const buildCommandImplement = (cmd: any) => {
     const config = getFileSync(cmd.appName);
     buildCommandHandle({
       config,
-      isBuildWebpack: existsSync(`${config.appName}/webpack.config.js`)
+      isBuildWebpack: existsSync(`${config.appName}/webpack.config.js`),
+      writeFileSyncFunc: (manifestJSON: any) =>
+        writeFileSync(`manifest.json`, manifestJSON, {
+          spaces: 4,
+          EOL: '\r\n'
+        }),
+      readdirSyncUTF8Func
     });
   } catch (err) {
     console.log(err);
@@ -17,11 +30,15 @@ export const buildCommandImplement = (cmd: any) => {
 
 export const buildCommandHandle = ({
   config,
-  isBuildWebpack
+  isBuildWebpack,
+  writeFileSyncFunc,
+  readdirSyncUTF8Func
 }: buildCommandHandleProps) => {
   const isNotError = buildAppImplement({
     config,
-    isBuildWebpack: isBuildWebpack
+    isBuildWebpack: isBuildWebpack,
+    writeFileSyncFunc,
+    readdirSyncUTF8Func
   });
 
   appFileCheckImplement({
@@ -48,7 +65,9 @@ export const getFileSync = (appName: string) =>
 
 export const buildAppImplement = ({
   config,
-  isBuildWebpack
+  isBuildWebpack,
+  writeFileSyncFunc,
+  readdirSyncUTF8Func
 }: buildAppImplementProps) => {
   if (isBuildWebpack) {
     buildUsingWebpack(config);
@@ -60,7 +79,19 @@ export const buildAppImplement = ({
     buildVanillaJS(config);
   }
   if (config.type === 'Plugin') {
-    buildPlugin(config);
+    buildPlugin({
+      option: config,
+      writeFileSyncFunc,
+      readdirSyncUTF8Func,
+      keyFileName: readdirSync(`${config.appName}/dist`).filter(
+        (name: string) => {
+          return /.ppk$/.test(name);
+        }
+      ),
+      renameSyncFunc: (file) =>
+        renameSync(file, `${config.appName}/dist/private.ppk`),
+      unlinkSyncFunc: unlinkSync(`manifest.json`)
+    });
   }
   return true;
 };
@@ -94,7 +125,7 @@ export const updateManifestJSON = ({
   if (manifestJSON.config && manifestJSON.config.html) {
     manifestJSONConfig({
       manifestJSON,
-      htmlContent: readFileSync(manifestJSON.config.html, 'utf-8')
+      htmlContent: readdirSyncUTF8Func(manifestJSON.config.html)
     });
   }
 };
@@ -105,3 +136,5 @@ export const manifestJSONConfig = ({
 }: manifestJSONConfigProps) => {
   if (!htmlContent) delete manifestJSON.config;
 };
+
+export const readdirSyncUTF8Func = (dir: any) => readdirSync(dir, 'utf-8');

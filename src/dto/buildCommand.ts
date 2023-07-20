@@ -1,11 +1,15 @@
 type buildAppImplementProps = {
   isBuildWebpack: boolean;
   config: any;
+  writeFileSyncFunc: any;
+  readdirSyncUTF8Func: any;
 };
 
 type buildCommandHandleProps = {
   config: any;
   isBuildWebpack: boolean;
+  writeFileSyncFunc: any;
+  readdirSyncUTF8Func: any;
 };
 
 type appFileCheckImplementProps = {
@@ -21,6 +25,7 @@ type appFileCheckProps = {
 type updateManifestJSONProps = {
   manifestJSON: any;
   option: any;
+  readdirSyncUTF8Func: any;
 };
 
 type manifestJSONConfigProps = {
@@ -37,4 +42,15 @@ type paramArrUpdateProps = {
 type renameSyncImplementProps = {
   appName: string;
   isRenameSync: boolean;
+  keyFileName: any;
+  renameSyncFunc: any;
+};
+
+type buildPluginProps = {
+  option: any;
+  writeFileSyncFunc: any;
+  readdirSyncUTF8Func: any;
+  keyFileName: any;
+  renameSyncFunc: any;
+  unlinkSyncFunc: any;
 };

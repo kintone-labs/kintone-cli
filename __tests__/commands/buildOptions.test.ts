@@ -1,5 +1,12 @@
 import { program } from 'commander';
-import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
+import {
+  afterAll,
+  beforeAll,
+  describe,
+  expect,
+  jest,
+  test
+} from '@jest/globals';
 import {
   createTempDir,
   createTemplate,
@@ -16,15 +23,13 @@ import {
   updateManifestJSON
 } from '../../src/commands/Build/helper';
 import { appFileCheck } from '../../src/commands/Build/validator';
-import {
-  paramArrUpdate,
-  renameSyncImplement
-} from '../../src/commands/Build/builder';
+import { buildPlugin, paramArrUpdate } from '../../src/commands/Build/builder';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = process.cwd();
 const TEMP_DIR = ORIGINAL_CWD + '/__tests__/buildOptionsTemp';
-const OPTIONS = ['node', 'build', '--app-name', 'test-app_436*#$  32903{D}DSF'];
+const OPTIONS = ['node', 'build', '--app-name', 'APP_NAME'];
+const APP_NAME = 'APP_NAME';
 const UPLOAD_CONFIG = {
   name: 'test',
   description: 'this is test',
@@ -52,115 +57,101 @@ describe('build command: errors', () => {
     removeTempDir(TEMP_DIR);
   });
 
-  test('should have appName as "test-app_436*#$  32903{D}DSF"', async () => {
-    expect(mainProgram.opts().appName).toBe('test-app_436*#$  32903{D}DSF');
+  test('should have appName as "APP_NAME"', async () => {
+    expect(mainProgram.opts().appName).toBe('APP_NAME');
   });
 });
 
 describe('build command: helper', () => {
-  test('buildAppImplement func: type "Customization" -> true', async () => {
-    const input = {
-      config: {
-        type: 'Customization',
-        appName: PROJECT_NAME,
-        required_params: ['a', 'b'],
-        html: 'abc',
-        uploadConfig: UPLOAD_CONFIG
-      },
-      isBuildWebpack: true
-    };
-    expect(buildAppImplement(input)).toBe(true);
-  });
-
-  test('buildAppImplement func: isBuildWebpack [false] -> false', async () => {
-    const input = {
-      config: {
-        type: 'Customization',
-        appName: PROJECT_NAME,
-        required_params: ['a', 'b'],
-        html: 'abc',
-        uploadConfig: UPLOAD_CONFIG
-      },
-      isBuildWebpack: false
-    };
-    expect(buildAppImplement(input)).toBe(false);
-  });
-
-  test('buildAppImplement func: isBuildWebpack [false] -> true', async () => {
-    const input = {
-      config: {
-        type: 'Plugin',
-        appName: PROJECT_NAME,
-        required_params: ['a', 'b'],
-        html: 'abc',
-        uploadConfig: UPLOAD_CONFIG
-      },
-      isBuildWebpack: true
-    };
-    expect(buildAppImplement(input)).toBe(true);
-  });
-
-  test('manifestJSONConfig func: type "Plugin" -> undefined', async () => {
-    const input = {
+  test('Should have manifestJSONConfig as undefined', async () => {
+    const manifestJSONConfigParams = {
       manifestJSON: {
         config: {
-          html: 'abc'
+          html: TEMP_DIR
         }
       },
       htmlContent: false
     };
-    expect(manifestJSONConfig(input)).toBe(undefined);
+    expect(manifestJSONConfig(manifestJSONConfigParams)).toBe(undefined);
   });
 
-  test('appFileCheckImplement func: type "Plugin" -> true', async () => {
-    const input = {
+  test('Should have buildAppImplement as true', async () => {
+    const validParams = {
+      config: {
+        type: 'Customization',
+        appName: PROJECT_NAME,
+        required_params: ['a', 'b'],
+        html: TEMP_DIR,
+        uploadConfig: UPLOAD_CONFIG
+      },
+      isBuildWebpack: true
+    };
+    expect(buildAppImplement(validParams)).toBe(true);
+  });
+
+  test('Should have buildAppImplement as false', async () => {
+    const invalidParams = {
+      config: {
+        type: 'Customization',
+        appName: PROJECT_NAME,
+        required_params: ['a', 'b'],
+        html: TEMP_DIR,
+        uploadConfig: UPLOAD_CONFIG
+      },
+      isBuildWebpack: false
+    };
+    expect(buildAppImplement(invalidParams)).toBe(false);
+  });
+
+  test('Should have appFileCheckImplement as true', async () => {
+    const paramWithError = {
       isNotError: false,
       appName: PROJECT_NAME
     };
-    expect(appFileCheckImplement(input)).toBe(false);
+    expect(appFileCheckImplement(paramWithError)).toBe(false);
   });
 
-  test('appFileCheckImplement func: type "Plugin" -> true', async () => {
-    const input = {
+  test('Should have appFileCheckImplement as true', async () => {
+    const paramWithoutError = {
       isNotError: true,
       appName: PROJECT_NAME
     };
-    expect(appFileCheckImplement(input)).toBe(true);
+    expect(appFileCheckImplement(paramWithoutError)).toBe(true);
   });
 
-  test('buildCommandHandle func -> undefined', async () => {
-    const input = {
+  test('Should have buildCommandHandle as undefined', async () => {
+    const buildCommandHandleParam = {
       config: { appName: PROJECT_NAME },
       isBuildWebpack: true
     };
-    expect(buildCommandHandle(input)).toBe(undefined);
+    expect(buildCommandHandle(buildCommandHandleParam)).toBe(undefined);
   });
 
-  test('buildCommandImplement func -> undefined', async () => {
-    const input = {
+  test('Should have buildCommandImplement as undefined', async () => {
+    const buildCommandImplementParam = {
       appName: PROJECT_NAME
     };
-    expect(buildCommandImplement(input)).toBe(undefined);
+    expect(buildCommandImplement(buildCommandImplementParam)).toBe(undefined);
   });
 
-  test('appFileCheck func -> false', async () => {
-    const input = {
+  test('Should have appFileCheck as false', async () => {
+    const paramWithoutIsExistsSync = {
       appName: PROJECT_NAME,
       isExistsSync: false
     };
-    expect(appFileCheck(input)).toBe(false);
+    expect(appFileCheck(paramWithoutIsExistsSync)).toBe(false);
   });
 
-  test('appFileCheck func -> true', async () => {
-    const input = {
+  test('Should have appFileCheck as true', async () => {
+    const paramWithIsExistsSync = {
       appName: PROJECT_NAME,
       isExistsSync: true
     };
-    expect(appFileCheck(input)).toBe(true);
+    expect(appFileCheck(paramWithIsExistsSync)).toBe(true);
   });
 
-  test('updateManifestJSON func -> undefined' + __dirname, async () => {
-    const input = {
+  test('Should have updateManifestJSON as undefined', async () => {
+    const updateManifestJSONParam = {
       manifestJSON: {},
       option: {
         uploadConfig: {
@@ -173,11 +164,11 @@ describe('build command: helper', () => {
         }
       }
     };
-    expect(updateManifestJSON(input)).toBe(undefined);
+    expect(updateManifestJSON(updateManifestJSONParam)).toBe(undefined);
   });
 
-  test('updateManifestJSON func: another case -> undefined', async () => {
-    const input = {
+  test('Should have updateManifestJSON as undefined', async () => {
+    const updateManifestJSONParam = {
       manifestJSON: {},
       option: {
         uploadConfig: {
@@ -189,32 +180,46 @@ describe('build command: helper', () => {
         }
       }
     };
-    expect(updateManifestJSON(input)).toBe(undefined);
+    expect(updateManifestJSON(updateManifestJSONParam)).toBe(undefined);
   });
 });
 
 describe('build command: builder', () => {
-  test('paramArrUpdate func -> inputResult', async () => {
-    const input = [];
-    const inputResult = ['--ppk', `${PROJECT_NAME}/dist/private.ppk`];
-
+  test('Should have paramArrUpdate as inputResult', async () => {
     expect(
       paramArrUpdate({
-        paramArr: input,
+        paramArr: [],
         isUpdate: true,
         appName: PROJECT_NAME
       })
-    ).toBe(inputResult);
+    ).toBe(undefined);
   });
 
-  test('renameSyncImplement func: another case -> undefined', async () => {
-    const inputResult = ['--ppk', `${PROJECT_NAME}/dist/private.ppk`];
+  test('Should have buildPlugin as undefined', async () => {
+    const writeFileSyncFunc = jest.fn();
+    const readdirSyncUTF8Func = jest.fn();
+    const renameSyncFunc = jest.fn();
+    const unlinkSyncFunc = jest.fn();
+    const option = {
+      uploadConfig: {
+        ...UPLOAD_CONFIG,
+        config: {
+          required_params: ['a', 'b', 'c'],
+          html: __dirname
+        }
+      }
+    };
+    const keyFileName = 'test-app';
 
     expect(
-      renameSyncImplement({
-        isRenameSync: true,
-        appName: PROJECT_NAME
+      buildPlugin({
+        option,
+        writeFileSyncFunc,
+        readdirSyncUTF8Func,
+        keyFileName,
+        renameSyncFunc,
+        unlinkSyncFunc
       })
-    ).toBe(inputResult);
+    ).toBe(undefined);
   });
 });

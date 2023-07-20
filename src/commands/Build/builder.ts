@@ -1,12 +1,5 @@
 import * as spawn from 'cross-spawn';
-import { writeFileSync } from 'jsonfile';
-import {
-  unlinkSync,
-  existsSync,
-  readdirSync,
-  renameSync,
-  readFileSync
-} from 'fs';
+import { existsSync } from 'fs';
 import { updateManifestJSON } from './helper';
 
 const spawnSync = spawn.sync;
@@ -19,7 +12,14 @@ const buildVanillaJS = (option: object) => {
   // function body
 };
 
-const buildPlugin = (option: any) => {
+const buildPlugin = ({
+  option,
+  writeFileSyncFunc,
+  readdirSyncUTF8Func,
+  keyFileName,
+  renameSyncFunc,
+  unlinkSyncFunc
+}: buildPluginProps) => {
   const manifestJSON: any = {};
 
   manifestJSON.manifest_version = 1;
@@ -32,10 +32,11 @@ const buildPlugin = (option: any) => {
 
   updateManifestJSON({
     manifestJSON,
-    option
+    option,
+    readdirSyncUTF8Func
   });
 
-  writeFileSync(`manifest.json`, manifestJSON, { spaces: 4, EOL: '\r\n' });
+  writeFileSyncFunc(manifestJSON);
 
   const paramArr = ['./', '--out', `${option.appName}/dist/plugin.zip`];
   paramArrUpdate({
@@ -50,10 +51,12 @@ const buildPlugin = (option: any) => {
 
   renameSyncImplement({
     appName: option.appName,
-    isRenameSync: !existsSync(`${option.appName}/dist/private.ppk`)
+    isRenameSync: !existsSync(`${option.appName}/dist/private.ppk`),
+    keyFileName,
+    renameSyncFunc
   });
 
-  unlinkSync(`manifest.json`);
+  unlinkSyncFunc();
 };
 
 const paramArrUpdate = ({
@@ -69,18 +72,12 @@ const paramArrUpdate = ({
 
 const renameSyncImplement = ({
   appName,
-  isRenameSync
+  isRenameSync,
+  keyFileName,
+  renameSyncFunc
 }: renameSyncImplementProps) => {
   if (isRenameSync) {
-    const keyFileName = readdirSync(`${appName}/dist`).filter(
-      (name: string) => {
-        return /.ppk$/.test(name);
-      }
-    );
-    renameSync(
-      `${appName}/dist/${keyFileName[0]}`,
-      `${appName}/dist/private.ppk`
-    );
+    renameSyncFunc(`${appName}/dist/${keyFileName[0]}`);
   }
 };
 
