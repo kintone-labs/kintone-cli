@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'fs';
 import { buildPlugin, buildUsingWebpack, buildVanillaJS } from './builder';
 import chalk from 'chalk';
 import { appFileCheck } from './validator';
+import { readFileSync as readJSONFileSync } from 'jsonfile';
 
 export const buildCommandImplement = (cmd: any) => {
   try {
@@ -44,7 +45,7 @@ export const appFileCheckImplement = ({
 };
 
 export const getFileSync = (appName: string) =>
-  readFileSync(`${appName}/config.json`) as any;
+  readJSONFileSync(`${appName}/config.json`) as any;
 
 export const buildAppImplement = ({
   config,
