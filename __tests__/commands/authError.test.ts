@@ -1,5 +1,4 @@
 import { describe, expect, test } from '@jest/globals';
-import { ERRORS } from '../../src/constant';
 import {
   appIDValidator,
   authValidator,
@@ -10,68 +9,70 @@ import {
 } from '../../src/commands/Auth/validator';
 
 describe('auth command: validator', () => {
-  test(`The name app missing -> ${ERRORS.APP_NAME_MISSING}`, () => {
-    const input = '';
-    expect(authValidator(input)).toBe(ERRORS.APP_NAME_MISSING);
+  test(`Should have authValidator as 'App name missing'`, () => {
+    const invalidAppName = '';
+    expect(authValidator(invalidAppName)).toBe('App name missing');
   });
 
-  test(`Domain validator: missing https -> ${ERRORS.DOMAIN_STARTS_WITH_HTTPS}`, () => {
-    const input = 'domain.kintone.com';
-    expect(domainValidator(input)).toBe(ERRORS.DOMAIN_STARTS_WITH_HTTPS);
+  test(`Should have domainValidator as 'Domain has to start with https'`, () => {
+    const invalidDomain = 'domain.kintone.com';
+    expect(domainValidator(invalidDomain)).toBe(
+      'Domain has to start with https'
+    );
   });
 
-  test(`Domain validator: valid domain -> ${ERRORS.VALID_DOMAIN}`, () => {
-    const input = 'https://%*@(&#$#).k#intone.%com';
-    expect(domainValidator(input)).toBe(ERRORS.VALID_DOMAIN);
+  test(`Should have domainValidator as 'Please enter a valid domain'`, () => {
+    const invalidDomain = 'https://%*@(&#$#).k#intone.%com';
+    expect(domainValidator(invalidDomain)).toBe('Please enter a valid domain');
   });
 
-  test(`Domain validator: true -> ${ERRORS.VALID_DOMAIN}`, () => {
-    const input = 'https://domain.kintone.com';
-    expect(domainValidator(input)).toBe(true);
+  test(`Should have domainValidator as 'Please enter a valid domain'`, () => {
+    const validDomain = 'https://domain.kintone.com';
+    expect(domainValidator(validDomain)).toBe(true);
   });
 
-  test(`Username validator -> ${ERRORS.USER_NAME_EMPTY}`, () => {
-    const input = '';
-    expect(usernameValidator(input)).toBe(ERRORS.USER_NAME_EMPTY);
+  test(`Should have usernameValidator as "Username can't be empty."`, () => {
+    const emptyUsername = '';
+    expect(usernameValidator(emptyUsername)).toBe("Username can't be empty.");
   });
 
-  test(`Username validator -> true`, () => {
-    const input = 'tester';
-    expect(usernameValidator(input)).toBe(true);
+  test(`Should have usernameValidator as true`, () => {
+    const validUsername = 'tester';
+    expect(usernameValidator(validUsername)).toBe(true);
   });
 
-  test(`Password validator -> ${ERRORS.PASSWORD_EMPTY}`, () => {
-    const input = '';
-    expect(passwordValidator(input)).toBe(ERRORS.PASSWORD_EMPTY);
+  test(`Should have passwordValidator as "Password can't be empty"`, () => {
+    const emptyPassword = '';
+    expect(passwordValidator(emptyPassword)).toBe("Password can't be empty");
   });
 
-  test(`Password validator -> true`, () => {
-    const input = 'passwordtest';
-    expect(passwordValidator(input)).toBe(true);
+  test(`Should have passwordValidator as true`, () => {
+    const validPassword = 'passwordtest';
+    expect(passwordValidator(validPassword)).toBe(true);
   });
 
-  test(`AppID validator -> ${ERRORS.APP_ID_EMPTY}`, () => {
-    const input = '';
-    expect(appIDValidator(input)).toBe(ERRORS.APP_ID_EMPTY);
+  test(`Should have appIDValidator as "App ID can't be empty."`, () => {
+    const emptyAppID = '';
+    expect(appIDValidator(emptyAppID)).toBe("App ID can't be empty.");
   });
 
-  test(`AppID validator -> ${ERRORS.APP_ID_NUMBER}`, () => {
-    const input = '%#$testttt';
-    expect(appIDValidator(input)).toBe(ERRORS.APP_ID_NUMBER);
+  test(`Should have appIDValidator as 'App ID must be a number.'`, () => {
+    const invalidAppID = '%#$testttt';
+    expect(appIDValidator(invalidAppID)).toBe('App ID must be a number.');
   });
 
-  test(`AppID validator -> true`, () => {
-    const input = '546';
-    expect(appIDValidator(input)).toBe(true);
+  test(`Should have appIDValidator as true`, () => {
+    const validAppID = '546';
+    expect(appIDValidator(validAppID)).toBe(true);
   });
 
-  test(`Proxy validator -> ${ERRORS.PROXY_EMPTY}`, () => {
-    const input = '';
-    expect(proxyValidator(input)).toBe(ERRORS.PROXY_EMPTY);
+  test(`Should have proxyValidator as "Proxy URL can't be empty."`, () => {
+    const invalidProxy = '';
+    expect(proxyValidator(invalidProxy)).toBe("Proxy URL can't be empty.");
   });
 
-  test(`Proxy validator -> true`, () => {
-    const input = '546';
-    expect(proxyValidator(input)).toBe(true);
+  test(`Should have proxyValidator as true`, () => {
+    const validProxy = 'https://example.proxy.com';
+    expect(proxyValidator(validProxy)).toBe(true);
   });
 });
