@@ -6,7 +6,7 @@ import {
   passwordValidator,
   proxyValidator,
   usernameValidator
-} from '../../src/commands/Auth/validator';
+} from '../../../src/commands/Auth/validator';
 
 describe('auth command: validator', () => {
   test(`Should have authValidator as 'App name missing.'`, () => {
