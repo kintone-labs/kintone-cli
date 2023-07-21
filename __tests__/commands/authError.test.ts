@@ -9,24 +9,24 @@ import {
 } from '../../src/commands/Auth/validator';
 
 describe('auth command: validator', () => {
-  test(`Should have authValidator as 'App name missing'`, () => {
+  test(`Should have authValidator as 'App name missing.'`, () => {
     const invalidAppName = '';
-    expect(authValidator(invalidAppName)).toBe('App name missing');
+    expect(authValidator(invalidAppName)).toBe('App name missing.');
   });
 
-  test(`Should have domainValidator as 'Domain has to start with https'`, () => {
+  test(`Should have domainValidator as 'Domain has to start with https.'`, () => {
     const invalidDomain = 'domain.kintone.com';
     expect(domainValidator(invalidDomain)).toBe(
-      'Domain has to start with https'
+      'Domain has to start with https.'
     );
   });
 
-  test(`Should have domainValidator as 'Please enter a valid domain'`, () => {
+  test(`Should have domainValidator as 'Please enter a valid domain.'`, () => {
     const invalidDomain = 'https://%*@(&#$#).k#intone.%com';
-    expect(domainValidator(invalidDomain)).toBe('Please enter a valid domain');
+    expect(domainValidator(invalidDomain)).toBe('Please enter a valid domain.');
   });
 
-  test(`Should have domainValidator as 'Please enter a valid domain'`, () => {
+  test(`Should have domainValidator as true`, () => {
     const validDomain = 'https://domain.kintone.com';
     expect(domainValidator(validDomain)).toBe(true);
   });
@@ -41,9 +41,9 @@ describe('auth command: validator', () => {
     expect(usernameValidator(validUsername)).toBe(true);
   });
 
-  test(`Should have passwordValidator as "Password can't be empty"`, () => {
+  test(`Should have passwordValidator as "Password can't be empty."`, () => {
     const emptyPassword = '';
-    expect(passwordValidator(emptyPassword)).toBe("Password can't be empty");
+    expect(passwordValidator(emptyPassword)).toBe("Password can't be empty.");
   });
 
   test(`Should have passwordValidator as true`, () => {
