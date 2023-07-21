@@ -27,6 +27,7 @@ const authCommand = (program: any) => {
     .action(async (cmd) => {
       const error = authValidator(cmd);
       if (error && typeof error === 'string') {
+        console.log(chalk.red(error));
         return;
       }
       let authJSON: any;
