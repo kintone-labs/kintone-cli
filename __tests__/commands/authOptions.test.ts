@@ -41,6 +41,7 @@ describe('auth command: options', () => {
 
     mainProgram = authCommand(program);
     process.argv = AUTH_OPTIONS;
+
     await mainProgram.parseAsync(process.argv);
   });
 
