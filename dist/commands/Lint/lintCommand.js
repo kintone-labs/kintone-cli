@@ -8,11 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = require("chalk");
-const spawn = require("cross-spawn");
-const validator_1 = require("./validator");
-const spawnSync = spawn.sync;
+const chalk_1 = __importDefault(require("chalk"));
+const cross_spawn_1 = __importDefault(require("cross-spawn"));
+const validator_1 = __importDefault(require("./validator"));
+const spawnSync = cross_spawn_1.default.sync;
 const lintCommand = (program) => {
     program
         .command('lint')
