@@ -12,6 +12,7 @@ import {
   usernameValidator
 } from './validator';
 import { MESSAGES } from '../../constant';
+import { authJSONAddProps, configJSONAddProps } from './helper';
 
 const authCommand = (program: any) => {
   return program
@@ -84,18 +85,15 @@ const authCommand = (program: any) => {
         }
       ]);
 
-      authJSON.domain = cmd.domain || answer.domain;
-      authJSON.username = cmd.username || answer.username;
-      authJSON.password = cmd.password || answer.password;
-
-      if (cmd.proxy || answer.proxy) authJSON.proxy = cmd.proxy || answer.proxy;
+      authJSONAddProps({ authJSON, cmd, answer });
 
       writeFileSync(`${cmd.appName}/auth.json`, authJSON, {
         spaces: 4,
         EOL: '\r\n'
       });
 
-      if (!configJSON.appID) configJSON.appID = cmd.appID || answer.appID;
+      configJSONAddProps({ configJSON, cmd, answer });
+
       writeFileSync(`${cmd.appName}/config.json`, configJSON, {
         spaces: 4,
         EOL: '\r\n'

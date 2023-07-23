@@ -77,3 +77,47 @@ describe('auth command: options', () => {
     expect(mainProgram.opts().proxy).toBe('http://localhost:8080');
   });
 });
+
+describe('auth command: options', () => {
+  let mainProgram: CommanderStatic;
+
+  const PROJECT_NAME_SECOND = 'test-project';
+  const ORIGINAL_CWD_SECOND = linkDirCustom();
+  const TEMP_DIR_SECOND = ORIGINAL_CWD_SECOND + '/authOptionsTemp';
+  const AUTH_OPTIONS_SECOND = [
+    'node',
+    'auth',
+    '--app-name',
+    '',
+    '--domain',
+    'https://domain.kintone.com',
+    '--app-id',
+    '',
+    '--username',
+    'user',
+    '--password',
+    'password',
+    '--use-proxy',
+    '--proxy',
+    'http://localhost:8080'
+  ];
+
+  beforeAll(async () => {
+    createTempDir(TEMP_DIR_SECOND);
+
+    await initProject(TEMP_DIR_SECOND, PROJECT_NAME_SECOND);
+    await createTemplate(TEMP_DIR_SECOND, PROJECT_NAME_SECOND);
+
+    mainProgram = authCommand(program);
+    process.argv = AUTH_OPTIONS_SECOND;
+
+    await mainProgram.parseAsync(process.argv);
+  });
+
+  afterAll(() => {
+    removeTempDir(TEMP_DIR_SECOND);
+  });
+  test('should have proxy as "http://localhost:8080"', async () => {
+    expect(mainProgram.opts().proxy).toBe('http://localhost:8080');
+  });
+});
