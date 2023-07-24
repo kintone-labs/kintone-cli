@@ -8,6 +8,7 @@ import {
   linkDirCustom,
   removeTempDir
 } from '../../test-helpers';
+import { readFileSync } from 'jsonfile';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = linkDirCustom();
@@ -17,6 +18,7 @@ const OPTIONS = ['node', 'build', '--app-name', APP_NAME];
 
 describe('type', () => {
   let mainProgram: CommanderStatic;
+  const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
     createTempDir(TEMP_DIR);
@@ -34,7 +36,8 @@ describe('type', () => {
     removeTempDir(TEMP_DIR);
   });
 
-  test('Should be "test-app" when assign to "test-app"', async () => {
-    expect(mainProgram.opts().appName).toBe('test-app');
+  test('Should be "Plugin" when assign type to "Plugin"', async () => {
+    const config = readFileSync(`${CURRENT_DIR}/config.json`);
+    expect(config.type).toBe('Plugin');
   });
 });
