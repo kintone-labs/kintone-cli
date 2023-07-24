@@ -33,27 +33,10 @@ export async function initProject(TEMP_DIR: string, PROJECT_NAME: string) {
   await program.parseAsync(process.argv);
 }
 
-export async function createTemplate(TEMP_DIR: string, PROJECT_NAME: string) {
-  process.chdir(TEMP_DIR + '/' + PROJECT_NAME);
-  global.currentDir = process.cwd();
-
-  initCommand(program);
-  process.argv = [
-    'node',
-    'dist',
-    'create-template',
-    '--quick',
-    '--app-name',
-    'test-app',
-    '--app-id',
-    '100'
-  ];
-  await program.parseAsync(process.argv);
-}
-
-export async function createTemplatePluginType(
+export async function createTemplateSpecificType(
   TEMP_DIR: string,
-  PROJECT_NAME: string
+  PROJECT_NAME: string,
+  type: string
 ) {
   process.chdir(TEMP_DIR + '/' + PROJECT_NAME);
   global.currentDir = process.cwd();
@@ -65,7 +48,25 @@ export async function createTemplatePluginType(
     'create-template',
     '--quick',
     '--type',
-    'Plugin',
+    type,
+    '--app-name',
+    'test-app',
+    '--app-id',
+    '100'
+  ];
+  await program.parseAsync(process.argv);
+}
+
+export async function createTemplate(TEMP_DIR: string, PROJECT_NAME: string) {
+  process.chdir(TEMP_DIR + '/' + PROJECT_NAME);
+  global.currentDir = process.cwd();
+
+  initCommand(program);
+  process.argv = [
+    'node',
+    'dist',
+    'create-template',
+    '--quick',
     '--app-name',
     'test-app',
     '--app-id',
