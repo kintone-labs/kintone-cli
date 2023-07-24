@@ -20,9 +20,6 @@ const OPTIONS = ['node', 'build', '--app-name', APP_NAME];
 describe('Info options: name', () => {
   let mainProgram: CommanderStatic;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
-  const DATA_DEMO = {
-    name: 'test'
-  };
 
   beforeAll(async () => {
     createTempDir(TEMP_DIR);
@@ -35,7 +32,9 @@ describe('Info options: name', () => {
 
     writeFileSync(`${CURRENT_DIR}/auth.json`, DECLARE_KINTONE);
     const config = readFileSync(`${CURRENT_DIR}/config.json`);
-    Object.assign(config.uploadConfig, DATA_DEMO);
+    Object.assign(config.uploadConfig, {
+      name: 'package test'
+    });
     writeFileSync(`${CURRENT_DIR}/config.json`, config, WRITE_FILE_OPTIONS);
 
     await mainProgram.parseAsync(process.argv);
@@ -45,23 +44,22 @@ describe('Info options: name', () => {
     removeTempDir(TEMP_DIR);
   });
 
-  test('Should be "test" when assign to "test"', async () => {
+  test('Should be "package test" when assign to "package test"', async () => {
     const config = readFileSync(`${CURRENT_DIR}/config.json`);
     const result = {
       name: config.uploadConfig.name,
       description: config.uploadConfig.description,
       version: config.uploadConfig.version
     };
-    expect(result).toEqual(DATA_DEMO);
+    expect(result).toEqual({
+      name: 'package test'
+    });
   });
 });
 
 describe('Info options: name empty', () => {
   let mainProgram: CommanderStatic;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
-  const DATA_DEMO = {
-    name: ''
-  };
 
   beforeAll(async () => {
     createTempDir(TEMP_DIR);
@@ -74,7 +72,9 @@ describe('Info options: name empty', () => {
 
     writeFileSync(`${CURRENT_DIR}/auth.json`, DECLARE_KINTONE);
     const config = readFileSync(`${CURRENT_DIR}/config.json`);
-    Object.assign(config.uploadConfig, DATA_DEMO);
+    Object.assign(config.uploadConfig, {
+      name: ''
+    });
     writeFileSync(`${CURRENT_DIR}/config.json`, config, WRITE_FILE_OPTIONS);
 
     await mainProgram.parseAsync(process.argv);
@@ -89,16 +89,15 @@ describe('Info options: name empty', () => {
     const result = {
       name: config.uploadConfig.name
     };
-    expect(result).toEqual(DATA_DEMO);
+    expect(result).toEqual({
+      name: ''
+    });
   });
 });
 
 describe('Info options: description', () => {
   let mainProgram: CommanderStatic;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
-  const DATA_DEMO = {
-    description: 'This is unit test'
-  };
 
   beforeAll(async () => {
     createTempDir(TEMP_DIR);
@@ -111,7 +110,9 @@ describe('Info options: description', () => {
 
     writeFileSync(`${CURRENT_DIR}/auth.json`, DECLARE_KINTONE);
     const config = readFileSync(`${CURRENT_DIR}/config.json`);
-    Object.assign(config.uploadConfig, DATA_DEMO);
+    Object.assign(config.uploadConfig, {
+      description: 'metadata about this project'
+    });
     writeFileSync(`${CURRENT_DIR}/config.json`, config, WRITE_FILE_OPTIONS);
 
     await mainProgram.parseAsync(process.argv);
@@ -121,21 +122,20 @@ describe('Info options: description', () => {
     removeTempDir(TEMP_DIR);
   });
 
-  test('Should be "This is unit test" when assign to "This is unit test"', async () => {
+  test('Should be "metadata about this project" when assign to "metadata about this project"', async () => {
     const config = readFileSync(`${CURRENT_DIR}/config.json`);
     const result = {
       description: config.uploadConfig.description
     };
-    expect(result).toEqual(DATA_DEMO);
+    expect(result).toEqual({
+      description: 'metadata about this project'
+    });
   });
 });
 
 describe('Info options: description empty', () => {
   let mainProgram: CommanderStatic;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
-  const DATA_DEMO = {
-    description: ''
-  };
 
   beforeAll(async () => {
     createTempDir(TEMP_DIR);
@@ -148,7 +148,9 @@ describe('Info options: description empty', () => {
 
     writeFileSync(`${CURRENT_DIR}/auth.json`, DECLARE_KINTONE);
     const config = readFileSync(`${CURRENT_DIR}/config.json`);
-    Object.assign(config.uploadConfig, DATA_DEMO);
+    Object.assign(config.uploadConfig, {
+      description: ''
+    });
     writeFileSync(`${CURRENT_DIR}/config.json`, config, WRITE_FILE_OPTIONS);
 
     await mainProgram.parseAsync(process.argv);
@@ -163,16 +165,15 @@ describe('Info options: description empty', () => {
     const result = {
       description: config.uploadConfig.description
     };
-    expect(result).toEqual(DATA_DEMO);
+    expect(result).toEqual({
+      description: ''
+    });
   });
 });
 
 describe('Info options: version', () => {
   let mainProgram: CommanderStatic;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
-  const DATA_DEMO = {
-    version: '1.0.0'
-  };
 
   beforeAll(async () => {
     createTempDir(TEMP_DIR);
@@ -185,7 +186,9 @@ describe('Info options: version', () => {
 
     writeFileSync(`${CURRENT_DIR}/auth.json`, DECLARE_KINTONE);
     const config = readFileSync(`${CURRENT_DIR}/config.json`);
-    Object.assign(config.uploadConfig, DATA_DEMO);
+    Object.assign(config.uploadConfig, {
+      version: '1.0.0'
+    });
     writeFileSync(`${CURRENT_DIR}/config.json`, config, WRITE_FILE_OPTIONS);
 
     await mainProgram.parseAsync(process.argv);
@@ -200,16 +203,15 @@ describe('Info options: version', () => {
     const result = {
       version: config.uploadConfig.version
     };
-    expect(result).toEqual(DATA_DEMO);
+    expect(result).toEqual({
+      version: '1.0.0'
+    });
   });
 });
 
 describe('Info options: version empty', () => {
   let mainProgram: CommanderStatic;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
-  const DATA_DEMO = {
-    version: ''
-  };
 
   beforeAll(async () => {
     createTempDir(TEMP_DIR);
@@ -222,7 +224,9 @@ describe('Info options: version empty', () => {
 
     writeFileSync(`${CURRENT_DIR}/auth.json`, DECLARE_KINTONE);
     const config = readFileSync(`${CURRENT_DIR}/config.json`);
-    Object.assign(config.uploadConfig, DATA_DEMO);
+    Object.assign(config.uploadConfig, {
+      version: ''
+    });
     writeFileSync(`${CURRENT_DIR}/config.json`, config, WRITE_FILE_OPTIONS);
 
     await mainProgram.parseAsync(process.argv);
@@ -237,6 +241,8 @@ describe('Info options: version empty', () => {
     const result = {
       version: config.uploadConfig.version
     };
-    expect(result).toEqual(DATA_DEMO);
+    expect(result).toEqual({
+      version: ''
+    });
   });
 });
