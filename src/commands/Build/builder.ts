@@ -28,16 +28,16 @@ const buildPlugin = (option: any) => {
   manifestJSON.name = {
     en: option.appName
   };
-  if (option.uploadConfig && option.uploadConfig.name)
+  if (option && option.uploadConfig && option.uploadConfig.name)
     manifestJSON.name = option.uploadConfig.name;
 
   manifestJSON.description = {
     en: 'Kintone Plugin'
   };
-  if (option.uploadConfig && option.uploadConfig.description)
+  if (option && option.uploadConfig && option.uploadConfig.description)
     manifestJSON.description = option.uploadConfig.description;
 
-  if (option.uploadConfig && option.uploadConfig.version)
+  if (option && option.uploadConfig && option.uploadConfig.version)
     manifestJSON.version = option.uploadConfig.version;
 
   manifestJSON.desktop = option.uploadConfig.desktop;
@@ -72,10 +72,13 @@ const buildPlugin = (option: any) => {
         return /.ppk$/.test(name);
       }
     );
-    renameSync(
-      `${option.appName}/dist/${keyFileName[0]}`,
-      `${option.appName}/dist/private.ppk`
-    );
+
+    keyFileName &&
+      keyFileName.length &&
+      renameSync(
+        `${option.appName}/dist/${keyFileName[0]}`,
+        `${option.appName}/dist/private.ppk`
+      );
   }
 
   unlinkSync(`manifest.json`);

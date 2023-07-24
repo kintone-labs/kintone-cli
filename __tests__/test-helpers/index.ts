@@ -51,6 +51,29 @@ export async function createTemplate(TEMP_DIR: string, PROJECT_NAME: string) {
   await program.parseAsync(process.argv);
 }
 
+export async function createTemplatePluginType(
+  TEMP_DIR: string,
+  PROJECT_NAME: string
+) {
+  process.chdir(TEMP_DIR + '/' + PROJECT_NAME);
+  global.currentDir = process.cwd();
+
+  initCommand(program);
+  process.argv = [
+    'node',
+    'dist',
+    'create-template',
+    '--quick',
+    '--type',
+    'Plugin',
+    '--app-name',
+    'test-app',
+    '--app-id',
+    '100'
+  ];
+  await program.parseAsync(process.argv);
+}
+
 export const flatArr = (arr: any) => Object.values(arr).flat(1);
 
 export const linkDirCustom = () => {
