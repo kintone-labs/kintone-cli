@@ -3,9 +3,10 @@ import validator from './validator';
 import { readFileSync } from 'jsonfile';
 import { existsSync } from 'fs';
 import { buildUsingWebpack, buildVanillaJS, buildPlugin } from './builder';
+import { Command } from 'commander';
 
-const buildCommand = (program: any) => {
-  return program
+const buildCommand = (program: Command) => {
+  program
     .command('build')
     .description('Build customization/plugin')
     .option('--app-name <appName>', 'App name')

@@ -73,12 +73,10 @@ const buildPlugin = (option: any) => {
       }
     );
 
-    keyFileName &&
-      keyFileName.length &&
-      renameSync(
-        `${option.appName}/dist/${keyFileName[0]}`,
-        `${option.appName}/dist/private.ppk`
-      );
+    renameSync(
+      `${option.appName}/dist/${keyFileName[0]}`,
+      `${option.appName}/dist/private.ppk`
+    );
   }
 
   unlinkSync(`manifest.json`);
