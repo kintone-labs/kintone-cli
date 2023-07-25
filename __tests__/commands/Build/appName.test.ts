@@ -59,7 +59,7 @@ describe('appName', () => {
     removeTempDir(TEMP_DIR);
   });
 
-  test('Should be "App not existed" when assign to ""', async () => {
+  test('Should be "" when assign to ""', async () => {
     expect(mainProgram.opts().appName).toBe('');
   });
 });
