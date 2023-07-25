@@ -1,11 +1,11 @@
-import { Command } from 'commander';
+import commander from 'commander';
 import chalk from 'chalk';
 import spawn from 'cross-spawn';
 import validator from './validator';
 
 const spawnSync = spawn.sync;
 
-const lintCommand = (program: Command) => {
+const lintCommand = (program: commander.Command) => {
   program
     .command('lint')
     .description('Check/fix code using @cybozu/eslint-config')

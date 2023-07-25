@@ -1,11 +1,11 @@
-import { Command } from 'commander';
+import commander from 'commander';
 import chalk from 'chalk';
 import validator from './validator';
 import { readFileSync } from 'jsonfile';
 import { deployCustomization, deployPlugin } from './deployer';
 import { existsSync } from 'fs';
 
-const deployCommand = (program: Command) => {
+const deployCommand = (program: commander.Command) => {
   program
     .command('deploy')
     .description('Deploy customization/plugin for production')
