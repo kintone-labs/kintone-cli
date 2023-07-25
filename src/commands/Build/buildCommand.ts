@@ -3,9 +3,9 @@ import validator from './validator';
 import { readFileSync } from 'jsonfile';
 import { existsSync } from 'fs';
 import { buildUsingWebpack, buildVanillaJS, buildPlugin } from './builder';
-import { Command } from 'commander';
+import commander from 'commander';
 
-const buildCommand = (program: Command) => {
+const buildCommand = (program: commander.Command) => {
   return program
     .command('build')
     .description('Build customization/plugin')
