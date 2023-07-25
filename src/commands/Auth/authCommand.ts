@@ -1,11 +1,11 @@
-import { Command } from 'commander';
+import commander from 'commander';
 import validator from './validator';
 import chalk from 'chalk';
 import { readFileSync, writeFileSync } from 'jsonfile';
 import { prompt } from 'inquirer';
 import { isDomain } from '../../utils/string';
 
-const authCommand = (program: Command) => {
+const authCommand = (program: commander.Command) => {
   program
     .command('auth')
     .description('Set authentication credentials')
