@@ -1,20 +1,12 @@
+import { Command } from 'commander';
+import validator from './validator';
 import chalk from 'chalk';
 import { readFileSync, writeFileSync } from 'jsonfile';
 import { prompt } from 'inquirer';
-import {
-  appIDValidator,
-  authValidator,
-  domainValidator,
-  passwordValidator,
-  proxyValidator,
-  proxyWhenValidator,
-  useProxyValidator,
-  usernameValidator
-} from './validator';
-import { MESSAGES } from '../../constant';
+import { isDomain } from '../../utils/string';
 
-const authCommand = (program: any) => {
-  return program
+const authCommand = (program: Command) => {
+  program
     .command('auth')
     .description('Set authentication credentials')
     .option('-a, --app-name <appName>', 'App name')
@@ -25,7 +17,7 @@ const authCommand = (program: any) => {
     .option('-r, --use-proxy', 'Use proxy or not')
     .option('-x, --proxy <proxy>', 'Proxy full URL, including port number')
     .action(async (cmd) => {
-      const error = authValidator(cmd);
+      const error = validator.authValidator(cmd);
       if (error && typeof error === 'string') {
         console.log(chalk.red(error));
         return;
@@ -43,44 +35,80 @@ const authCommand = (program: any) => {
         {
           type: 'input',
           name: 'domain',
-          message: MESSAGES.KINTONE_DOMAIN_PROMPT,
+          message: 'What is your kintone domain ?',
           when: !cmd.domain,
-          validate: domainValidator
+          validate: (input: any): any => {
+            if (!input.startsWith('https://'))
+              return 'Domain has to start with https';
+            if (!isDomain(input)) {
+              return 'Please enter a valid domain';
+            }
+            return true;
+          }
         },
         {
           type: 'input',
           name: 'username',
-          message: MESSAGES.KINTONE_USERNAME_PROMPT,
+          message: 'What is your kintone username ?',
           when: !cmd.username,
-          validate: usernameValidator
+          validate: (input: any): any => {
+            if (!input) {
+              return "Username can't be empty.";
+            }
+            return true;
+          }
         },
         {
           type: 'password',
           name: 'password',
-          message: MESSAGES.KINTONE_PASSWORD_PROMPT,
+          message: 'What is your kintone password ?',
           when: !cmd.password,
-          validate: passwordValidator
+          validate: (input: any): any => {
+            if (!input) {
+              return "Password can't be empty.";
+            }
+            return true;
+          }
         },
         {
           type: 'input',
           name: 'appID',
-          message: MESSAGES.APP_ID_PROMPT,
+          message: 'What is the app ID ?',
           when: !cmd.appID && !configJSON.appID,
-          validate: appIDValidator
+          validate: (input: any): any => {
+            if (!input) {
+              return "App ID can't be empty.";
+            }
+            const numberMatch = input.match(
+              /(^-?\d+|^\d+\.\d*|^\d*\.\d+)(e\d+)?$/
+            );
+            // If a number is found, return that input.
+            if (!numberMatch) {
+              return 'App ID must be a number.';
+            }
+            return true;
+          }
         },
         {
           type: 'confirm',
           name: 'useProxy',
-          message: MESSAGES.USE_PROXY_PROMPT,
+          message: 'Do you use proxy ?',
           default: false,
-          when: useProxyValidator(cmd)
+          when: !cmd.useProxy && !cmd.proxy
         },
         {
           type: 'input',
           name: 'proxy',
-          message: MESSAGES.PROXY_URL_PROMPT,
-          when: (curAnswers: any) => proxyWhenValidator(cmd, curAnswers),
-          validate: proxyValidator
+          message: 'Specify your proxy full URL, including port number:',
+          when: (curAnswers: any) => {
+            return (cmd.useProxy || curAnswers.useProxy) && !cmd.proxy;
+          },
+          validate: (input: any): any => {
+            if (!input) {
+              return "Proxy URL can't be empty.";
+            }
+            return true;
+          }
         }
       ]);
 
