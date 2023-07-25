@@ -13,26 +13,28 @@ const deployCustomization = (option: any) => {
   };
   const paramArr = [`${option.appName}/dist/customize-manifest.json`];
 
-  const authJSON = readFileSync(`${option.appName}/auth.json`);
-  if (authJSON.domain) {
-    paramArr.push('--base-url');
-    paramArr.push(authJSON.domain);
-  }
-  if (authJSON.username) {
-    paramArr.push('--username');
-    paramArr.push(authJSON.username);
-    paramArr.push('--basic-auth-username');
-    paramArr.push(authJSON.username);
-  }
-  if (authJSON.password) {
-    paramArr.push('--password');
-    paramArr.push(authJSON.password);
-    paramArr.push('--basic-auth-password');
-    paramArr.push(authJSON.password);
-  }
-  if (authJSON.proxy) {
-    paramArr.push('--proxy');
-    paramArr.push(authJSON.proxy);
+  if (existsSync(`${option.appName}/webpack.config.js`)) {
+    const authJSON = readFileSync(`${option.appName}/auth.json`);
+    if (authJSON.domain) {
+      paramArr.push('--base-url');
+      paramArr.push(authJSON.domain);
+    }
+    if (authJSON.username) {
+      paramArr.push('--username');
+      paramArr.push(authJSON.username);
+      paramArr.push('--basic-auth-username');
+      paramArr.push(authJSON.username);
+    }
+    if (authJSON.password) {
+      paramArr.push('--password');
+      paramArr.push(authJSON.password);
+      paramArr.push('--basic-auth-password');
+      paramArr.push(authJSON.password);
+    }
+    if (authJSON.proxy) {
+      paramArr.push('--proxy');
+      paramArr.push(authJSON.proxy);
+    }
   }
 
   if (!existsSync(`${option.appName}/dist`)) {

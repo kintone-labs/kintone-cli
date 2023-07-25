@@ -10,7 +10,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --check './src/**/*.ts'",
     "format:fix": "prettier --write './src/**/*.ts'",
-    "test": "jest --silent"
+    "test": "jest --silent=false"
   },
   "preferGlobal": true,
   "bin": {
