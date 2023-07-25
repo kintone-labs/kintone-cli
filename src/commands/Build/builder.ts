@@ -28,16 +28,16 @@ const buildPlugin = (option: any) => {
   manifestJSON.name = {
     en: option.appName
   };
-  if (option && option.uploadConfig && option.uploadConfig.name)
+  if (option.uploadConfig && option.uploadConfig.name)
     manifestJSON.name = option.uploadConfig.name;
 
   manifestJSON.description = {
     en: 'Kintone Plugin'
   };
-  if (option && option.uploadConfig && option.uploadConfig.description)
+  if (option.uploadConfig && option.uploadConfig.description)
     manifestJSON.description = option.uploadConfig.description;
 
-  if (option && option.uploadConfig && option.uploadConfig.version)
+  if (option.uploadConfig && option.uploadConfig.version)
     manifestJSON.version = option.uploadConfig.version;
 
   manifestJSON.desktop = option.uploadConfig.desktop;
