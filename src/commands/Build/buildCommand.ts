@@ -1,11 +1,11 @@
-import commander from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import validator from './validator';
 import { readFileSync } from 'jsonfile';
 import { existsSync } from 'fs';
 import { buildUsingWebpack, buildVanillaJS, buildPlugin } from './builder';
 
-const buildCommand = (program: commander.Command) => {
+const buildCommand = (program: Command) => {
   program
     .command('build')
     .description('Build customization/plugin')

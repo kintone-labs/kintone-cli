@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const validator_1 = __importDefault(require("./validator"));
 const chalk_1 = __importDefault(require("chalk"));
 const jsonfile_1 = require("jsonfile");
 const inquirer_1 = require("inquirer");
-const string_1 = require("../../utils/string");
+const validator_1 = require("./validator");
+const constant_1 = require("../../constant");
 const authCommand = (program) => {
-    program
+    return program
         .command('auth')
         .description('Set authentication credentials')
         .option('-a, --app-name <appName>', 'App name')
@@ -29,9 +29,8 @@ const authCommand = (program) => {
         .option('-r, --use-proxy', 'Use proxy or not')
         .option('-x, --proxy <proxy>', 'Proxy full URL, including port number')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
-        const error = validator_1.default.authValidator(cmd);
+        const error = (0, validator_1.authValidator)(cmd);
         if (error && typeof error === 'string') {
-            console.log(chalk_1.default.red(error));
             return;
         }
         let authJSON;
@@ -46,78 +45,44 @@ const authCommand = (program) => {
             {
                 type: 'input',
                 name: 'domain',
-                message: 'What is your kintone domain ?',
+                message: constant_1.MESSAGES.KINTONE_DOMAIN_PROMPT,
                 when: !cmd.domain,
-                validate: (input) => {
-                    if (!input.startsWith('https://'))
-                        return 'Domain has to start with https';
-                    if (!(0, string_1.isDomain)(input)) {
-                        return 'Please enter a valid domain';
-                    }
-                    return true;
-                }
+                validate: validator_1.domainValidator
             },
             {
                 type: 'input',
                 name: 'username',
-                message: 'What is your kintone username ?',
+                message: constant_1.MESSAGES.KINTONE_USERNAME_PROMPT,
                 when: !cmd.username,
-                validate: (input) => {
-                    if (!input) {
-                        return "Username can't be empty.";
-                    }
-                    return true;
-                }
+                validate: validator_1.usernameValidator
             },
             {
                 type: 'password',
                 name: 'password',
-                message: 'What is your kintone password ?',
+                message: constant_1.MESSAGES.KINTONE_PASSWORD_PROMPT,
                 when: !cmd.password,
-                validate: (input) => {
-                    if (!input) {
-                        return "Password can't be empty.";
-                    }
-                    return true;
-                }
+                validate: validator_1.passwordValidator
             },
             {
                 type: 'input',
                 name: 'appID',
-                message: 'What is the app ID ?',
+                message: constant_1.MESSAGES.APP_ID_PROMPT,
                 when: !cmd.appID && !configJSON.appID,
-                validate: (input) => {
-                    if (!input) {
-                        return "App ID can't be empty.";
-                    }
-                    const numberMatch = input.match(/(^-?\d+|^\d+\.\d*|^\d*\.\d+)(e\d+)?$/);
-                    // If a number is found, return that input.
-                    if (!numberMatch) {
-                        return 'App ID must be a number.';
-                    }
-                    return true;
-                }
+                validate: validator_1.appIDValidator
             },
             {
                 type: 'confirm',
                 name: 'useProxy',
-                message: 'Do you use proxy ?',
+                message: constant_1.MESSAGES.USE_PROXY_PROMT,
                 default: false,
-                when: !cmd.useProxy && !cmd.proxy
+                when: (0, validator_1.useProxyValidator)(cmd)
             },
             {
                 type: 'input',
                 name: 'proxy',
-                message: 'Specify your proxy full URL, including port number:',
-                when: (curAnswers) => {
-                    return (cmd.useProxy || curAnswers.useProxy) && !cmd.proxy;
-                },
-                validate: (input) => {
-                    if (!input) {
-                        return "Proxy URL can't be empty.";
-                    }
-                    return true;
-                }
+                message: constant_1.MESSAGES.PROXY_URL_PROMPT,
+                when: (curAnswers) => (0, validator_1.proxyWhenValidator)(cmd, curAnswers),
+                validate: validator_1.proxyValidator
             }
         ]);
         authJSON.domain = cmd.domain || answer.domain;
