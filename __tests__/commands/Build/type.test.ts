@@ -39,7 +39,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "Plugin" when assign type to "Plugin"', async () => {
+    test('Should be "Plugin" when assign type to "Plugin"', () => {
       const config = readFileSync(`${CURRENT_DIR}/config.json`);
       expect(config.type).toBe('Plugin');
     });
@@ -65,7 +65,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "Customization" when assign type to "Customization"', async () => {
+    test('Should be "Customization" when assign type to "Customization"', () => {
       const config = readFileSync(`${CURRENT_DIR}/config.json`);
       expect(config.type).toBe('Customization');
     });
@@ -91,7 +91,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be false when assign type to "another_&^#_2"', async () => {
+    test('Should be false when assign type to "another_&^#_2"', () => {
       const isExistFile = existsSync(`${CURRENT_DIR}/config.json`);
       expect(isExistFile).toBe(false);
     });
@@ -117,7 +117,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "Customization" when assign type to ""', async () => {
+    test('Should be "Customization" when assign type to ""', () => {
       const config = readFileSync(`${CURRENT_DIR}/config.json`);
       expect(config.type).toBe('Customization');
     });

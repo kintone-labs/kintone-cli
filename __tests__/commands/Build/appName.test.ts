@@ -36,7 +36,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "test-app" when assign to "test-app"', async () => {
+    test('Should be "test-app" when assign to "test-app"', () => {
       expect(mainProgram.opts().appName).toBe('test-app');
     });
   });
@@ -61,7 +61,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "" when assign to ""', async () => {
+    test('Should be "" when assign to ""', () => {
       expect(mainProgram.opts().appName).toBe('');
     });
   });
