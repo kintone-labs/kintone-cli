@@ -36,7 +36,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "test-app" when assign to "test-app"', () => {
+    test('Should be "test-app" when setting "test-app"', () => {
       expect(mainProgram.opts().appName).toBe('test-app');
     });
   });
