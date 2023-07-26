@@ -1,9 +1,8 @@
-import chalk from 'chalk';
+import { Command } from 'commander';
 import validator from './validator';
 import { readFileSync } from 'jsonfile';
 import { existsSync } from 'fs';
 import { buildUsingWebpack, buildVanillaJS, buildPlugin } from './builder';
-import { Command } from 'commander';
 
 const buildCommand = (program: Command) => {
   return program
