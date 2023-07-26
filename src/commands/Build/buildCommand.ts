@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { Command } from 'commander';
 import validator from './validator';
 import { readFileSync } from 'jsonfile';
