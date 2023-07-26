@@ -7,7 +7,7 @@ import {
   jestCommon,
   linkDirCustom,
   removeTempDir
-} from '../../test-helpers';
+} from '../../utils';
 import { DECLARE_KINTONE, WRITE_FILE_OPTIONS } from '../../../src/constant';
 import { readFileSync, writeFileSync } from 'jsonfile';
 

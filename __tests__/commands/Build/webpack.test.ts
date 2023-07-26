@@ -7,7 +7,7 @@ import {
   jestCommon,
   linkDirCustom,
   removeTempDir
-} from '../../test-helpers';
+} from '../../utils';
 import { readFileSync, writeFileSync } from 'jsonfile';
 
 const PROJECT_NAME = 'test-project';

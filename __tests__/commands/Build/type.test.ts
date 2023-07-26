@@ -7,7 +7,7 @@ import {
   jestCommon,
   linkDirCustom,
   removeTempDir
-} from '../../test-helpers';
+} from '../../utils';
 import { readFileSync } from 'jsonfile';
 import { existsSync } from 'fs';
 

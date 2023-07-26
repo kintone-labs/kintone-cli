@@ -6,7 +6,7 @@ import {
   initProject,
   linkDirCustom,
   removeTempDir
-} from '../../test-helpers';
+} from '../../utils';
 import buildCommand from '../../../src/commands/Build/buildCommand';
 
 const PROJECT_NAME = 'test-project';
