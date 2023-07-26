@@ -61,7 +61,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "" when assign to ""', () => {
+    test('Should be "" when setting ""', () => {
       expect(mainProgram.opts().appName).toBe('');
     });
   });
