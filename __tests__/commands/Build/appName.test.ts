@@ -1,19 +1,20 @@
 import { program, CommanderStatic } from 'commander';
-import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
-import buildCommand from '../../../src/commands/Build/buildCommand';
 import {
+  jestCommon,
   createTempDir,
   createTemplate,
   initProject,
   linkDirCustom,
   removeTempDir
 } from '../../test-helpers';
+import buildCommand from '../../../src/commands/Build/buildCommand';
 
 const PROJECT_NAME = 'test-project';
 const ORIGINAL_CWD = linkDirCustom();
 const TEMP_DIR = ORIGINAL_CWD + '/buildappNameTemp';
 const APP_NAME = 'test-app';
 const OPTIONS = ['node', 'build', '--app-name', APP_NAME];
+const { afterAll, beforeAll, describe, expect, test } = jestCommon;
 
 describe('appName', () => {
   let mainProgram: CommanderStatic;

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
 
 import { program } from 'commander';
 
@@ -81,3 +82,5 @@ export const linkDirCustom = () => {
   const linkDir = __dirname;
   return linkDir.replace('commands', '');
 };
+
+export const jestCommon = { afterAll, beforeAll, describe, expect, test };

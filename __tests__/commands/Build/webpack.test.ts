@@ -1,10 +1,10 @@
 import { program, CommanderStatic } from 'commander';
-import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
 import buildCommand from '../../../src/commands/Build/buildCommand';
 import {
   createTempDir,
   createTemplate,
   initProject,
+  jestCommon,
   linkDirCustom,
   removeTempDir
 } from '../../test-helpers';
@@ -16,6 +16,7 @@ const TEMP_DIR = ORIGINAL_CWD + '/buildWebpackTemp';
 const APP_NAME = 'test-app';
 const OPTIONS = ['node', 'build', '--app-name', APP_NAME];
 const WEBPACK_CONTENT = 'webpack';
+const { afterAll, beforeAll, describe, expect, test } = jestCommon;
 
 describe('webpack', () => {
   let mainProgram: CommanderStatic;
