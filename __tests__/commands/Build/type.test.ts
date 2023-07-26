@@ -1,4 +1,4 @@
-import { program, CommanderStatic } from 'commander';
+import { program, Command } from 'commander';
 import buildCommand from '../../../src/commands/Build/buildCommand';
 import {
   createTempDir,
@@ -19,7 +19,7 @@ const OPTIONS = ['node', 'build', '--app-name', APP_NAME];
 const { afterAll, beforeAll, describe, expect, test } = jestCommon;
 
 describe('type: "Plugin"', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
@@ -45,7 +45,7 @@ describe('type: "Plugin"', () => {
 });
 
 describe('type: "Customization"', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
@@ -71,7 +71,7 @@ describe('type: "Customization"', () => {
 });
 
 describe('type: "another_&^#_2"', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
@@ -97,7 +97,7 @@ describe('type: "another_&^#_2"', () => {
 });
 
 describe('type: ""', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {

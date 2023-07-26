@@ -1,4 +1,4 @@
-import { program, CommanderStatic } from 'commander';
+import { program, Command } from 'commander';
 import {
   jestCommon,
   createTempDir,
@@ -17,7 +17,7 @@ const OPTIONS = ['node', 'build', '--app-name', APP_NAME];
 const { afterAll, beforeAll, describe, expect, test } = jestCommon;
 
 describe('appName', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
 
   beforeAll(async () => {
     createTempDir(TEMP_DIR);
@@ -41,7 +41,7 @@ describe('appName', () => {
 });
 
 describe('appName', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const OPTIONS_MISS_NAME = ['node', 'build', '--app-name', ''];
 
   beforeAll(async () => {

@@ -1,4 +1,4 @@
-import { program, CommanderStatic } from 'commander';
+import { program, Command } from 'commander';
 import buildCommand from '../../../src/commands/Build/buildCommand';
 import {
   createTempDir,
@@ -19,7 +19,7 @@ const OPTIONS = ['node', 'build', '--app-name', APP_NAME];
 const { afterAll, beforeAll, describe, expect, test } = jestCommon;
 
 describe('Info options: name', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
@@ -59,7 +59,7 @@ describe('Info options: name', () => {
 });
 
 describe('Info options: name empty', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
@@ -97,7 +97,7 @@ describe('Info options: name empty', () => {
 });
 
 describe('Info options: description', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
@@ -135,7 +135,7 @@ describe('Info options: description', () => {
 });
 
 describe('Info options: description empty', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
@@ -173,7 +173,7 @@ describe('Info options: description empty', () => {
 });
 
 describe('Info options: version', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
@@ -211,7 +211,7 @@ describe('Info options: version', () => {
 });
 
 describe('Info options: version empty', () => {
-  let mainProgram: CommanderStatic;
+  let mainProgram: Command;
   const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
   beforeAll(async () => {
