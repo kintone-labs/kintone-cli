@@ -16,51 +16,53 @@ const APP_NAME = 'test-app';
 const OPTIONS = ['node', 'build', '--app-name', APP_NAME];
 const { afterAll, beforeAll, describe, expect, test } = jestCommon;
 
-describe('appName', () => {
-  let mainProgram: Command;
+describe('build command', () => {
+  describe('appName', () => {
+    let mainProgram: Command;
 
-  beforeAll(async () => {
-    createTempDir(TEMP_DIR);
+    beforeAll(async () => {
+      createTempDir(TEMP_DIR);
 
-    await initProject(TEMP_DIR, PROJECT_NAME);
-    await createTemplate(TEMP_DIR, PROJECT_NAME);
+      await initProject(TEMP_DIR, PROJECT_NAME);
+      await createTemplate(TEMP_DIR, PROJECT_NAME);
 
-    mainProgram = buildCommand(program);
-    process.argv = OPTIONS;
+      mainProgram = buildCommand(program);
+      process.argv = OPTIONS;
 
-    await mainProgram.parseAsync(process.argv);
+      await mainProgram.parseAsync(process.argv);
+    });
+
+    afterAll(() => {
+      removeTempDir(TEMP_DIR);
+    });
+
+    test('Should be "test-app" when assign to "test-app"', async () => {
+      expect(mainProgram.opts().appName).toBe('test-app');
+    });
   });
 
-  afterAll(() => {
-    removeTempDir(TEMP_DIR);
-  });
+  describe('appName', () => {
+    let mainProgram: Command;
+    const OPTIONS_MISS_NAME = ['node', 'build', '--app-name', ''];
 
-  test('Should be "test-app" when assign to "test-app"', async () => {
-    expect(mainProgram.opts().appName).toBe('test-app');
-  });
-});
+    beforeAll(async () => {
+      createTempDir(TEMP_DIR);
 
-describe('appName', () => {
-  let mainProgram: Command;
-  const OPTIONS_MISS_NAME = ['node', 'build', '--app-name', ''];
+      await initProject(TEMP_DIR, PROJECT_NAME);
+      await createTemplate(TEMP_DIR, PROJECT_NAME);
 
-  beforeAll(async () => {
-    createTempDir(TEMP_DIR);
+      mainProgram = buildCommand(program);
+      process.argv = OPTIONS_MISS_NAME;
 
-    await initProject(TEMP_DIR, PROJECT_NAME);
-    await createTemplate(TEMP_DIR, PROJECT_NAME);
+      await mainProgram.parseAsync(process.argv);
+    });
 
-    mainProgram = buildCommand(program);
-    process.argv = OPTIONS_MISS_NAME;
+    afterAll(() => {
+      removeTempDir(TEMP_DIR);
+    });
 
-    await mainProgram.parseAsync(process.argv);
-  });
-
-  afterAll(() => {
-    removeTempDir(TEMP_DIR);
-  });
-
-  test('Should be "" when assign to ""', async () => {
-    expect(mainProgram.opts().appName).toBe('');
+    test('Should be "" when assign to ""', async () => {
+      expect(mainProgram.opts().appName).toBe('');
+    });
   });
 });

@@ -18,106 +18,108 @@ const APP_NAME = 'test-app';
 const OPTIONS = ['node', 'build', '--app-name', APP_NAME];
 const { afterAll, beforeAll, describe, expect, test } = jestCommon;
 
-describe('type: "Plugin"', () => {
-  let mainProgram: Command;
-  const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
+describe('build command', () => {
+  describe('type: "Plugin"', () => {
+    let mainProgram: Command;
+    const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
-  beforeAll(async () => {
-    createTempDir(TEMP_DIR);
+    beforeAll(async () => {
+      createTempDir(TEMP_DIR);
 
-    await initProject(TEMP_DIR, PROJECT_NAME);
-    await createTemplateSpecificType(TEMP_DIR, PROJECT_NAME, 'Plugin');
+      await initProject(TEMP_DIR, PROJECT_NAME);
+      await createTemplateSpecificType(TEMP_DIR, PROJECT_NAME, 'Plugin');
 
-    mainProgram = buildCommand(program);
-    process.argv = OPTIONS;
+      mainProgram = buildCommand(program);
+      process.argv = OPTIONS;
 
-    await mainProgram.parseAsync(process.argv);
+      await mainProgram.parseAsync(process.argv);
+    });
+
+    afterAll(() => {
+      removeTempDir(TEMP_DIR);
+    });
+
+    test('Should be "Plugin" when assign type to "Plugin"', async () => {
+      const config = readFileSync(`${CURRENT_DIR}/config.json`);
+      expect(config.type).toBe('Plugin');
+    });
   });
 
-  afterAll(() => {
-    removeTempDir(TEMP_DIR);
+  describe('type: "Customization"', () => {
+    let mainProgram: Command;
+    const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
+
+    beforeAll(async () => {
+      createTempDir(TEMP_DIR);
+
+      await initProject(TEMP_DIR, PROJECT_NAME);
+      await createTemplateSpecificType(TEMP_DIR, PROJECT_NAME, 'Customization');
+
+      mainProgram = buildCommand(program);
+      process.argv = OPTIONS;
+
+      await mainProgram.parseAsync(process.argv);
+    });
+
+    afterAll(() => {
+      removeTempDir(TEMP_DIR);
+    });
+
+    test('Should be "Customization" when assign type to "Customization"', async () => {
+      const config = readFileSync(`${CURRENT_DIR}/config.json`);
+      expect(config.type).toBe('Customization');
+    });
   });
 
-  test('Should be "Plugin" when assign type to "Plugin"', async () => {
-    const config = readFileSync(`${CURRENT_DIR}/config.json`);
-    expect(config.type).toBe('Plugin');
-  });
-});
+  describe('type: "another_&^#_2"', () => {
+    let mainProgram: Command;
+    const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
-describe('type: "Customization"', () => {
-  let mainProgram: Command;
-  const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
+    beforeAll(async () => {
+      createTempDir(TEMP_DIR);
 
-  beforeAll(async () => {
-    createTempDir(TEMP_DIR);
+      await initProject(TEMP_DIR, PROJECT_NAME);
+      await createTemplateSpecificType(TEMP_DIR, PROJECT_NAME, 'another_&^#_2');
 
-    await initProject(TEMP_DIR, PROJECT_NAME);
-    await createTemplateSpecificType(TEMP_DIR, PROJECT_NAME, 'Customization');
+      mainProgram = buildCommand(program);
+      process.argv = OPTIONS;
 
-    mainProgram = buildCommand(program);
-    process.argv = OPTIONS;
+      await mainProgram.parseAsync(process.argv);
+    });
 
-    await mainProgram.parseAsync(process.argv);
-  });
+    afterAll(() => {
+      removeTempDir(TEMP_DIR);
+    });
 
-  afterAll(() => {
-    removeTempDir(TEMP_DIR);
-  });
-
-  test('Should be "Customization" when assign type to "Customization"', async () => {
-    const config = readFileSync(`${CURRENT_DIR}/config.json`);
-    expect(config.type).toBe('Customization');
-  });
-});
-
-describe('type: "another_&^#_2"', () => {
-  let mainProgram: Command;
-  const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
-
-  beforeAll(async () => {
-    createTempDir(TEMP_DIR);
-
-    await initProject(TEMP_DIR, PROJECT_NAME);
-    await createTemplateSpecificType(TEMP_DIR, PROJECT_NAME, 'another_&^#_2');
-
-    mainProgram = buildCommand(program);
-    process.argv = OPTIONS;
-
-    await mainProgram.parseAsync(process.argv);
+    test('Should be false when assign type to "another_&^#_2"', async () => {
+      const isExistFile = existsSync(`${CURRENT_DIR}/config.json`);
+      expect(isExistFile).toBe(false);
+    });
   });
 
-  afterAll(() => {
-    removeTempDir(TEMP_DIR);
-  });
+  describe('type: ""', () => {
+    let mainProgram: Command;
+    const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
 
-  test('Should be false when assign type to "another_&^#_2"', async () => {
-    const isExistFile = existsSync(`${CURRENT_DIR}/config.json`);
-    expect(isExistFile).toBe(false);
-  });
-});
+    beforeAll(async () => {
+      createTempDir(TEMP_DIR);
 
-describe('type: ""', () => {
-  let mainProgram: Command;
-  const CURRENT_DIR = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
+      await initProject(TEMP_DIR, PROJECT_NAME);
+      await createTemplateSpecificType(TEMP_DIR, PROJECT_NAME, '');
 
-  beforeAll(async () => {
-    createTempDir(TEMP_DIR);
+      mainProgram = buildCommand(program);
+      process.argv = OPTIONS;
 
-    await initProject(TEMP_DIR, PROJECT_NAME);
-    await createTemplateSpecificType(TEMP_DIR, PROJECT_NAME, '');
+      await mainProgram.parseAsync(process.argv);
+    });
 
-    mainProgram = buildCommand(program);
-    process.argv = OPTIONS;
+    afterAll(() => {
+      removeTempDir(TEMP_DIR);
+    });
 
-    await mainProgram.parseAsync(process.argv);
-  });
-
-  afterAll(() => {
-    removeTempDir(TEMP_DIR);
-  });
-
-  test('Should be "Customization" when assign type to ""', async () => {
-    const config = readFileSync(`${CURRENT_DIR}/config.json`);
-    expect(config.type).toBe('Customization');
+    test('Should be "Customization" when assign type to ""', async () => {
+      const config = readFileSync(`${CURRENT_DIR}/config.json`);
+      expect(config.type).toBe('Customization');
+    });
   });
 });
