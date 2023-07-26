@@ -41,7 +41,7 @@ describe('build command', () => {
     });
   });
 
-  describe('appName', () => {
+  describe('appName empty', () => {
     let mainProgram: Command;
     const OPTIONS_MISS_NAME = ['node', 'build', '--app-name', ''];
 
