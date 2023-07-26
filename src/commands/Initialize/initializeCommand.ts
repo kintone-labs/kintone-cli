@@ -1,4 +1,4 @@
-import commander from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import spawn from 'cross-spawn';
 import { prompt } from 'inquirer';
@@ -282,7 +282,7 @@ async function processProjectInfo(packageInfo) {
 
 const spawnSync = spawn.sync;
 
-const initializeCommand = (program: commander.Command) => {
+const initializeCommand = (program: Command) => {
   program
     .command('create-template')
     .description('Create customization/plugin template')

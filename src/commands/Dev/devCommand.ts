@@ -1,4 +1,4 @@
-import commander from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import { readFileSync } from 'jsonfile';
 import spawn from 'cross-spawn';
@@ -72,7 +72,7 @@ const readLineAsync = () => {
   });
 };
 
-const devCommand = (program: commander.Command) => {
+const devCommand = (program: Command) => {
   program
     .command('dev')
     .description('Deploy customization/plugin for development')
