@@ -46,7 +46,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "package test" when assign to "package test"', () => {
+    test('Should be "package test" when setting "package test"', () => {
       const config = readFileSync(`${CURRENT_DIR}/config.json`);
       const result = {
         name: config.uploadConfig.name,
@@ -86,7 +86,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "" when assign to ""', () => {
+    test('Should be "" when setting ""', () => {
       const config = readFileSync(`${CURRENT_DIR}/config.json`);
       const result = {
         name: config.uploadConfig.name
@@ -124,7 +124,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "metadata about this project" when assign to "metadata about this project"', () => {
+    test('Should be "metadata about this project" when setting "metadata about this project"', () => {
       const config = readFileSync(`${CURRENT_DIR}/config.json`);
       const result = {
         description: config.uploadConfig.description
@@ -162,7 +162,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "" when assign to ""', () => {
+    test('Should be "" when setting ""', () => {
       const config = readFileSync(`${CURRENT_DIR}/config.json`);
       const result = {
         description: config.uploadConfig.description
@@ -200,7 +200,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "1.0.0" when assign to "1.0.0"', () => {
+    test('Should be "1.0.0" when setting "1.0.0"', () => {
       const config = readFileSync(`${CURRENT_DIR}/config.json`);
       const result = {
         version: config.uploadConfig.version
@@ -238,7 +238,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "" when assign to ""', () => {
+    test('Should be "" when setting ""', () => {
       const config = readFileSync(`${CURRENT_DIR}/config.json`);
       const result = {
         version: config.uploadConfig.version
