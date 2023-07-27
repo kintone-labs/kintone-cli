@@ -57,3 +57,27 @@ export const linkDirCustom = () => {
   const linkDir = __dirname;
   return linkDir.replace('commands', '');
 };
+
+export async function createTemplateSpecificType(
+  TEMP_DIR: string,
+  PROJECT_NAME: string,
+  type: string
+) {
+  process.chdir(TEMP_DIR + '/' + PROJECT_NAME);
+  global.currentDir = process.cwd();
+
+  initCommand(program);
+  process.argv = [
+    'node',
+    'dist',
+    'create-template',
+    '--quick',
+    '--type',
+    type,
+    '--app-name',
+    'test-app',
+    '--app-id',
+    '100'
+  ];
+  await program.parseAsync(process.argv);
+}
