@@ -41,7 +41,7 @@ describe('build command', () => {
       removeTempDir(TEMP_DIR);
     });
 
-    test('Should be "webpack" when assign content to "webpack" in webpack.config.js', () => {
+    test('Should be "webpack" when setting "webpack"', () => {
       const config = readFileSync(WEBPACK_DIR);
       expect(config).toBe(WEBPACK_CONTENT);
     });
