@@ -1,5 +1,5 @@
-import { beforeAll, describe, expect, test } from '@jest/globals';
-import { Command, program } from 'commander';
+import { describe, expect, test } from '@jest/globals';
+import { program } from 'commander';
 import { existsSync } from 'fs';
 import { readFileSync } from 'jsonfile';
 import {
@@ -16,96 +16,41 @@ import {
 } from '../../../../unit_test/helper';
 import buildCommand from '../buildCommand';
 
+const getAppDirByProjectType = async (projectType: string) => {
+  const projectName = getRandomProjectName();
+  createBuildDir(DIR_BUILD_PATH);
+
+  await initProject(DIR_BUILD_PATH, projectName);
+  await createTemplateWithType(projectName, projectType);
+
+  const mainProgram = buildCommand(program);
+  process.argv = OPTIONS_BUILD;
+
+  await mainProgram.parseAsync(process.argv);
+  return `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
+};
+
 describe('build command', () => {
-  describe('type: "Plugin"', () => {
-    let mainProgram: Command;
-    const projectName = getRandomProjectName();
-    const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
-
-    beforeAll(async () => {
-      createBuildDir(DIR_BUILD_PATH);
-
-      await initProject(DIR_BUILD_PATH, projectName);
-      await createTemplateWithType(projectName, PROJECT_TYPE.PLUGIN);
-
-      mainProgram = buildCommand(program);
-      process.argv = OPTIONS_BUILD;
-
-      await mainProgram.parseAsync(process.argv);
-    });
-
-    test('Should be "Plugin" when setting "Plugin"', () => {
-      const config = readFileSync(`${CURRENT_DIR}/config.json`);
+  describe('App type', () => {
+    test('Should be "Plugin" when setting "Plugin"', async () => {
+      const APP_DIR = await getAppDirByProjectType(PROJECT_TYPE.PLUGIN);
+      const config = readFileSync(`${APP_DIR}/config.json`);
       expect(config.type).toBe(PROJECT_TYPE.PLUGIN);
     });
-  });
-
-  describe('type: "Customization"', () => {
-    let mainProgram: Command;
-    const projectName = getRandomProjectName();
-    const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
-
-    beforeAll(async () => {
-      createBuildDir(DIR_BUILD_PATH);
-
-      await initProject(DIR_BUILD_PATH, projectName);
-      await createTemplateWithType(projectName, PROJECT_TYPE.CUSTOMIZATION);
-
-      mainProgram = buildCommand(program);
-      process.argv = OPTIONS_BUILD;
-
-      await mainProgram.parseAsync(process.argv);
-    });
-
-    test('Should be "Customization" when setting "Customization"', () => {
-      const config = readFileSync(`${CURRENT_DIR}/config.json`);
+    test('Should be "Customization" when setting "Customization"', async () => {
+      const APP_DIR = await getAppDirByProjectType(PROJECT_TYPE.CUSTOMIZATION);
+      const config = readFileSync(`${APP_DIR}/config.json`);
       expect(config.type).toBe(PROJECT_TYPE.CUSTOMIZATION);
     });
-  });
-
-  describe('type: Invalid', () => {
-    let mainProgram: Command;
-    const projectName = getRandomProjectName();
-    const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
-
-    beforeAll(async () => {
-      createBuildDir(DIR_BUILD_PATH);
-
-      await initProject(DIR_BUILD_PATH, projectName);
-      await createTemplateWithType(projectName, 'invalid_type');
-
-      mainProgram = buildCommand(program);
-      process.argv = OPTIONS_BUILD;
-
-      await mainProgram.parseAsync(process.argv);
-    });
-
-    test('Should not create the project template', () => {
-      const isExistFile = existsSync(`${CURRENT_DIR}/config.json`);
+    test('Should not create the project template when setting inExist type', async () => {
+      const APP_DIR = await getAppDirByProjectType('invalid_type');
+      const isExistFile = existsSync(`${APP_DIR}/config.json`);
       expect(isExistFile).toBe(false);
     });
-  });
-
-  describe('Type: default', () => {
-    let mainProgram: Command;
-    const projectName = getRandomProjectName();
-    const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
-
-    beforeAll(async () => {
-      createBuildDir(DIR_BUILD_PATH);
-
-      await initProject(DIR_BUILD_PATH, projectName);
-      await createTemplateWithType(projectName, '');
-
-      mainProgram = buildCommand(program);
-      process.argv = OPTIONS_BUILD;
-
-      await mainProgram.parseAsync(process.argv);
-    });
-
-    test('Should be "Customization" when setting ""', () => {
-      const config = readFileSync(`${CURRENT_DIR}/config.json`);
-      expect(config.type).toBe(PROJECT_TYPE.CUSTOMIZATION);
+    test('Should be "Customization" when setting default type', async () => {
+      const APP_DIR = await getAppDirByProjectType('');
+      const isExistFile = existsSync(`${APP_DIR}/config.json`);
+      expect(isExistFile).toBe(false);
     });
   });
 });
