@@ -10,7 +10,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --check './src/**/*.ts'",
     "format:fix": "prettier --write './src/**/*.ts'",
-    "test": "rm -rf ./__tests__/utils/*Temp && jest --silent"
+    "test": "rm -rf ./unit_test/build/* && jest --silent"
   },
   "preferGlobal": true,
   "bin": {
