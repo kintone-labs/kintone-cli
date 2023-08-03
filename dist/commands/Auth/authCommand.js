@@ -73,7 +73,7 @@ const authCommand = (program) => {
             {
                 type: 'confirm',
                 name: 'useProxy',
-                message: constant_1.MESSAGES.USE_PROXY_PROMT,
+                message: constant_1.MESSAGES.USE_PROXY_PROMPT,
                 default: false,
                 when: (0, validator_1.useProxyValidator)(cmd)
             },
