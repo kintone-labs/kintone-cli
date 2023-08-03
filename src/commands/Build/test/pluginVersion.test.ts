@@ -16,7 +16,7 @@ import {
 import { DECLARE_KINTONE, WRITE_FILE_OPTIONS } from '../../../constant';
 import buildCommand from '../buildCommand';
 
-const getAppDirByProjectType = async (version: string) => {
+const getAppDir = async (version: string) => {
   const projectName = getRandomProjectName();
   const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
   createBuildDir(DIR_BUILD_PATH);
@@ -42,9 +42,9 @@ const getAppDirByProjectType = async (version: string) => {
 };
 
 describe('build command', () => {
-  describe('Plugin version: valid', () => {
+  describe('Plugin version', () => {
     test('Should be "1.0.0" when setting "1.0.0"', async () => {
-      const appDir = await getAppDirByProjectType('1.0.0');
+      const appDir = await getAppDir('1.0.0');
       const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
       const result = {
         version: config.uploadConfig.version
@@ -53,11 +53,8 @@ describe('build command', () => {
         version: '1.0.0'
       });
     });
-  });
-
-  describe('Plugin version: empty', () => {
     test('Should be "" when setting ""', async () => {
-      const appDir = await getAppDirByProjectType('');
+      const appDir = await getAppDir('');
       const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
       const result = {
         version: config.uploadConfig.version

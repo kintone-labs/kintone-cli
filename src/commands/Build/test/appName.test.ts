@@ -9,7 +9,7 @@ import {
 } from '../../../../unit_test/helper';
 import buildCommand from '../buildCommand';
 
-const getAppDirByProjectType = async () => {
+const getMainProgram = async () => {
   const projectName = getRandomProjectName();
 
   createBuildDir(DIR_BUILD_PATH);
@@ -23,20 +23,17 @@ const getAppDirByProjectType = async () => {
 };
 
 describe('build command', () => {
-  describe('appName: valid', () => {
+  describe('App name', () => {
     test('Should be "test-app" when setting "test-app"', async () => {
-      const mainProgram = await getAppDirByProjectType();
+      const mainProgram = await getMainProgram();
       process.argv = OPTIONS_BUILD;
       await mainProgram.parseAsync(process.argv);
 
       expect(mainProgram.opts().appName).toBe('test-app');
     });
-  });
-
-  describe('appName: empty', () => {
-    const OPTIONS_MISS_NAME = ['node', 'build', '--app-name', ''];
     test('Should be "" when setting ""', async () => {
-      const mainProgram = await getAppDirByProjectType();
+      const OPTIONS_MISS_NAME = ['node', 'build', '--app-name', ''];
+      const mainProgram = await getMainProgram();
       process.argv = OPTIONS_MISS_NAME;
       await mainProgram.parseAsync(process.argv);
 

@@ -16,7 +16,7 @@ import {
 } from '../../../../unit_test/helper';
 import buildCommand from '../buildCommand';
 
-const getAppDirByProjectType = async (projectType: string) => {
+const getAppDir = async (projectType: string) => {
   const projectName = getRandomProjectName();
   createBuildDir(DIR_BUILD_PATH);
 
@@ -33,22 +33,22 @@ const getAppDirByProjectType = async (projectType: string) => {
 describe('build command', () => {
   describe('App type', () => {
     test('Should be "Plugin" when setting "Plugin"', async () => {
-      const APP_DIR = await getAppDirByProjectType(PROJECT_TYPE.PLUGIN);
+      const APP_DIR = await getAppDir(PROJECT_TYPE.PLUGIN);
       const config = readFileSync(`${APP_DIR}/config.json`);
       expect(config.type).toBe(PROJECT_TYPE.PLUGIN);
     });
     test('Should be "Customization" when setting "Customization"', async () => {
-      const APP_DIR = await getAppDirByProjectType(PROJECT_TYPE.CUSTOMIZATION);
+      const APP_DIR = await getAppDir(PROJECT_TYPE.CUSTOMIZATION);
       const config = readFileSync(`${APP_DIR}/config.json`);
       expect(config.type).toBe(PROJECT_TYPE.CUSTOMIZATION);
     });
     test('Should not create the project template when setting inExist type', async () => {
-      const APP_DIR = await getAppDirByProjectType('invalid_type');
+      const APP_DIR = await getAppDir('invalid_type');
       const isExistFile = existsSync(`${APP_DIR}/config.json`);
       expect(isExistFile).toBe(false);
     });
     test('Should be "Customization" when setting default type', async () => {
-      const APP_DIR = await getAppDirByProjectType('');
+      const APP_DIR = await getAppDir('');
       const config = readFileSync(`${APP_DIR}/config.json`);
       expect(config.type).toBe(PROJECT_TYPE.CUSTOMIZATION);
     });

@@ -16,7 +16,7 @@ import {
 import { DECLARE_KINTONE, WRITE_FILE_OPTIONS } from '../../../constant';
 import buildCommand from '../buildCommand';
 
-const getAppDirByProjectType = async (description: string) => {
+const getAppDir = async (description: string) => {
   const projectName = getRandomProjectName();
   const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 
@@ -43,11 +43,9 @@ const getAppDirByProjectType = async (description: string) => {
 };
 
 describe('build command', () => {
-  describe('Plugin description: valid', () => {
+  describe('Plugin description', () => {
     test('Should be "metadata about this project" when setting "metadata about this project"', async () => {
-      const appDir = await getAppDirByProjectType(
-        'metadata about this project'
-      );
+      const appDir = await getAppDir('metadata about this project');
       const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
       const result = {
         description: config.uploadConfig.description
@@ -56,11 +54,8 @@ describe('build command', () => {
         description: 'metadata about this project'
       });
     });
-  });
-
-  describe('Plugin description: empty', () => {
     test('Should be "" when setting ""', async () => {
-      const appDir = await getAppDirByProjectType('');
+      const appDir = await getAppDir('');
 
       const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
       const result = {
