@@ -2,6 +2,7 @@ import { program } from 'commander';
 import fs from 'fs';
 import path from 'path';
 import initCommand from '../../dist/commands/Initialize/initializeCommand';
+import authCommand from '../../src/commands/Auth/authCommand';
 import { DIR_BUILD_PATH } from '../constant';
 
 export const getRandomProjectName = () =>
@@ -9,6 +10,9 @@ export const getRandomProjectName = () =>
 
 export const createBuildDir = (buildDir: string) =>
   !fs.existsSync(buildDir) && fs.mkdirSync(buildDir);
+
+export const removeTempDir = (buildDir: string) =>
+  fs.existsSync(buildDir) && fs.rmdirSync(buildDir, { recursive: true });
 
 export async function initProject(buildDir: string, projectName: string) {
   process.chdir(path.join(buildDir));
@@ -66,3 +70,28 @@ export async function createTemplate(buildDir: string, projectName: string) {
   ];
   await program.parseAsync(process.argv);
 }
+
+export const authCommandImplement = async (authProgramInput, authProcess) => {
+  const authProgram = authCommand(authProgramInput);
+  const AUTH_OPTIONS = [
+    'node',
+    'auth',
+    '--app-name',
+    'test-app',
+    '--domain',
+    'https://domain.kintone.com',
+    '--app-id',
+    '100',
+    '--username',
+    'user',
+    '--password',
+    'password',
+    '--use-proxy',
+    '--proxy',
+    'http://localhost:8080'
+  ];
+
+  authProcess.argv = AUTH_OPTIONS;
+
+  await authProgram.parseAsync(authProcess.argv);
+};
