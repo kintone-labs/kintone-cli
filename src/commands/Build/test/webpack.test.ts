@@ -15,7 +15,7 @@ import {
 } from '../../../../unit_test/helper';
 import buildCommand from '../buildCommand';
 
-const getAppDirByProjectType = async () => {
+const initTestProject = async () => {
   const projectName = getRandomProjectName();
   const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
   const WEBPACK_DIR = `${CURRENT_DIR}/webpack.config.js`;
@@ -39,7 +39,7 @@ const getAppDirByProjectType = async () => {
 describe('build command', () => {
   describe('webpack', () => {
     test('Should be "webpack" when setting "webpack"', async () => {
-      const appDir = await getAppDirByProjectType();
+      const appDir = await initTestProject();
       const config = readFileSync(appDir.WEBPACK_DIR);
       expect(config).toBe(WEBPACK_CONTENT);
     });

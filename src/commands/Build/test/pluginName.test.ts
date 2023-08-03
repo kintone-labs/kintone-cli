@@ -16,7 +16,7 @@ import {
 import { DECLARE_KINTONE, WRITE_FILE_OPTIONS } from '../../../constant';
 import buildCommand from '../buildCommand';
 
-const getAppDirByProjectType = async (name: string) => {
+const initTestProject = async (name: string) => {
   const projectName = getRandomProjectName();
   const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 
@@ -43,9 +43,9 @@ const getAppDirByProjectType = async (name: string) => {
 };
 
 describe('build command', () => {
-  describe('Plugin name: valid', () => {
+  describe('Plugin name', () => {
     test('Should be "package test" when setting "package test"', async () => {
-      const appDir = await getAppDirByProjectType('package test');
+      const appDir = await initTestProject('package test');
       const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
       const result = {
         name: config.uploadConfig.name,
@@ -60,7 +60,7 @@ describe('build command', () => {
 
   describe('Plugin name: empty', () => {
     test('Should be "" when setting ""', async () => {
-      const appDir = await getAppDirByProjectType('');
+      const appDir = await initTestProject('');
       const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
       const result = {
         name: config.uploadConfig.name
