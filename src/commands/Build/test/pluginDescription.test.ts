@@ -54,9 +54,7 @@ describe('build command', () => {
         description: 'metadata about this project'
       });
     });
-  });
 
-  describe('Plugin description: empty', () => {
     test('Should be "" when setting ""', async () => {
       const appDir = await initTestProject('');
 

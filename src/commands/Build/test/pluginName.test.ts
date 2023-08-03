@@ -56,9 +56,7 @@ describe('build command', () => {
         name: 'package test'
       });
     });
-  });
 
-  describe('Plugin name: empty', () => {
     test('Should be "" when setting ""', async () => {
       const appDir = await initTestProject('');
       const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);

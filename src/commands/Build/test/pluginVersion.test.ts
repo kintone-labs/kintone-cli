@@ -53,9 +53,7 @@ describe('build command', () => {
         version: '1.0.0'
       });
     });
-  });
 
-  describe('Plugin version: empty', () => {
     test('Should be "" when setting ""', async () => {
       const appDir = await initTestProject('');
       const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);

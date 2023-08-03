@@ -31,9 +31,7 @@ describe('build command', () => {
 
       expect(mainProgram.opts().appName).toBe('test-app');
     });
-  });
 
-  describe('appName: empty', () => {
     test('Should be "" when setting ""', async () => {
       const OPTIONS_MISS_NAME = ['node', 'build', '--app-name', ''];
       const mainProgram = await initTestProject();
