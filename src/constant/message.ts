@@ -15,7 +15,7 @@ export const MESSAGES = {
   PROXY_URL_PROMPT: 'Specify your proxy full URL, including port number:',
   SET_AUTH_INFO_MESSAGE: 'To set auth info, use:',
   START_DEVELOPING_APP_MESSAGE: 'To start developing app, use:',
-  TYPE_OF_APP_PROMPT: 'What type of app you want to create ?',
+  TYPE_OF_APP_PROMPT: 'What type of app you want to create?',
   USE_ESLINT_CONFIG_PROMPT:
     'Do you want to use @cybozu/eslint-config for syntax checking?',
   USE_KINTONE_UI_COMPONENT_PROMPT:
@@ -26,6 +26,5 @@ export const MESSAGES = {
   USE_TYPESCRIPT_PROMPT: 'Do you want to use TypeScript?',
   USE_WEBPACK_PROMPT: 'Do you want to use webpack?',
   WELCOME_MESSAGE: 'Welcome to kintone-cli!',
-  WEBPACK_ENTRY_PROMPT: 'What is the entry for webpack?',
-  USE_PROXY_PROMT: 'Do you use proxy?'
+  WEBPACK_ENTRY_PROMPT: 'What is the entry for webpack?'
 };

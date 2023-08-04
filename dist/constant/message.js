@@ -27,6 +27,6 @@ exports.MESSAGES = {
     USE_WEBPACK_PROMPT: 'Do you want to use webpack?',
     WELCOME_MESSAGE: 'Welcome to kintone-cli!',
     WEBPACK_ENTRY_PROMPT: 'What is the entry for webpack?',
-    USE_PROXY_PROMT: 'Do you use proxy?'
+    USE_PROXY_PROMPT: 'Do you use proxy?'
 };
 //# sourceMappingURL=message.js.map
