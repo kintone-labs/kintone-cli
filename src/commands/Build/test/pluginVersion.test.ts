@@ -5,10 +5,10 @@ import {
   APP_NAME,
   DIR_BUILD_PATH,
   OPTIONS_BUILD,
+  PRIVATE_KEY,
   PROJECT_TYPE
 } from '../../../../unit_test/constant';
 import {
-  createBuildDir,
   createTemplateWithType,
   getRandomProjectName,
   initProject
@@ -18,8 +18,7 @@ import buildCommand from '../buildCommand';
 
 const initTestProject = async (version: string) => {
   const projectName = getRandomProjectName();
-  const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
-  createBuildDir(DIR_BUILD_PATH);
+  const currentDir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 
   await initProject(DIR_BUILD_PATH, projectName);
   await createTemplateWithType(projectName, PROJECT_TYPE.PLUGIN);
@@ -27,42 +26,32 @@ const initTestProject = async (version: string) => {
   const mainProgram = buildCommand(program);
   process.argv = OPTIONS_BUILD;
 
-  writeFileSync(`${CURRENT_DIR}/auth.json`, DECLARE_KINTONE);
-  const config = readFileSync(`${CURRENT_DIR}/config.json`);
-  Object.assign(config.uploadConfig, {
-    version
-  });
-  writeFileSync(`${CURRENT_DIR}/config.json`, config, WRITE_FILE_OPTIONS);
+  writeFileSync(`${currentDir}/auth.json`, DECLARE_KINTONE);
+  const config = readFileSync(`${currentDir}/config.json`);
+  Object.assign(config.uploadConfig, { version });
+  writeFileSync(`${currentDir}/dist/private.ppk`, PRIVATE_KEY);
+  writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
 
   await mainProgram.parseAsync(process.argv);
-  return {
-    APP_DIR: `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`,
-    CURRENT_DIR
-  };
+  return currentDir;
 };
 
 describe('build command', () => {
   describe('Plugin version', () => {
     test('Should be "1.0.0" when setting "1.0.0"', async () => {
       const appDir = await initTestProject('1.0.0');
-      const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
-      const result = {
-        version: config.uploadConfig.version
-      };
-      expect(result).toEqual({
-        version: '1.0.0'
-      });
+      const config = readFileSync(`${appDir}/config.json`);
+      const result = { version: config.uploadConfig.version };
+
+      expect(result).toEqual({ version: '1.0.0' });
     });
 
     test('Should be "" when setting ""', async () => {
       const appDir = await initTestProject('');
-      const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
-      const result = {
-        version: config.uploadConfig.version
-      };
-      expect(result).toEqual({
-        version: ''
-      });
+      const config = readFileSync(`${appDir}/config.json`);
+      const result = { version: config.uploadConfig.version };
+
+      expect(result).toEqual({ version: '' });
     });
   });
 });

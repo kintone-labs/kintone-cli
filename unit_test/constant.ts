@@ -8,3 +8,10 @@ export const PROJECT_TYPE = {
   PLUGIN: 'Plugin',
   CUSTOMIZATION: 'Customization'
 };
+export const PRIVATE_KEY = `
+-----BEGIN RSA PRIVATE KEY-----
+MIICXAIBAAKBgqlIuw9D/Y3Af/iSRRF/liwNbL07OV72/PI3CZSXnRh7eeee3et4
+s9Qkrkp/2kq9BFnA4XKelz9abONwRtwUVhJqhTN5v6zBMJ+KgnglTBRtr7f3Bf1m
+TIYkdWr1KMiwDElHCy7zdkkKDKFNdslkf9023fddgRMnZXHCBJIQl7pfvu4Wr/Q=
+-----END RSA PRIVATE KEY-----
+`;
