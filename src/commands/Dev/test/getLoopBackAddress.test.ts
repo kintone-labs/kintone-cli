@@ -1,36 +1,27 @@
-import { program, Command } from 'commander';
-import {
-  createTempDir,
-  createTemplate,
-  createTemplateSpecificType,
-  initProject,
-  linkDirCustom,
-  removeTempDir
-} from '../../test-helpers';
-import devCommand from '../../../src/commands/Dev/devCommand';
-import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
+import { program } from 'commander';
 import { readFileSync, writeFileSync } from 'jsonfile';
-import { getLoopBackAddress } from '../../../src/commands/Dev/helper';
-import spawn from 'cross-spawn';
-import { WRITE_FILE_OPTIONS } from '../../../dist/constant';
-import { isURL } from '../../../dist/utils/string';
-
-const ORIGINAL_CWD = linkDirCustom();
-const TEMP_DIR = ORIGINAL_CWD;
-const APP_NAME = 'test-app';
+import { APP_NAME, DIR_BUILD_PATH } from '../../../../unit_test/constant';
+import {
+  createTemplate,
+  getRandomProjectName,
+  initProject
+} from '../../../../unit_test/helper';
+import { WRITE_FILE_OPTIONS } from '../../../constant';
+import devCommand from '../devCommand';
+import { getLoopBackAddress } from '../helper';
 
 const initTestProject = async () => {
-  const PROJECT_NAME = 'test-project' + Math.random();
+  const projectName = getRandomProjectName();
 
-  const OPTIONS_MISS_NAME = ['node', 'auth', '--app-name', APP_NAME];
-  const current_dir = `${TEMP_DIR}/${PROJECT_NAME}/${APP_NAME}`;
-  createTempDir(TEMP_DIR);
+  const OPTIONS = ['node', 'dev', '--app-name', APP_NAME];
+  const current_dir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 
-  await initProject(TEMP_DIR, PROJECT_NAME);
-  await createTemplate(TEMP_DIR, PROJECT_NAME);
+  await initProject(DIR_BUILD_PATH, projectName);
+  await createTemplate(DIR_BUILD_PATH, projectName);
 
   const mainProgram = devCommand(program);
-  process.argv = OPTIONS_MISS_NAME;
+  process.argv = OPTIONS;
 
   await mainProgram.parseAsync(process.argv);
 
