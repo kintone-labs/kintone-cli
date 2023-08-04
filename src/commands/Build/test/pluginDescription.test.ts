@@ -27,9 +27,7 @@ const initTestProject = async (description: string) => {
 
   writeFileSync(`${currentDir}/auth.json`, DECLARE_KINTONE);
   const config = readFileSync(`${currentDir}/config.json`);
-  Object.assign(config.uploadConfig, {
-    description
-  });
+  Object.assign(config.uploadConfig, { description });
   writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
   await mainProgram.parseAsync(process.argv);
 
@@ -41,25 +39,17 @@ describe('build command', () => {
     test('Should be "metadata about this project" when setting "metadata about this project"', async () => {
       const appDir = await initTestProject('metadata about this project');
       const config = readFileSync(`${appDir}/config.json`);
-      const result = {
-        description: config.uploadConfig.description
-      };
+      const result = { description: config.uploadConfig.description };
 
-      expect(result).toEqual({
-        description: 'metadata about this project'
-      });
+      expect(result).toEqual({ description: 'metadata about this project' });
     });
 
     test('Should be "" when setting ""', async () => {
       const appDir = await initTestProject('');
       const config = readFileSync(`${appDir}/config.json`);
-      const result = {
-        description: config.uploadConfig.description
-      };
+      const result = { description: config.uploadConfig.description };
 
-      expect(result).toEqual({
-        description: ''
-      });
+      expect(result).toEqual({ description: '' });
     });
   });
 });
