@@ -1,14 +1,10 @@
 import { program } from 'commander';
-import fs from 'fs';
 import path from 'path';
 import initCommand from '../../dist/commands/Initialize/initializeCommand';
 import { DIR_BUILD_PATH } from '../constant';
 
 export const getRandomProjectName = () =>
   `${Math.random().toString(36).substring(2, 12)}`;
-
-export const createBuildDir = (buildDir: string) =>
-  !fs.existsSync(buildDir) && fs.mkdirSync(buildDir);
 
 export async function initProject(buildDir: string, projectName: string) {
   process.chdir(path.join(buildDir));
