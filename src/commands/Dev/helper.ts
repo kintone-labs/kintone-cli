@@ -4,12 +4,9 @@ import { prompt } from 'inquirer';
 import { devCustomize, devPlugin } from './devGenerator';
 import chalk from 'chalk';
 
-const readline = require('readline');
-
-export const devCommandHandle = async (ws, cmd, data) => {
+export const devCommandHandle = async ({ ws, cmd, data, readLineAsync }) => {
   let watching = false;
   const resp = data.toString();
-  console.log(resp, 'resprespresp', data);
   const serverAddr = await getLoopBackAddress(resp, cmd.localhost);
 
   const config = readFileSync(`${cmd.appName}/config.json`);
@@ -21,7 +18,6 @@ export const devCommandHandle = async (ws, cmd, data) => {
     }
   );
 
-  console.log(config, 'configggggg');
   config.uploadConfig.mobile.js = config.uploadConfig.mobile.js.map(
     (item: string) => {
       if (!isURL(item)) return `${serverAddr}/${item}`;
@@ -89,6 +85,7 @@ const isURL = (str: string) => {
   ); // fragment locator
   return !!pattern.test(str);
 };
+
 export const getLoopBackAddress = async (resp: any, localhost: boolean) => {
   if (resp.indexOf('Serving at') === -1) {
     console.log(chalk.red(`${resp}`));
@@ -122,17 +119,4 @@ export const getLoopBackAddress = async (resp: any, localhost: boolean) => {
     }
   ]);
   return answer.localAddress;
-};
-
-const readLineAsync = () => {
-  const rl = readline.createInterface({
-    input: process.stdin
-  });
-  return new Promise((resolve) => {
-    rl.prompt();
-    rl.on('line', (line: string) => {
-      rl.close();
-      resolve(line);
-    });
-  });
 };

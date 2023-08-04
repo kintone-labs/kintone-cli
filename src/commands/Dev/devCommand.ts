@@ -1,13 +1,27 @@
-import commander, { Command } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import spawn from 'cross-spawn';
 import { existsSync } from 'fs';
 import validator from './validator';
 import { devCommandHandle } from './helper';
+const readline = require('readline');
 
 const spawnSync = spawn.sync;
 
-const devCommand = (program: commander.Command) => {
+const readLineAsync = () => {
+  const rl = readline.createInterface({
+    input: process.stdin
+  });
+  return new Promise((resolve) => {
+    rl.prompt();
+    rl.on('line', (line: string) => {
+      rl.close();
+      resolve(line);
+    });
+  });
+};
+
+const devCommand = (program: Command) => {
   return program
     .command('dev')
     .description('Deploy customization/plugin for development')
@@ -38,7 +52,7 @@ const devCommand = (program: commander.Command) => {
       const ws = spawn('npm', ['run', 'dev', '--', '--https']);
 
       ws.stderr.on('data', async (data) => {
-        devCommandHandle(ws, cmd, data);
+        await devCommandHandle({ ws, cmd, data, readLineAsync });
       });
     });
 };

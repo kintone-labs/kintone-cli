@@ -6,7 +6,7 @@ import { isDomain } from '../../utils/string';
 import commander from 'commander';
 
 const authCommand = (program: commander.Command) => {
-  program
+  return program
     .command('auth')
     .description('Set authentication credentials')
     .option('-a, --app-name <appName>', 'App name')

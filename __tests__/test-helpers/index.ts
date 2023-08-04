@@ -1,9 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-
-import { program } from 'commander';
-
+import { readFileSync, writeFileSync } from 'jsonfile';
+import { Command, program } from 'commander';
+import authCommand from '../../src/commands/Auth/authCommand';
 import initCommand from '../../dist/commands/Initialize/initializeCommand';
+import { jest } from '@jest/globals';
+import spawn from 'cross-spawn';
+import devCommand from '../../src/commands/Dev/devCommand';
+import buildCommand from '../../src/commands/Build/buildCommand';
 
 export function createTempDir(TEMP_DIR: string) {
   if (!fs.existsSync(TEMP_DIR)) {
@@ -81,3 +85,28 @@ export async function createTemplateSpecificType(
   ];
   await program.parseAsync(process.argv);
 }
+
+export const authCommandImplement = async (authProgramInput, authProcess) => {
+  const authProgram = authCommand(authProgramInput);
+  const AUTH_OPTIONS = [
+    'node',
+    'auth',
+    '--app-name',
+    'test-app',
+    '--domain',
+    'https://domain.kintone.com',
+    '--app-id',
+    '100',
+    '--username',
+    'user',
+    '--password',
+    'password',
+    '--use-proxy',
+    '--proxy',
+    'http://localhost:8080'
+  ];
+
+  authProcess.argv = AUTH_OPTIONS;
+
+  await authProgram.parseAsync(authProcess.argv);
+};
