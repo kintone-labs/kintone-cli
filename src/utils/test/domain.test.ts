@@ -4,15 +4,15 @@ import { isDomain } from '../string';
 describe('Utils', () => {
   describe('Domain', () => {
     test('Should be "false" when setting domain name invalid', async () => {
-      const input = '127.0.0:8080';
+      const domain = '127.0.0:8080';
 
-      expect(isDomain(input)).toBe(false);
+      expect(isDomain(domain)).toBe(false);
     });
 
     test('Should be "true" when setting domain name valid', async () => {
-      const input = 'sdd.kintone.com';
+      const domain = 'sdd-demo.cybozu.com';
 
-      expect(isDomain(input)).toBe(true);
+      expect(isDomain(domain)).toBe(true);
     });
   });
 });
