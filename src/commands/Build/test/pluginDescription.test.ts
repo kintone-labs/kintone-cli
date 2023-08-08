@@ -8,7 +8,6 @@ import {
   PROJECT_TYPE
 } from '../../../../unit_test/constant';
 import {
-  createBuildDir,
   createTemplateWithType,
   getRandomProjectName,
   initProject
@@ -16,11 +15,9 @@ import {
 import { DECLARE_KINTONE, WRITE_FILE_OPTIONS } from '../../../constant';
 import buildCommand from '../buildCommand';
 
-const getAppDirByProjectType = async (description: string) => {
+const initTestProject = async (description: string) => {
   const projectName = getRandomProjectName();
-  const CURRENT_DIR = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
-
-  createBuildDir(DIR_BUILD_PATH);
+  const currentDir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 
   await initProject(DIR_BUILD_PATH, projectName);
   await createTemplateWithType(projectName, PROJECT_TYPE.PLUGIN);
@@ -28,47 +25,31 @@ const getAppDirByProjectType = async (description: string) => {
   const mainProgram = buildCommand(program);
   process.argv = OPTIONS_BUILD;
 
-  writeFileSync(`${CURRENT_DIR}/auth.json`, DECLARE_KINTONE);
-  const config = readFileSync(`${CURRENT_DIR}/config.json`);
-  Object.assign(config.uploadConfig, {
-    description
-  });
-  writeFileSync(`${CURRENT_DIR}/config.json`, config, WRITE_FILE_OPTIONS);
-
+  writeFileSync(`${currentDir}/auth.json`, DECLARE_KINTONE);
+  const config = readFileSync(`${currentDir}/config.json`);
+  Object.assign(config.uploadConfig, { description });
+  writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
   await mainProgram.parseAsync(process.argv);
-  return {
-    APP_DIR: `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`,
-    CURRENT_DIR
-  };
+
+  return currentDir;
 };
 
 describe('build command', () => {
-  describe('Plugin description: valid', () => {
+  describe('Plugin description', () => {
     test('Should be "metadata about this project" when setting "metadata about this project"', async () => {
-      const appDir = await getAppDirByProjectType(
-        'metadata about this project'
-      );
-      const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
-      const result = {
-        description: config.uploadConfig.description
-      };
-      expect(result).toEqual({
-        description: 'metadata about this project'
-      });
+      const appDir = await initTestProject('metadata about this project');
+      const config = readFileSync(`${appDir}/config.json`);
+      const result = { description: config.uploadConfig.description };
+
+      expect(result).toEqual({ description: 'metadata about this project' });
     });
-  });
 
-  describe('Plugin description: empty', () => {
     test('Should be "" when setting ""', async () => {
-      const appDir = await getAppDirByProjectType('');
+      const appDir = await initTestProject('');
+      const config = readFileSync(`${appDir}/config.json`);
+      const result = { description: config.uploadConfig.description };
 
-      const config = readFileSync(`${appDir.CURRENT_DIR}/config.json`);
-      const result = {
-        description: config.uploadConfig.description
-      };
-      expect(result).toEqual({
-        description: ''
-      });
+      expect(result).toEqual({ description: '' });
     });
   });
 });
