@@ -25,10 +25,10 @@ const initTestProject = async (version: string) => {
 
   const mainProgram = buildCommand(program);
   process.argv = OPTIONS_BUILD;
-
-  writeFileSync(`${currentDir}/auth.json`, DECLARE_KINTONE);
   const config = readFileSync(`${currentDir}/config.json`);
   Object.assign(config.uploadConfig, { version });
+
+  writeFileSync(`${currentDir}/auth.json`, DECLARE_KINTONE);
   writeFileSync(`${currentDir}/dist/private.ppk`, PRIVATE_KEY);
   writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
 

@@ -21,11 +21,10 @@ const initTestProject = async () => {
 
   await initProject(DIR_BUILD_PATH, projectName);
   await createTemplate(DIR_BUILD_PATH, projectName);
+  writeFileSync(webpackDir, WEBPACK_CONTENT);
 
   const mainProgram = buildCommand(program);
   process.argv = OPTIONS_BUILD;
-
-  writeFileSync(webpackDir, WEBPACK_CONTENT);
   await mainProgram.parseAsync(process.argv);
 
   return webpackDir;
