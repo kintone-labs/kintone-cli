@@ -13,7 +13,6 @@ const initTestProject = async () => {
 
   await initProject(DIR_BUILD_PATH, projectName);
   await createTemplate(DIR_BUILD_PATH, projectName);
-
   return buildCommand(program);
 };
 

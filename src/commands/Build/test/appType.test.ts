@@ -23,8 +23,8 @@ const initTestProject = async (projectType: string) => {
 
   const mainProgram = buildCommand(program);
   process.argv = OPTIONS_BUILD;
-
   await mainProgram.parseAsync(process.argv);
+
   return `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 };
 
@@ -44,7 +44,7 @@ describe('build command', () => {
       expect(config.type).toBe(PROJECT_TYPE.CUSTOMIZATION);
     });
 
-    test('Should not create the project template when setting inExist type', async () => {
+    test('Should not create the project template when setting invalid type', async () => {
       const appDir = await initTestProject('invalid_type');
       const isExistFile = existsSync(`${appDir}/config.json`);
 

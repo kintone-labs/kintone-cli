@@ -3,16 +3,16 @@ import { isURL } from '../string';
 
 describe('Utils', () => {
   describe('URL', () => {
-    test('Should be "false" when setting url name invalid', async () => {
-      const input = 'http://www.example{23}.com/and%26here.html';
+    test('Should be "false" when setting invalid url', async () => {
+      const url = 'http://www.example{23}.com/and%26here.html';
 
-      expect(isURL(input)).toBe(false);
+      expect(isURL(url)).toBe(false);
     });
 
-    test('Should be "true" when setting url name valid', async () => {
-      const input = 'https://support.google.com/';
+    test('Should be "true" when setting valid url', async () => {
+      const url = 'https://kintone.dev/';
 
-      expect(isURL(input)).toBe(true);
+      expect(isURL(url)).toBe(true);
     });
   });
 });
