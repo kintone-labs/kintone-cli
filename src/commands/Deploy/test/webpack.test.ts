@@ -4,7 +4,6 @@ import { readFileSync, writeFileSync } from 'jsonfile';
 import { APP_NAME, DIR_BUILD_PATH } from '../../../../unit_test/constant';
 import {
   authCommandImplement,
-  createBuildDir,
   createTemplate,
   getRandomProjectName,
   initProject
@@ -17,7 +16,6 @@ const webpack_content = 'webpack';
 const initTestProject = async () => {
   const projectName = getRandomProjectName();
   const current_dir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
-  createBuildDir(DIR_BUILD_PATH);
 
   await initProject(DIR_BUILD_PATH, projectName);
   await createTemplate(DIR_BUILD_PATH, projectName);

@@ -3,7 +3,6 @@ import { program } from 'commander';
 import { DIR_BUILD_PATH } from '../../../../unit_test/constant';
 import {
   authCommandImplement,
-  createBuildDir,
   createTemplate,
   getRandomProjectName,
   initProject
@@ -12,7 +11,6 @@ import deployCommand from '../deployCommand';
 
 const initTestProject = async () => {
   const projectName = getRandomProjectName();
-  createBuildDir(DIR_BUILD_PATH);
 
   await initProject(DIR_BUILD_PATH, projectName);
   await createTemplate(DIR_BUILD_PATH, projectName);
