@@ -38,7 +38,7 @@ const initTestProject = async () => {
   return mainProgram;
 };
 
-describe('build command', () => {
+describe('auth command', () => {
   describe('App name', () => {
     test('Should be "test-app" when setting "test-app"', async () => {
       const mainProgram = await initTestProject();
