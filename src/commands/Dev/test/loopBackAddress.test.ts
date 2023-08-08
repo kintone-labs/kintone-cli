@@ -36,40 +36,40 @@ const initTestProject = async () => {
   config.uploadConfig.mobile.js = dataDemo(config.uploadConfig.mobile.js);
 
   writeFileSync(`${current_dir}/config.json`, config, WRITE_FILE_OPTIONS);
-
-  return { current_dir };
 };
 
-describe('Exist serving', () => {
-  test('Should be "" when assign to ""', async () => {
-    await initTestProject();
-    const resp = '';
+describe('dev command', () => {
+  describe('LoopBack Address', () => {
+    test('Should be "" when assign to ""', async () => {
+      await initTestProject();
+      const resp = '';
 
-    const loopBackAddress = await getLoopBackAddress(resp, true);
-    expect(loopBackAddress).toBe('');
-  });
+      const loopBackAddress = await getLoopBackAddress(resp, true);
+      expect(loopBackAddress).toBe('');
+    });
 
-  test('Should be "" when assign to ""', async () => {
-    await initTestProject();
-    const resp = 'Serving at';
+    test('Should be "" when assign to "Serving at"', async () => {
+      await initTestProject();
+      const resp = 'Serving at';
 
-    const loopBackAddress = await getLoopBackAddress(resp, true);
-    expect(loopBackAddress).toBe('');
-  });
+      const loopBackAddress = await getLoopBackAddress(resp, true);
+      expect(loopBackAddress).toBe('');
+    });
 
-  test('Should be "https://domain.kintone.com" when assign to "https://domain.kintone.com"', async () => {
-    await initTestProject();
-    const resp = 'Serving at,https://domain.kintone.com';
+    test('Should be "https://domain.kintone.com" when assign to "https://domain.kintone.com"', async () => {
+      await initTestProject();
+      const resp = 'Serving at,https://domain.kintone.com';
 
-    const loopBackAddress = await getLoopBackAddress(resp, true);
-    expect(loopBackAddress).toBe('https://domain.kintone.com');
-  });
+      const loopBackAddress = await getLoopBackAddress(resp, true);
+      expect(loopBackAddress).toBe('https://domain.kintone.com');
+    });
 
-  test('Should be "https://127.0.0.1:8000" when assign to "https://127.0.0.1:8000"', async () => {
-    await initTestProject();
-    const resp = 'Serving at,https://127.0.0.1:8000';
+    test('Should be "https://127.0.0.1:8000" when assign to "https://127.0.0.1:8000"', async () => {
+      await initTestProject();
+      const resp = 'Serving at,https://127.0.0.1:8000';
 
-    const loopBackAddress = await getLoopBackAddress(resp, true);
-    expect(loopBackAddress).toBe('https://127.0.0.1:8000');
+      const loopBackAddress = await getLoopBackAddress(resp, true);
+      expect(loopBackAddress).toBe('https://127.0.0.1:8000');
+    });
   });
 });
