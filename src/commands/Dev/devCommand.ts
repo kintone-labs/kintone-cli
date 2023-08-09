@@ -24,7 +24,7 @@ const isURL = (str: string) => {
   return !!pattern.test(str);
 };
 
-const getLoopBackAddress = async (resp: any, localhost: boolean) => {
+export const getLoopBackAddress = async (resp: any, localhost: boolean) => {
   if (resp.indexOf('Serving at') === -1) {
     console.log(chalk.red(`${resp}`));
     return '';
@@ -73,7 +73,7 @@ const readLineAsync = () => {
 };
 
 const devCommand = (program: Command) => {
-  program
+  return program
     .command('dev')
     .description('Deploy customization/plugin for development')
     .option('--watch', 'Watch for changes in source code')
@@ -88,7 +88,6 @@ const devCommand = (program: Command) => {
       process.on('SIGINT', () => {
         process.exit();
       });
-      let watching = false;
 
       // build the first time and upload link to kintone
       if (existsSync(`${cmd.appName}/webpack.config.js`)) {
@@ -104,73 +103,88 @@ const devCommand = (program: Command) => {
       const ws = spawn('npm', ['run', 'dev', '--', '--https']);
 
       ws.stderr.on('data', async (data) => {
-        const resp = data.toString();
-        const serverAddr = await getLoopBackAddress(resp, cmd.localhost);
-
-        const config = readFileSync(`${cmd.appName}/config.json`);
-
-        config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map(
-          (item: string) => {
-            if (!isURL(item)) return `${serverAddr}/${item}`;
-            return item;
-          }
-        );
-
-        config.uploadConfig.mobile.js = config.uploadConfig.mobile.js.map(
-          (item: string) => {
-            if (!isURL(item)) return `${serverAddr}/${item}`;
-            return item;
-          }
-        );
-
-        config.uploadConfig.desktop.css = config.uploadConfig.desktop.css.map(
-          (item: string) => {
-            if (!isURL(item)) return `${serverAddr}/${item}`;
-            return item;
-          }
-        );
-
-        if (config.type !== 'Customization') {
-          config.uploadConfig.config.js = config.uploadConfig.config.js.map(
-            (item: string) => {
-              if (!isURL(item)) return `${serverAddr}/${item}`;
-              return item;
-            }
-          );
-
-          config.uploadConfig.config.css = config.uploadConfig.config.css.map(
-            (item: string) => {
-              if (!isURL(item)) return `${serverAddr}/${item}`;
-              return item;
-            }
-          );
-        }
-
-        config.watch = cmd.watch;
-
-        console.log('');
-        console.log(
-          chalk.yellow(
-            `Please open this link in your browser to trust kintone ${config.type} files:`
-          )
-        );
-        console.log('');
-        console.log(`   ${chalk.green(`${serverAddr}`)}`);
-        console.log('');
-
-        console.log(chalk.yellow('Then, press any key to continue:'));
-
-        await readLineAsync();
-        if (!watching) {
-          watching = true;
-          if (config.type === 'Customization') {
-            devCustomize(ws, config);
-          } else if (config.type === 'Plugin') {
-            devPlugin(ws, config);
-          }
-        }
+        await devCommandHandle({
+          ws,
+          cmd,
+          data,
+          readLineAsyncParam: readLineAsync
+        });
       });
     });
+};
+
+export const devCommandHandle = async ({
+  ws,
+  cmd,
+  data,
+  readLineAsyncParam
+}) => {
+  let watching = false;
+  const resp = data.toString();
+  const serverAddr = await getLoopBackAddress(resp, cmd.localhost);
+
+  const config = readFileSync(`${cmd.appName}/config.json`);
+
+  config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map(
+    (item: string) => {
+      if (!isURL(item)) return `${serverAddr}/${item}`;
+      return item;
+    }
+  );
+
+  config.uploadConfig.mobile.js = config.uploadConfig.mobile.js.map(
+    (item: string) => {
+      if (!isURL(item)) return `${serverAddr}/${item}`;
+      return item;
+    }
+  );
+
+  config.uploadConfig.desktop.css = config.uploadConfig.desktop.css.map(
+    (item: string) => {
+      if (!isURL(item)) return `${serverAddr}/${item}`;
+      return item;
+    }
+  );
+
+  if (config.type !== 'Customization') {
+    config.uploadConfig.config.js = config.uploadConfig.config.js.map(
+      (item: string) => {
+        if (!isURL(item)) return `${serverAddr}/${item}`;
+        return item;
+      }
+    );
+
+    config.uploadConfig.config.css = config.uploadConfig.config.css.map(
+      (item: string) => {
+        if (!isURL(item)) return `${serverAddr}/${item}`;
+        return item;
+      }
+    );
+  }
+
+  config.watch = cmd.watch;
+
+  console.log('');
+  console.log(
+    chalk.yellow(
+      `Please open this link in your browser to trust kintone ${config.type} files:`
+    )
+  );
+  console.log('');
+  console.log(`   ${chalk.green(`${serverAddr}`)}`);
+  console.log('');
+
+  console.log(chalk.yellow('Then, press any key to continue:'));
+
+  await readLineAsyncParam();
+  if (!watching) {
+    watching = true;
+    if (config.type === 'Customization') {
+      devCustomize(ws, config);
+    } else if (config.type === 'Plugin') {
+      devPlugin(ws, config);
+    }
+  }
 };
 
 export default devCommand;
