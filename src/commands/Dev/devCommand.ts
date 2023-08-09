@@ -24,7 +24,7 @@ const isURL = (str: string) => {
   return !!pattern.test(str);
 };
 
-const getLoopBackAddress = async (resp: any, localhost: boolean) => {
+export const getLoopBackAddress = async (resp: any, localhost: boolean) => {
   if (resp.indexOf('Serving at') === -1) {
     console.log(chalk.red(`${resp}`));
     return '';
