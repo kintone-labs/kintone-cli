@@ -8,8 +8,7 @@ import {
   initProject
 } from '../../../../unit_test/helper';
 import { WRITE_FILE_OPTIONS } from '../../../constant';
-import devCommand from '../devCommand';
-import { getLoopBackAddress } from '../helper';
+import devCommand, { getLoopBackAddress } from '../devCommand';
 
 const initTestProject = async () => {
   const projectName = getRandomProjectName();

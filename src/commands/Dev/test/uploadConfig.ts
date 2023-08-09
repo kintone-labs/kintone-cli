@@ -3,12 +3,11 @@ import { program } from 'commander';
 import spawn from 'cross-spawn';
 import { readFileSync, writeFileSync } from 'jsonfile';
 
-import devCommand from '../devCommand';
-import { devCommandHandle } from '../helper';
+import devCommand, { devCommandHandle } from '../devCommand';
 import buildCommand from '../../Build/buildCommand';
 import { WRITE_FILE_OPTIONS } from '../../../constant';
-import { APP_NAME } from '../../../../__tests__/test-helpers/constant';
 import {
+  APP_NAME,
   DIR_BUILD_PATH,
   WEBPACK_CONTENT
 } from '../../../../unit_test/constant';
@@ -73,7 +72,7 @@ export const dataDemo = (dataInit = []) => [
 ];
 
 describe('dev command', () => {
-  const readLineAsync = jest.fn();
+  const readLineAsyncParam = jest.fn();
   describe('UploadConfig', () => {
     test('Should be "https://exmaple-abc.com" when setting "https://exmaple-abc.com"', async () => {
       const currentDir = await devCommandInit();
@@ -97,7 +96,7 @@ describe('dev command', () => {
           ws: webpackDevServer,
           cmd: commandConfig,
           data: responseMessage,
-          readLineAsync
+          readLineAsyncParam
         });
         const configCheck = readFileSync(`${currentDir}/config.json`);
 
@@ -131,7 +130,7 @@ describe('dev command', () => {
           ws: webpackDevServer,
           cmd: commandConfig,
           data: responseMessage,
-          readLineAsync
+          readLineAsyncParam
         });
         const configCheck = readFileSync(`${currentDir}/config.json`);
 

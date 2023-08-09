@@ -3,8 +3,7 @@ import { program, Command } from 'commander';
 import { readFileSync, writeFileSync } from 'jsonfile';
 
 import { dataInitDevCommand, devCommandInit, dataDemo } from './uploadConfig';
-import devCommand from '../devCommand';
-import { devCommandHandle } from '../helper';
+import devCommand, { devCommandHandle } from '../devCommand';
 import {
   APP_NAME,
   DIR_BUILD_PATH,
@@ -60,7 +59,7 @@ describe('dev command', () => {
     });
 
     let mainProgram: Command;
-    const readLineAsync = jest.fn();
+    const readLineAsyncParam = jest.fn();
     test('Should be "" when assign watch to false', async () => {
       const currentDir = await devCommandInit('Plugin');
       const config = readFileSync(`${currentDir}/config.json`);
@@ -86,7 +85,7 @@ describe('dev command', () => {
           ws: webpackDevServer,
           cmd: commandConfig,
           data: responseMessage,
-          readLineAsync
+          readLineAsyncParam
         });
         expect(mainProgram.opts().appName).toBe('');
       } catch (error) {
@@ -119,7 +118,7 @@ describe('dev command', () => {
           ws: webpackDevServer,
           cmd: commandConfig,
           data: responseMessage,
-          readLineAsync
+          readLineAsyncParam
         });
         expect(mainProgram.opts().appName).toBe('');
       } catch (error) {
