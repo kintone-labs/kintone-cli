@@ -1,7 +1,11 @@
 import { describe, expect, test } from '@jest/globals';
 import { program } from 'commander';
 import { readFileSync } from 'jsonfile';
-import { APP_NAME, DIR_BUILD_PATH } from '../../../../unit_test/constant';
+import {
+  APP_NAME,
+  DIR_BUILD_PATH,
+  OPTIONS_DEPLOY
+} from '../../../../unit_test/constant';
 import {
   authCommandImplement,
   createTemplate,
@@ -12,25 +16,26 @@ import deployCommand from '../deployCommand';
 
 const initTestProject = async () => {
   const projectName = getRandomProjectName();
-  const current_dir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
+  const currentDir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 
   await initProject(DIR_BUILD_PATH, projectName);
   await createTemplate(DIR_BUILD_PATH, projectName);
   await authCommandImplement(program, process);
 
-  return current_dir;
+  return currentDir;
 };
 
-describe('domain', () => {
-  test('Should be "https://domain.kintone.com" when assign type to "https://domain.kintone.com"', async () => {
-    const options = ['node', 'deploy', '--app-name', APP_NAME];
-    const current_dir = await initTestProject();
+describe('Deploy Command', () => {
+  describe('domain', () => {
+    test('Should be "https://domain.kintone.com" when assign to "https://domain.kintone.com"', async () => {
+      const currentDir = await initTestProject();
 
-    const mainProgram = deployCommand(program);
-    process.argv = options;
+      const mainProgram = deployCommand(program);
+      process.argv = OPTIONS_DEPLOY;
+      await mainProgram.parseAsync(process.argv);
+      const config = readFileSync(`${currentDir}/auth.json`);
 
-    await mainProgram.parseAsync(process.argv);
-    const config = readFileSync(`${current_dir}/auth.json`);
-    expect(config.domain).toBe('https://domain.kintone.com');
+      expect(config.domain).toBe('https://domain.kintone.com');
+    });
   });
 });
