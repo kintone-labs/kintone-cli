@@ -3,9 +3,9 @@ import chalk from 'chalk';
 import { readFileSync, writeFileSync } from 'jsonfile';
 import { prompt } from 'inquirer';
 import { isDomain } from '../../utils/string';
-import commander from 'commander';
+import { Command } from 'commander';
 
-const authCommand = (program: commander.Command) => {
+const authCommand = (program: Command) => {
   return program
     .command('auth')
     .description('Set authentication credentials')
