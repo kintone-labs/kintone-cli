@@ -7,9 +7,9 @@ export const ERRORS = {
     'Project folder already exists! Please run the cli again and choose another project name.',
   VALID_DOMAIN: 'Please enter a valid domain.',
   APP_NAME_MISSING: 'App name missing.',
-  USER_NAME_EMPTY: "Username can't be empty.",
-  PASSWORD_EMPTY: "Password can't be empty.",
-  APP_ID_EMPTY: "App ID can't be empty.",
+  USER_NAME_EMPTY: 'Username cannot be empty.',
+  PASSWORD_EMPTY: 'Password cannot be empty.',
+  APP_ID_EMPTY: 'App ID cannot be empty.',
   APP_ID_NUMBER: 'App ID must be a number.',
-  PROXY_EMPTY: "Proxy URL can't be empty."
+  PROXY_EMPTY: 'Proxy URL cannot be empty.'
 };

@@ -1,9 +1,9 @@
-import { Command } from 'commander';
 import validator from './validator';
 import chalk from 'chalk';
 import { readFileSync, writeFileSync } from 'jsonfile';
 import { prompt } from 'inquirer';
 import { isDomain } from '../../utils/string';
+import { Command } from 'commander';
 
 const authCommand = (program: Command) => {
   return program
