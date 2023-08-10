@@ -182,7 +182,7 @@ describe('Initialize command', () => {
 
     test('Should be true when setting answer', async () => {
       const answer = {
-        setAuth: 'auth',
+        setAuth: true,
         useTypescript: true,
         useWebpack: true,
         entry: 'index.tsx',

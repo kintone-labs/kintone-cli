@@ -1,5 +1,4 @@
 import { describe, expect, test } from '@jest/globals';
-import validator from '../validator';
 import { buildWebpackReactTemplate } from '../webpackTemplate';
 
 describe('Initialize command', () => {

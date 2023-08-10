@@ -1,5 +1,4 @@
 import { describe, expect, test } from '@jest/globals';
-import validator from '../validator';
 import generateSample from '../sampleCode';
 
 describe('Initialize command', () => {
