@@ -2,7 +2,6 @@ import { describe, expect, jest, test } from '@jest/globals';
 import { program, Command } from 'commander';
 import { readFileSync, writeFileSync } from 'jsonfile';
 
-import { dataInitDevCommand, devCommandInit, dataDemo } from './uploadConfig';
 import devCommand, { devCommandHandle } from '../devCommand';
 import {
   APP_NAME,
@@ -17,6 +16,11 @@ import {
   getRandomProjectName,
   initProject
 } from '../../../../unit_test/helper';
+import {
+  dataInitDevCommand,
+  dataTest,
+  devCommandInit
+} from './uploadConfig.test';
 
 const initTestProject = async () => {
   const projectName = getRandomProjectName();
@@ -42,7 +46,7 @@ describe('dev command', () => {
       writeFileSync(webpackDir, WEBPACK_CONTENT);
       await mainProgram.parseAsync(process.argv);
 
-      expect(mainProgram.opts().appName).toBe('test-app');
+      expect(mainProgram.opts().appName).toEqual('test-app');
     });
 
     test('Should be "" when assign to ""', async () => {
@@ -55,30 +59,28 @@ describe('dev command', () => {
       writeFileSync(webpackDir, WEBPACK_CONTENT);
       await mainProgram.parseAsync(process.argv);
 
-      expect(mainProgram.opts().appName).toBe('');
+      expect(mainProgram.opts().appName).toEqual('');
     });
 
     let mainProgram: Command;
     const readLineAsyncParam = jest.fn();
+
     test('Should be "" when assign watch to false', async () => {
       const currentDir = await devCommandInit('Plugin');
       const config = readFileSync(`${currentDir}/config.json`);
 
-      config.uploadConfig.desktop.css = dataDemo();
-      config.uploadConfig.mobile.js = dataDemo();
+      config.uploadConfig.desktop.css = dataTest();
+      config.uploadConfig.mobile.js = dataTest();
       Object.assign(config.uploadConfig, {
         config: {
-          css: dataDemo(),
-          js: dataDemo()
+          css: dataTest(),
+          js: dataTest()
         }
-      }).desktop.css = dataDemo();
+      });
 
       writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
       const { webpackDevServer, commandConfig, responseMessage } =
-        dataInitDevCommand({
-          process,
-          watch: false
-        });
+        dataInitDevCommand({ process, watch: false });
 
       try {
         await devCommandHandle({
@@ -87,9 +89,9 @@ describe('dev command', () => {
           data: responseMessage,
           readLineAsyncParam
         });
-        expect(mainProgram.opts().appName).toBe('');
+        expect(mainProgram.opts().appName).toEqual('');
       } catch (error) {
-        expect(error).toBe(error);
+        expect(error).toEqual(error);
       }
     });
 
@@ -97,21 +99,18 @@ describe('dev command', () => {
       const currentDir = await devCommandInit('Plugin');
       const config = readFileSync(`${currentDir}/config.json`);
 
-      config.uploadConfig.desktop.css = dataDemo();
-      config.uploadConfig.mobile.js = dataDemo();
+      config.uploadConfig.desktop.css = dataTest();
+      config.uploadConfig.mobile.js = dataTest();
       Object.assign(config.uploadConfig, {
         config: {
-          css: dataDemo(),
-          js: dataDemo()
+          css: dataTest(),
+          js: dataTest()
         }
-      }).desktop.css = dataDemo();
+      });
 
       writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
       const { webpackDevServer, commandConfig, responseMessage } =
-        dataInitDevCommand({
-          process,
-          watch: true
-        });
+        dataInitDevCommand({ process, watch: true });
 
       try {
         await devCommandHandle({
@@ -120,9 +119,9 @@ describe('dev command', () => {
           data: responseMessage,
           readLineAsyncParam
         });
-        expect(mainProgram.opts().appName).toBe('');
+        expect(mainProgram.opts().appName).toEqual('');
       } catch (error) {
-        expect(error).toBe(error);
+        expect(error).toEqual(error);
       }
     });
   });

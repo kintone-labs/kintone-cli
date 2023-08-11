@@ -25,14 +25,14 @@ const initTestProject = async () => {
   await mainProgram.parseAsync(process.argv);
 
   const config = readFileSync(`${current_dir}/config.json`);
-  const dataDemo = (dataInit) => [
+  const dataTest = (dataInit) => [
     ...dataInit,
     'https://exmaple-abc.com',
     'test-app/source/js/script.js'
   ];
-  config.uploadConfig.desktop.js = dataDemo(config.uploadConfig.desktop.js);
-  config.uploadConfig.desktop.css = dataDemo(config.uploadConfig.desktop.css);
-  config.uploadConfig.mobile.js = dataDemo(config.uploadConfig.mobile.js);
+  config.uploadConfig.desktop.js = dataTest(config.uploadConfig.desktop.js);
+  config.uploadConfig.desktop.css = dataTest(config.uploadConfig.desktop.css);
+  config.uploadConfig.mobile.js = dataTest(config.uploadConfig.mobile.js);
 
   writeFileSync(`${current_dir}/config.json`, config, WRITE_FILE_OPTIONS);
 };
@@ -42,33 +42,33 @@ describe('dev command', () => {
     test('Should be "" when assign to ""', async () => {
       await initTestProject();
       const resp = '';
-
       const loopBackAddress = await getLoopBackAddress(resp, true);
-      expect(loopBackAddress).toBe('');
+
+      expect(loopBackAddress).toEqual('');
     });
 
     test('Should be "" when assign to "Serving at"', async () => {
       await initTestProject();
       const resp = 'Serving at';
-
       const loopBackAddress = await getLoopBackAddress(resp, true);
-      expect(loopBackAddress).toBe('');
+
+      expect(loopBackAddress).toEqual('');
     });
 
     test('Should be "https://domain.kintone.com" when assign to "https://domain.kintone.com"', async () => {
       await initTestProject();
       const resp = 'Serving at,https://domain.kintone.com';
-
       const loopBackAddress = await getLoopBackAddress(resp, true);
-      expect(loopBackAddress).toBe('https://domain.kintone.com');
+
+      expect(loopBackAddress).toEqual('https://domain.kintone.com');
     });
 
     test('Should be "https://127.0.0.1:8000" when assign to "https://127.0.0.1:8000"', async () => {
       await initTestProject();
       const resp = 'Serving at,https://127.0.0.1:8000';
-
       const loopBackAddress = await getLoopBackAddress(resp, true);
-      expect(loopBackAddress).toBe('https://127.0.0.1:8000');
+
+      expect(loopBackAddress).toEqual('https://127.0.0.1:8000');
     });
   });
 });
