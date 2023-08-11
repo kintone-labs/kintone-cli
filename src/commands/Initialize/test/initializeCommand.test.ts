@@ -12,7 +12,7 @@ import {
   DIR_BUILD_PATH,
   WEBPACK_CONTENT
 } from '../../../../unit_test/constant';
-import { existsSync, readFileSync, unlinkSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import {
   getAppSetting,
   printAppDevelopmentInstructions
@@ -32,12 +32,12 @@ const initTestProject = async (
   handleBeforeCreateTemplate && handleBeforeCreateTemplate(projectName);
   await createTemplateWithArgv(projectName, argv);
 
-  return { projectName };
+  return projectName;
 };
 
 describe('Initialize command', () => {
-  describe('validator', () => {
-    test('Should be true when setting quick', async () => {
+  describe('Validator App Type', () => {
+    test('Should be "Invalid App Type" when setting quick option', async () => {
       const argv = [
         'node',
         'dist',
@@ -49,34 +49,13 @@ describe('Initialize command', () => {
         '100'
       ];
       await initTestProject(argv);
-      const params = {
-        type: 'testType'
-      };
-      const appValidator = validator.appValidator(params) as string;
+      const params = { type: 'invalid type' };
+      const errorMessage = validator.appValidator(params) as string;
 
-      expect(appValidator.includes('Invalid App Type')).toBe(true);
+      expect(errorMessage).toEqual('Invalid App Type');
     });
 
-    test('Should be false when setting none package.json', async () => {
-      const argv = [
-        'node',
-        'dist',
-        'create-template',
-        '--quick',
-        '--app-name',
-        APP_NAME
-      ];
-      const removePackage = (projectName) =>
-        unlinkSync(`${DIR_BUILD_PATH}/${projectName}/package.json`);
-      const initTest = await initTestProject(argv, removePackage);
-      const isExistFolder = existsSync(
-        `${DIR_BUILD_PATH}/${initTest.projectName}/package.json`
-      );
-
-      expect(isExistFolder).toBe(false);
-    });
-
-    test('Should be true when setting preset is React', async () => {
+    test('Should be use React in template file when setting preset is React', async () => {
       const argv = [
         'node',
         'dist',
@@ -89,16 +68,18 @@ describe('Initialize command', () => {
         '--type',
         'Plugin'
       ];
-      const initTest = await initTestProject(argv);
-      const config = readFileSync(
-        `${DIR_BUILD_PATH}/${initTest.projectName}/${APP_NAME}/source/index.jsx`,
+      const projectName = await initTestProject(argv);
+      const templateFile = readFileSync(
+        `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}/source/index.jsx`,
         'utf8'
       );
 
-      expect(config.includes("import * as React from 'react';")).toBe(true);
+      expect(templateFile.includes("import * as React from 'react';")).toBe(
+        true
+      );
     });
 
-    test('Should be true when setting preset is ReactTS', async () => {
+    test('Should be exist tsconfig file when setting preset is ReactTS', async () => {
       const argv = [
         'node',
         'dist',
@@ -109,23 +90,23 @@ describe('Initialize command', () => {
         '--preset',
         'ReactTS'
       ];
-      const initTest = await initTestProject(argv);
+      const projectName = await initTestProject(argv);
 
       writeFileSync(
-        `${DIR_BUILD_PATH}/${initTest.projectName}/config.json`,
+        `${DIR_BUILD_PATH}/${projectName}/config.json`,
         WEBPACK_CONTENT,
         WRITE_FILE_OPTIONS
       );
       await authCommandImplement(program, process);
 
-      const isExistFolder = existsSync(
-        `${DIR_BUILD_PATH}/${initTest.projectName}/test-app/tsconfig.json`
+      const isExistFile = existsSync(
+        `${DIR_BUILD_PATH}/${projectName}/test-app/tsconfig.json`
       );
 
-      expect(isExistFolder).toBe(true);
+      expect(isExistFile).toBe(true);
     });
 
-    test('Should be false when setting false for appValidator', async () => {
+    test('Should do not create folder when setting invalid scope', async () => {
       const argv = [
         'node',
         'dist',
@@ -136,17 +117,17 @@ describe('Initialize command', () => {
         '--type',
         'Customization',
         '--scope',
-        'testScope'
+        'invalid scope'
       ];
-      const initTest = await initTestProject(argv);
+      const projectName = await initTestProject(argv);
       const isExistFolder = existsSync(
-        `${DIR_BUILD_PATH}/${initTest.projectName}/test-app`
+        `${DIR_BUILD_PATH}/${projectName}/test-app`
       );
 
       expect(isExistFolder).toBe(false);
     });
 
-    test('Should be false when setting install', async () => {
+    test('Should do not create folder when setting install option', async () => {
       const argv = [
         'node',
         'dist',
@@ -159,13 +140,13 @@ describe('Initialize command', () => {
         '--scope',
         'testScope'
       ];
-      const initTest = await initTestProject(
+      const projectName = await initTestProject(
         argv,
         null,
         initProjectWithInstall
       );
       const isExistFolder = existsSync(
-        `${DIR_BUILD_PATH}/${initTest.projectName}/test-app`
+        `${DIR_BUILD_PATH}/${projectName}/test-app`
       );
 
       expect(isExistFolder).toBe(false);
@@ -180,36 +161,9 @@ describe('Initialize command', () => {
       expect(checkAppStatus).toBe(undefined);
     });
 
-    test('Should be true when setting answer', async () => {
+    test('App setting should be the same as the answer value', async () => {
       const answer = {
         setAuth: true,
-        useTypescript: true,
-        useWebpack: true,
-        entry: 'index.tsx',
-        useReact: true,
-        appName: 'test-app',
-        domain: 'domain.com',
-        username: 'username',
-        password: 'password',
-        type: 'Customization',
-        appID: '100',
-        useCybozuLint: 'lintExample',
-        scope: 'ALL',
-        proxy: null
-      };
-
-      const cmd = {};
-
-      const appSetting = getAppSetting(cmd, answer);
-
-      expect(JSON.stringify(appSetting) === JSON.stringify(answer)).toEqual(
-        true
-      );
-    });
-
-    test('Should be true when setting answer', async () => {
-      const answer = {
-        setAuth: 'auth',
         useTypescript: true,
         useWebpack: true,
         entry: 'index.tsx',

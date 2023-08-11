@@ -3,48 +3,46 @@ import validator from '../validator';
 
 describe('Initialize command', () => {
   describe('validator', () => {
-    test('Should be true when setting testType', async () => {
-      const params = {
-        type: 'testType'
-      };
-      const appValidator = validator.appValidator(params) as string;
+    test('Should be "Invalid App Type" when setting invalid app type', async () => {
+      const params = { type: 'invalid type' };
+      const errorMessage = validator.appValidator(params) as string;
 
-      expect(appValidator.includes('Invalid App Type')).toBe(true);
+      expect(errorMessage).toEqual('Invalid App Type');
     });
 
-    test('Should be true when setting testPreset', async () => {
+    test('Should be "Invalid Preset" when setting invalid preset', async () => {
       const params = {
         type: 'Customization',
-        preset: 'testPreset'
+        preset: 'invalid preset'
       };
-      const appValidator = validator.appValidator(params) as string;
+      const errorMessage = validator.appValidator(params) as string;
 
-      expect(appValidator.includes('Invalid Preset')).toBe(true);
+      expect(errorMessage).toEqual('Invalid Preset');
     });
 
-    test('Should be true when setting USER', async () => {
+    test('Should be "Invalid Scope" when setting invalid scope', async () => {
       const params = {
         type: 'Customization',
         preset: 'React',
         scope: 'USER'
       };
-      const appValidator = validator.appValidator(params) as string;
+      const errorMessage = validator.appValidator(params) as string;
 
-      expect(appValidator.includes('Invalid Scope')).toBe(true);
+      expect(errorMessage).toEqual('Invalid Scope');
     });
 
-    test('Should be true when setting USER', async () => {
+    test('Should be "Invalid Scope" when setting invalid scope', async () => {
       const params = {
         type: 'Customization',
         preset: 'React',
         scope: 'USER'
       };
-      const appValidator = validator.appValidator(params) as string;
+      const errorMessage = validator.appValidator(params) as string;
 
-      expect(appValidator.includes('Invalid Scope')).toBe(true);
+      expect(errorMessage).toEqual('Invalid Scope');
     });
 
-    test('Should be false when setting ALL', async () => {
+    test('Should be false when setting scope is ALL', async () => {
       const params = {
         type: 'Customization',
         preset: 'React',

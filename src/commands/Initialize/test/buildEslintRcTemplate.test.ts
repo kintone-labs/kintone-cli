@@ -3,50 +3,50 @@ import { buildEslintRcTemplate } from '../eslintRcTemplate';
 
 describe('Initialize command', () => {
   describe('buildEslintRcTemplate', () => {
-    test('Should be true when setting useTypescript', async () => {
-      const eslintRcinit = buildEslintRcTemplate({
+    test('Should be "@cybozu/eslint-config/presets/typescript" when use TypeScript', async () => {
+      const eslintRcInit = buildEslintRcTemplate({
         useTypescript: true,
         useWebpack: false,
         useReact: false
       });
 
       expect(
-        eslintRcinit.includes('@cybozu/eslint-config/presets/typescript')
+        eslintRcInit.includes('@cybozu/eslint-config/presets/typescript')
       ).toBe(true);
     });
 
-    test('Should be true when setting useReact', async () => {
-      const eslintRcinit = buildEslintRcTemplate({
+    test('Should be "cybozu/eslint-config/presets/react" when use React', async () => {
+      const eslintRcInit = buildEslintRcTemplate({
         useTypescript: false,
         useWebpack: false,
         useReact: true
       });
 
-      expect(eslintRcinit.includes('@cybozu/eslint-config/presets/react')).toBe(
+      expect(eslintRcInit.includes('@cybozu/eslint-config/presets/react')).toBe(
         true
       );
     });
 
-    test('Should be true when setting useReact and useTypescript', async () => {
-      const eslintRcinit = buildEslintRcTemplate({
+    test('Should be "@cybozu/eslint-config/presets/react-typescript" when use React and TypeScript', async () => {
+      const eslintRcInit = buildEslintRcTemplate({
         useTypescript: true,
         useWebpack: false,
         useReact: true
       });
 
       expect(
-        eslintRcinit.includes('@cybozu/eslint-config/presets/react-typescript')
+        eslintRcInit.includes('@cybozu/eslint-config/presets/react-typescript')
       ).toBe(true);
     });
 
-    test('Should be true when setting ues6', async () => {
-      const eslintRcinit = buildEslintRcTemplate({
+    test('Should be es6 when do not setting env', async () => {
+      const eslintRcInit = buildEslintRcTemplate({
         useTypescript: false,
         useWebpack: false,
         useReact: false
       });
 
-      expect(eslintRcinit.includes('es6')).toBe(true);
+      expect(eslintRcInit.includes('es6')).toBe(true);
     });
   });
 });

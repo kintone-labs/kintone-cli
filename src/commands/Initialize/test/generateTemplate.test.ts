@@ -2,8 +2,8 @@ import { describe, expect, test } from '@jest/globals';
 import generateSample from '../sampleCode';
 
 describe('Initialize command', () => {
-  describe('validator', () => {
-    test('Should be true when setting useReact', async () => {
+  describe('Generate template', () => {
+    test('Should be JSX template when use React', async () => {
       const params = {
         useTypescript: false,
         useReact: true
@@ -27,7 +27,7 @@ const App = () => {
       expect(generateSampleInit.includes(jsxSample)).toBe(true);
     });
 
-    test('Should be true when setting useReact and useTypescript', async () => {
+    test('Should be TSX template when use React and TypeScript', async () => {
       const params = {
         useTypescript: true,
         useReact: true
@@ -53,7 +53,7 @@ const App = () => {
       expect(generateSampleInit.includes(tsxSample)).toBe(true);
     });
 
-    test('Should be true when setting none useReact and useTypescript', async () => {
+    test('Should be TS template when do not use React and use TypeScript', async () => {
       const params = {
         useTypescript: true,
         useReact: false
@@ -69,7 +69,7 @@ const App = () => {
       expect(generateSampleInit.includes(tsSample)).toBe(true);
     });
 
-    test('Should be true when setting none useReact and none useTypescript', async () => {
+    test('Should be JS sample when do not use React and do not use TypeScript', async () => {
       const params = {
         useTypescript: false,
         useReact: false
