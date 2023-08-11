@@ -1,20 +1,33 @@
-import { describe, expect, test } from '@jest/globals';
+import { beforeAll, describe, expect, test } from '@jest/globals';
 import { program } from 'commander';
-import { DIR_BUILD_PATH, OPTIONS_BUILD } from '../../../../unit_test/constant';
+import { APP_NAME, DIR_BUILD_PATH } from '../../../../unit_test/constant';
 import {
   createTemplate,
   getRandomProjectName,
   initProject
 } from '../../../../unit_test/helper';
 import authCommand from '../authCommand';
+import validator from '../validator';
 
-const initTestProject = async () => {
+const initTestProject = async (options) => {
   const projectName = getRandomProjectName();
-  const AUTH_OPTIONS = [
+
+  await initProject(DIR_BUILD_PATH, projectName);
+  await createTemplate(DIR_BUILD_PATH, projectName);
+
+  const mainProgram = authCommand(program);
+  process.argv = options;
+
+  await mainProgram.parseAsync(process.argv);
+  return mainProgram;
+};
+
+describe('Auth command', () => {
+  const options = [
     'node',
     'auth',
     '--app-name',
-    'test-app',
+    APP_NAME,
     '--domain',
     'https://domain.kintone.com',
     '--app-id',
@@ -28,33 +41,23 @@ const initTestProject = async () => {
     'http://localhost:8080'
   ];
 
-  await initProject(DIR_BUILD_PATH, projectName);
-  await createTemplate(DIR_BUILD_PATH, projectName);
+  beforeAll(async () => {
+    await initTestProject(options);
+  });
 
-  const mainProgram = authCommand(program);
-  process.argv = AUTH_OPTIONS;
-
-  await mainProgram.parseAsync(process.argv);
-  return mainProgram;
-};
-
-describe('auth command', () => {
   describe('App name', () => {
-    test('Should be "test-app" when setting "test-app"', async () => {
-      const mainProgram = await initTestProject();
-      process.argv = OPTIONS_BUILD;
-      await mainProgram.parseAsync(process.argv);
+    test('Should be "app-name" when setting "app-name"', async () => {
+      const params = { appName: APP_NAME };
+      const isError = validator.authValidator(params);
 
-      expect(mainProgram.opts().appName).toBe('test-app');
+      expect(isError).toBe(false);
     });
 
-    test('Should be "" when setting ""', async () => {
-      const OPTIONS_MISS_NAME = ['node', 'build', '--app-name', ''];
-      const mainProgram = await initTestProject();
-      process.argv = OPTIONS_MISS_NAME;
-      await mainProgram.parseAsync(process.argv);
+    test('Should be "App name missing" when setting app name is empty', async () => {
+      const params = {};
+      const isError = validator.authValidator(params);
 
-      expect(mainProgram.opts().appName).toBe('');
+      expect(isError).toEqual('App name missing');
     });
   });
 });
