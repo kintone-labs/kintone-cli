@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { program } from 'commander';
-import { DIR_BUILD_PATH, OPTIONS_DEPLOY } from '../../../../unit_test/constant';
+import { DIR_BUILD_PATH } from '../../../../unit_test/constant';
 import {
   authCommandImplement,
   createTemplate,
@@ -17,27 +17,24 @@ const initTestProject = async () => {
   await authCommandImplement(program, process);
 };
 
-describe('Deploy Command', () => {
+describe('Deploy command', () => {
   describe('App name', () => {
-    test('Should be "test-app" when assign to "test-app"', async () => {
+    test('Should be "test-app" when setting the value "test-app" to --app-name option', async () => {
       await initTestProject();
-
       const mainProgram = deployCommand(program);
-      process.argv = OPTIONS_DEPLOY;
+      process.argv = ['node', 'deploy', '--app-name', 'test-app'];
       await mainProgram.parseAsync(process.argv);
 
-      expect(mainProgram.opts().appName).toBe('test-app');
+      expect(mainProgram.opts().appName).toEqual('test-app');
     });
 
-    test('Should be "" when assign to ""', async () => {
+    test('Should be "" when setting the value "" to --app-name option', async () => {
       await initTestProject();
-
-      const OPTIONS = ['node', 'deploy', '--app-name', ''];
       const mainProgram = deployCommand(program);
-      process.argv = OPTIONS;
+      process.argv = ['node', 'deploy', '--app-name', ''];
       await mainProgram.parseAsync(process.argv);
 
-      expect(mainProgram.opts().appName).toBe('');
+      expect(mainProgram.opts().appName).toEqual('');
     });
   });
 });

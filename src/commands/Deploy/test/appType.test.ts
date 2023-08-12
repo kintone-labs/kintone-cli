@@ -16,15 +16,15 @@ import {
 } from '../../../../unit_test/helper';
 import deployCommand from '../deployCommand';
 
-const initTestProject = async (projectType: string) => {
+const initializeTestProject = async (projectType: string) => {
   const projectName = getRandomProjectName();
   const currentDir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 
   await initProject(DIR_BUILD_PATH, projectName);
   await createTemplateWithType(projectName, projectType);
 
-  const isProjectTypeValid = Object.values(PROJECT_TYPE).includes(projectType);
-  if (isProjectTypeValid || projectType === '') {
+  const isValidProjectType = Object.values(PROJECT_TYPE).includes(projectType);
+  if (isValidProjectType || projectType === '') {
     await authCommandImplement(program, process);
   }
 
@@ -32,45 +32,41 @@ const initTestProject = async (projectType: string) => {
 };
 
 describe('Deploy command', () => {
-  describe('Type', () => {
-    test('Should be "Plugin" when assign to "Plugin"', async () => {
-      const currentDir = await initTestProject('Plugin');
+  describe('App type', () => {
+    test('Should be "Plugin" when the project is set to "Plugin"', async () => {
+      const currentDir = await initializeTestProject('Plugin');
       const mainProgram = deployCommand(program);
       process.argv = OPTIONS_DEPLOY;
-
       await mainProgram.parseAsync(process.argv);
       const config = readFileSync(`${currentDir}/config.json`);
 
       expect(config.type).toBe('Plugin');
     });
 
-    test('Should be "Customization" when assign to "Customization"', async () => {
-      const current_dir = await initTestProject('Customization');
+    test('Should be "Customization" when the project is set to "Customization"', async () => {
+      const currentDir = await initializeTestProject('Customization');
       const mainProgram = deployCommand(program);
       process.argv = OPTIONS_DEPLOY;
-
       await mainProgram.parseAsync(process.argv);
-      const config = readFileSync(`${current_dir}/config.json`);
+      const config = readFileSync(`${currentDir}/config.json`);
 
       expect(config.type).toBe('Customization');
     });
 
-    test('Should be false when assign to invalid type', async () => {
-      const currentDir = await initTestProject('invalid_type');
+    test('Should not be deployed when project is set to invalid', async () => {
+      const currentDir = await initializeTestProject('invalid_type');
       const mainProgram = deployCommand(program);
       process.argv = OPTIONS_DEPLOY;
-
       await mainProgram.parseAsync(process.argv);
       const isExistFile = existsSync(`${currentDir}/config.json`);
 
       expect(isExistFile).toBe(false);
     });
 
-    test('Should be "Customization" when assign type to default type', async () => {
-      const currentDir = await initTestProject('');
+    test('Should be "Customization" when the project is set to default', async () => {
+      const currentDir = await initializeTestProject('');
       const mainProgram = deployCommand(program);
       process.argv = OPTIONS_DEPLOY;
-
       await mainProgram.parseAsync(process.argv);
       const config = readFileSync(`${currentDir}/config.json`);
 

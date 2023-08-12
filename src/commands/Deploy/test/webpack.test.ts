@@ -15,7 +15,7 @@ import {
 } from '../../../../unit_test/helper';
 import deployCommand from '../deployCommand';
 
-const initTestProject = async () => {
+const initializeTestProject = async () => {
   const projectName = getRandomProjectName();
   const currentDir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 
@@ -27,8 +27,8 @@ const initTestProject = async () => {
 };
 
 describe('webpack', () => {
-  test('Should be "webpack" when assign content to "webpack" in webpack.config.js', async () => {
-    const currentDir = await initTestProject();
+  test('Should be assigned as "webpack" when the content is "webpack"', async () => {
+    const currentDir = await initializeTestProject();
     const webpackDir = `${currentDir}/webpack.config.js`;
     const mainProgram = deployCommand(program);
     process.argv = OPTIONS_DEPLOY;

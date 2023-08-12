@@ -14,7 +14,7 @@ import {
 } from '../../../../unit_test/helper';
 import deployCommand from '../deployCommand';
 
-const initTestProject = async () => {
+const initializeTestProject = async () => {
   const projectName = getRandomProjectName();
   const currentDir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 
@@ -27,9 +27,8 @@ const initTestProject = async () => {
 
 describe('Deploy Command', () => {
   describe('domain', () => {
-    test('Should be "https://domain.kintone.com" when assign to "https://domain.kintone.com"', async () => {
-      const currentDir = await initTestProject();
-
+    test('Should be set as "https://domain.kintone.com" when setting the domain to "https://domain.kintone.com"', async () => {
+      const currentDir = await initializeTestProject();
       const mainProgram = deployCommand(program);
       process.argv = OPTIONS_DEPLOY;
       await mainProgram.parseAsync(process.argv);
