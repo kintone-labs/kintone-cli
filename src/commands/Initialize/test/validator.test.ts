@@ -31,26 +31,15 @@ describe('Initialize command', () => {
       expect(errorMessage).toEqual('Invalid Scope');
     });
 
-    test('Should be "Invalid Scope" when setting invalid scope', async () => {
-      const params = {
-        type: 'Customization',
-        preset: 'React',
-        scope: 'USER'
-      };
-      const errorMessage = validator.appValidator(params) as string;
-
-      expect(errorMessage).toEqual('Invalid Scope');
-    });
-
-    test('Should be false when setting scope is ALL', async () => {
+    test('Should not have an error when setting valid scope', async () => {
       const params = {
         type: 'Customization',
         preset: 'React',
         scope: 'ALL'
       };
-      const appValidator = validator.appValidator(params) as boolean;
+      const isError = validator.appValidator(params) as boolean;
 
-      expect(appValidator).toBe(false);
+      expect(isError).toBe(false);
     });
   });
 });

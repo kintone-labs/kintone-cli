@@ -8,8 +8,8 @@ describe('Initialize command', () => {
     type: 'Plugin'
   };
 
-  describe('Webpack Template', () => {
-    test('Should be true when setting "invalid type"', async () => {
+  describe('Webpack template', () => {
+    test('Should have app-name.min.js in output entry when the type is set to "invalid type"', async () => {
       const webpackTemplate = buildWebpackReactTemplate({
         ...params,
         useTypescript: false,
@@ -17,49 +17,56 @@ describe('Initialize command', () => {
         type: 'invalid type'
       });
 
-      expect(webpackTemplate.includes("filename: 'app-name.min.js'")).toBe(
-        true
+      const doesFileExist = webpackTemplate.includes(
+        "filename: 'app-name.min.js'"
       );
+      expect(doesFileExist).toBe(true);
     });
 
-    test('Should be true when setting Plugin type in webpack', async () => {
+    test('Should have config.min.js in output entry when the type is set to "Plugin"', async () => {
       const webpackTemplate = buildWebpackReactTemplate({
         ...params,
         useTypescript: false,
         useReact: false
       });
+      const doesFileExist = webpackTemplate.includes(
+        "filename: 'config.min.js'"
+      );
 
-      expect(webpackTemplate.includes("filename: 'config.min.js'")).toBe(true);
+      expect(doesFileExist).toBe(true);
     });
 
-    test('Should be true when use TypeScript', async () => {
+    test('Should have config.ts file when the "useTypeScript" is set to true', async () => {
       const webpackTemplate = buildWebpackReactTemplate({
         ...params,
         useTypescript: true,
         useReact: false
       });
 
-      expect(webpackTemplate.includes('config.ts')).toBe(true);
+      const doesFileExist = webpackTemplate.includes('config.ts');
+      expect(doesFileExist).toBe(true);
     });
 
-    test('Should be true when setting use React and use TypeScript', async () => {
+    test('Should have rule tsx when both "useReact" and "useTypeScript" settings are set to true', async () => {
       const webpackTemplate = buildWebpackReactTemplate({
         ...params,
         useTypescript: true,
         useReact: true
       });
+      const isRuleTsx = webpackTemplate.includes('test: /.tsx?$/,');
 
-      expect(webpackTemplate.includes('test: /.tsx?$/,')).toBe(true);
+      expect(isRuleTsx).toBe(true);
     });
 
-    test('Should be true when setting useReact', async () => {
+    test('Should have rule jsx when the "useReact" is set to true', async () => {
       const webpackTemplate = buildWebpackReactTemplate({
         ...params,
         useTypescript: false,
         useReact: true
       });
+      const isRuleJsx = webpackTemplate.includes('test: /.jsx?$/,');
 
-      expect(webpackTemplate.includes('test: /.jsx?$/,')).toBe(true);
+      expect(isRuleJsx).toBe(true);
     });
   });
 });

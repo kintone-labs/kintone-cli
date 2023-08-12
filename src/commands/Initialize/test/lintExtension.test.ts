@@ -3,39 +3,36 @@ import { getLintedExtension } from '../generator';
 import { AppOption } from '../../../dto/app';
 
 describe('Initialize command', () => {
-  const appOption = {
-    useReact: true,
-    useTypescript: true
-  } as AppOption;
+  const appOption = { useReact: true, useTypescript: true } as AppOption;
 
-  describe('Lint Extension', () => {
-    test('Should be .tsx when use React and use TypeScript', async () => {
-      const extension = getLintedExtension(appOption);
+  describe('Lint extension', () => {
+    test('Should be .tsx when using React with TypeScript', async () => {
+      const fileExtension = getLintedExtension(appOption);
 
-      expect(extension).toBe('.tsx');
+      expect(fileExtension).toBe('.tsx');
     });
 
-    test('Should be .jsx when use React and do not use TypeScript', async () => {
+    test('Should be .jsx when using React without TypeScript', async () => {
       appOption.useTypescript = false;
-      const extension = getLintedExtension(appOption);
+      const fileExtension = getLintedExtension(appOption);
 
-      expect(extension).toBe('.jsx');
+      expect(fileExtension).toBe('.jsx');
     });
 
-    test('Should be .ts when do not use React and use TypeScript', async () => {
+    test('Should be .ts when not using React but using TypeScript', async () => {
       appOption.useReact = false;
       appOption.useTypescript = true;
-      const extension = getLintedExtension(appOption);
+      const fileExtension = getLintedExtension(appOption);
 
-      expect(extension).toBe('.ts');
+      expect(fileExtension).toBe('.ts');
     });
 
-    test('Should be .js when do not use React and do not use TypeScript', async () => {
+    test('Should be .js when not using React and not using TypeScript', async () => {
       appOption.useReact = false;
       appOption.useTypescript = false;
-      const extension = getLintedExtension(appOption);
+      const fileExtension = getLintedExtension(appOption);
 
-      expect(extension).toBe('.js');
+      expect(fileExtension).toBe('.js');
     });
   });
 });

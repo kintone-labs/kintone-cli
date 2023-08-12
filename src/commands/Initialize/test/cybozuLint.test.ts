@@ -6,25 +6,20 @@ import {
   getRandomProjectName,
   initProject
 } from '../../../../unit_test/helper';
-import { DIR_BUILD_PATH } from '../../../../unit_test/constant';
+import { APP_NAME, DIR_BUILD_PATH } from '../../../../unit_test/constant';
 import { readFileSync } from 'jsonfile';
 
-const initTestProject = async (
-  handleBeforeCreateTemplate?: any,
-  initProjectType: any = initProject
-) => {
+const initializeTestProject = async (initProjectType: any = initProject) => {
   const projectName = getRandomProjectName();
   const currentDir = `${DIR_BUILD_PATH}/${projectName}`;
-
   await initProjectType(DIR_BUILD_PATH, projectName);
-  handleBeforeCreateTemplate && handleBeforeCreateTemplate(projectName);
   const argv = [
     'node',
     'dist',
     'create-template',
     '--quick',
     '--app-name',
-    'test-app',
+    APP_NAME,
     '--app-id',
     '100'
   ];
@@ -35,18 +30,17 @@ const initTestProject = async (
 
 describe('Initialize command', () => {
   const appOption = {
-    appName: 'test-app',
+    appName: APP_NAME,
     type: 'Customization',
     appID: '100',
     scope: 'ALL'
   } as unknown as AppOption;
 
-  describe('Cybozu Lint', () => {
-    test('Should be undefined when do not use Cybozu Lint', async () => {
-      await initTestProject();
-
+  describe('Cybozu lint', () => {
+    test('Should be undefined when Cybozu Lint is not used', async () => {
+      await initializeTestProject();
       const packageJSON = {
-        name: 'ot4uyuk6vy',
+        name: APP_NAME,
         version: '1.0.0',
         description: 'kintone customization project',
         author: '',
@@ -64,18 +58,16 @@ describe('Initialize command', () => {
           dev: 'ws'
         }
       };
+      const cybozuLint = configureCybozuLint(appOption, packageJSON);
 
-      const lintedExtension = configureCybozuLint(appOption, packageJSON);
-
-      expect(lintedExtension).toBe(undefined);
+      expect(cybozuLint).toBe(undefined);
     });
-    test('Should be true when do not use Cybozu Lint', async () => {
-      const initTest = await initTestProject();
 
+    test('Should be true when Cybozu Lint is used', async () => {
+      const initTest = await initializeTestProject();
       appOption.useCybozuLint = true;
-
       const packageJSON = {
-        name: 'test-app',
+        name: APP_NAME,
         version: '1.0.0',
         description: 'kintone customization project',
         author: '',
@@ -92,30 +84,30 @@ describe('Initialize command', () => {
       };
 
       configureCybozuLint(appOption, packageJSON);
-      const packageInit = readFileSync(`${initTest.currentDir}/package.json`);
-      const isCybozuLintExist =
-        '@cybozu/eslint-config' in packageInit.devDependencies;
+      const packageInstalled = readFileSync(
+        `${initTest.currentDir}/package.json`
+      );
+      const isCybozuLintInstalled =
+        '@cybozu/eslint-config' in packageInstalled.devDependencies;
 
-      expect(isCybozuLintExist).toBe(true);
+      expect(isCybozuLintInstalled).toBe(true);
     });
   });
 
   describe('App Folder', () => {
-    test('Should be create folder when setting app option correct', async () => {
-      await initTestProject();
+    test('A folder should be created when the app option is set correctly', async () => {
+      await initializeTestProject();
       appOption.setAuth = true;
       appOption.appName = 'test-app-1';
       appOption.useCybozuLint = true;
+      const creationSuccessful = generateAppFolder(appOption);
 
-      const isCreateSuccess = generateAppFolder(appOption);
-
-      expect(isCreateSuccess).toBe(false);
+      expect(creationSuccessful).toBe(false);
     });
 
-    test('Should be "App folder existed." when setting name app is exist', async () => {
+    test('Should be "App folder existed." when the app name already exists', async () => {
       appOption.useCybozuLint = true;
       appOption.appName = 'test-app-1';
-
       const errorMessage = generateAppFolder(appOption);
 
       expect(errorMessage).toBe('App folder existed.');
