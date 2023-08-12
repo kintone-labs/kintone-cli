@@ -60,18 +60,17 @@ export const dataTest = (dataInit = []) => [
   'test-app/source/js/script.js'
 ];
 
-describe('dev command', () => {
+describe('Dev command', () => {
   const readLineAsyncParam = jest.fn();
-  describe('UploadConfig', () => {
-    test('Should be "https://exmaple-abc.com" when setting "https://exmaple-abc.com"', async () => {
+  describe('Upload config', () => {
+    test('Should be "https://exmaple-abc.com" when setting the value to "https://exmaple-abc.com"', async () => {
       const currentDir = await devCommandInit();
 
       const config = readFileSync(`${currentDir}/config.json`);
-      config.uploadConfig.desktop.js = ['https://exmaple-abc.com'];
-      config.uploadConfig.desktop.css = dataTest(
-        config.uploadConfig.desktop.css
-      );
-      config.uploadConfig.mobile.js = dataTest(config.uploadConfig.mobile.js);
+      const uploadConfig = config.uploadConfig;
+      uploadConfig.desktop.js = ['https://exmaple-abc.com'];
+      uploadConfig.desktop.css = dataTest(uploadConfig.desktop.css);
+      uploadConfig.mobile.js = dataTest(uploadConfig.mobile.js);
       writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
 
       const { webpackDevServer, commandConfig, responseMessage } =
@@ -84,13 +83,12 @@ describe('dev command', () => {
           data: responseMessage,
           readLineAsyncParam
         });
-        const configCheck = readFileSync(`${currentDir}/config.json`);
+        const configUpdated = readFileSync(`${currentDir}/config.json`);
+        const domainUpload = configUpdated.uploadConfig.desktop.js.find(
+          (item: string) => item === 'https://exmaple-abc.com'
+        );
 
-        expect(
-          configCheck.uploadConfig.desktop.js.find(
-            (item) => item === 'https://exmaple-abc.com'
-          )
-        ).toEqual('https://exmaple-abc.com');
+        expect(domainUpload).toEqual('https://exmaple-abc.com');
       } catch (error) {
         expect(error).toEqual(error);
       }

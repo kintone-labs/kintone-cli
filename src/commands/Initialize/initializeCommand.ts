@@ -20,8 +20,6 @@ import { AppType, CustomizationScope } from '../../dto/app';
 const getPromptsCreateTemplate = (cmd: any) => {
   const appTypes: AppType[] = ['Customization', 'Plugin'];
   const customizationScope: CustomizationScope[] = ['ALL', 'ADMIN', 'NONE'];
-  console.log(cmd, 'cmdcmdcmdcmd')
-  
   return [
     {
       type: 'list',

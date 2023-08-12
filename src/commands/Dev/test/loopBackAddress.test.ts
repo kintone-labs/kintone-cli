@@ -25,7 +25,7 @@ const initTestProject = async () => {
   await mainProgram.parseAsync(process.argv);
 
   const config = readFileSync(`${current_dir}/config.json`);
-  const dataTest = (dataInit) => [
+  const dataTest = (dataInit: any) => [
     ...dataInit,
     'https://exmaple-abc.com',
     'test-app/source/js/script.js'
@@ -37,9 +37,9 @@ const initTestProject = async () => {
   writeFileSync(`${current_dir}/config.json`, config, WRITE_FILE_OPTIONS);
 };
 
-describe('dev command', () => {
-  describe('LoopBack Address', () => {
-    test('Should be "" when assign to ""', async () => {
+describe('Dev command', () => {
+  describe('LoopBack address', () => {
+    test('Should be "" when setting the value to ""', async () => {
       await initTestProject();
       const resp = '';
       const loopBackAddress = await getLoopBackAddress(resp, true);
@@ -47,7 +47,7 @@ describe('dev command', () => {
       expect(loopBackAddress).toEqual('');
     });
 
-    test('Should be "" when assign to "Serving at"', async () => {
+    test('Should be "" when setting the value to "Serving at"', async () => {
       await initTestProject();
       const resp = 'Serving at';
       const loopBackAddress = await getLoopBackAddress(resp, true);
@@ -55,7 +55,7 @@ describe('dev command', () => {
       expect(loopBackAddress).toEqual('');
     });
 
-    test('Should be "https://domain.kintone.com" when assign to "https://domain.kintone.com"', async () => {
+    test('Should be "https://domain.kintone.com" setting the value to "https://domain.kintone.com"', async () => {
       await initTestProject();
       const resp = 'Serving at,https://domain.kintone.com';
       const loopBackAddress = await getLoopBackAddress(resp, true);
@@ -63,7 +63,7 @@ describe('dev command', () => {
       expect(loopBackAddress).toEqual('https://domain.kintone.com');
     });
 
-    test('Should be "https://127.0.0.1:8000" when assign to "https://127.0.0.1:8000"', async () => {
+    test('Should be "https://127.0.0.1:8000" setting the value to "https://127.0.0.1:8000"', async () => {
       await initTestProject();
       const resp = 'Serving at,https://127.0.0.1:8000';
       const loopBackAddress = await getLoopBackAddress(resp, true);

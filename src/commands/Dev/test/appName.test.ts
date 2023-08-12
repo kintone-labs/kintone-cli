@@ -22,7 +22,7 @@ import {
   devCommandInit
 } from './uploadConfig.test';
 
-const initTestProject = async () => {
+const initializeTestProject = async () => {
   const projectName = getRandomProjectName();
   const currentDir = `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
   const webpackDir = `${currentDir}/webpack.config.js`;
@@ -33,29 +33,25 @@ const initTestProject = async () => {
   return webpackDir;
 };
 
-describe('dev command', () => {
+describe('Dev command', () => {
   describe('App name', () => {
-    test('Should be "test-app" when assign to "test-app"', async () => {
+    test('Should be "test-app" when setting the value "test-app" to --app-name option', async () => {
       const options = ['node', 'dev', '--app-name', APP_NAME];
-      const webpackDir = await initTestProject();
-
+      const webpackDir = await initializeTestProject();
       authCommandImplement(program, process);
       process.argv = options;
       const mainProgram = devCommand(program);
-
       writeFileSync(webpackDir, WEBPACK_CONTENT);
       await mainProgram.parseAsync(process.argv);
 
       expect(mainProgram.opts().appName).toEqual('test-app');
     });
 
-    test('Should be "" when assign to ""', async () => {
+    test('Should be "" when setting the value "" to --app-name option', async () => {
       const options = ['node', 'dev', '--app-name', ''];
-      const webpackDir = await initTestProject();
-
+      const webpackDir = await initializeTestProject();
       const mainProgram = devCommand(program);
       process.argv = options;
-
       writeFileSync(webpackDir, WEBPACK_CONTENT);
       await mainProgram.parseAsync(process.argv);
 
@@ -65,17 +61,13 @@ describe('dev command', () => {
     let mainProgram: Command;
     const readLineAsyncParam = jest.fn();
 
-    test('Should be "" when assign watch to false', async () => {
+    test('Should be "" when setting the value watch to false', async () => {
       const currentDir = await devCommandInit('Plugin');
       const config = readFileSync(`${currentDir}/config.json`);
-
       config.uploadConfig.desktop.css = dataTest();
       config.uploadConfig.mobile.js = dataTest();
       Object.assign(config.uploadConfig, {
-        config: {
-          css: dataTest(),
-          js: dataTest()
-        }
+        config: { css: dataTest(), js: dataTest() }
       });
 
       writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
@@ -95,17 +87,13 @@ describe('dev command', () => {
       }
     });
 
-    test('Should be "" when assign watch to true', async () => {
+    test('Should be "" setting the value watch to true', async () => {
       const currentDir = await devCommandInit('Plugin');
       const config = readFileSync(`${currentDir}/config.json`);
-
       config.uploadConfig.desktop.css = dataTest();
       config.uploadConfig.mobile.js = dataTest();
       Object.assign(config.uploadConfig, {
-        config: {
-          css: dataTest(),
-          js: dataTest()
-        }
+        config: { css: dataTest(), js: dataTest() }
       });
 
       writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
