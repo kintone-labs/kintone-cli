@@ -9,16 +9,15 @@ import {
 import authCommand from '../authCommand';
 import validator from '../validator';
 
-const initTestProject = async (options) => {
+const initializeTestProject = async (options) => {
   const projectName = getRandomProjectName();
+  const mainProgram = authCommand(program);
 
   await initProject(DIR_BUILD_PATH, projectName);
   await createTemplate(DIR_BUILD_PATH, projectName);
-
-  const mainProgram = authCommand(program);
   process.argv = options;
-
   await mainProgram.parseAsync(process.argv);
+
   return mainProgram;
 };
 
@@ -42,18 +41,18 @@ describe('Auth command', () => {
   ];
 
   beforeAll(async () => {
-    await initTestProject(options);
+    await initializeTestProject(options);
   });
 
   describe('App name', () => {
-    test('Should be "app-name" when setting "app-name"', async () => {
+    test('Should not have an error when setting app name to a valid value', async () => {
       const params = { appName: APP_NAME };
       const isError = validator.authValidator(params);
 
       expect(isError).toBe(false);
     });
 
-    test('Should be "App name missing" when setting app name is empty', async () => {
+    test('Should be "App name missing" when setting app name to a empty value', async () => {
       const params = {};
       const isError = validator.authValidator(params);
 
