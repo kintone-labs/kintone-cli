@@ -45,7 +45,8 @@ export async function initProjectWithInstall(
 
 export async function createTemplateWithType(
   projectName: string,
-  type: string
+  type: string,
+  useWebpack: boolean = false
 ) {
   process.chdir(DIR_BUILD_PATH + '/' + projectName);
   global.currentDir = process.cwd();
@@ -63,6 +64,46 @@ export async function createTemplateWithType(
     '--app-id',
     '100'
   ];
+  if (useWebpack) {
+    process.argv = [
+      'node',
+      'dist',
+      'create-template',
+      '--type',
+      type,
+      '--app-name',
+      'test-app',
+      '--app-id',
+      '100',
+      '--type',
+      'Customization',
+      '--set-auth',
+      'false',
+      '--domain',
+      'https://test.com',
+      '--username',
+      'user',
+      '--password',
+      'user',
+      '--proxy',
+      'false',
+      '--use-react',
+      'false',
+      '--use-typescript',
+      'true',
+      '--use-webpack',
+      'true',
+      '--entry',
+      'index.tsx',
+      '--use-cybozu-lint',
+      'true',
+      '--app-id',
+      '3',
+      '--scope',
+      'ALL'
+    ];
+  }
+
   await program.parseAsync(process.argv);
 }
 
