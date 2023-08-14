@@ -60,7 +60,7 @@ describe('Initialize command', () => {
       expect(templateWithoutSpaces.includes(tsxSampleWithoutSpaces)).toBe(true);
     });
 
-    test('Should be TS template when not using React and using TypeScript', async () => {
+    test('Should be TS template when not using React but using TypeScript', async () => {
       const tsSample = `
         (() => {
           kintone.events.on('app.record.index.show', event => {
@@ -80,7 +80,7 @@ describe('Initialize command', () => {
       expect(templateWithoutSpaces.includes(tsSampleWithoutSpaces)).toBe(true);
     });
 
-    test('Should be JS sample when not using React and not using TypeScript', async () => {
+    test('Should be JS sample when neither React nor TypeScript is used', async () => {
       const jsSample = `
         (function() {
           'use strict';
