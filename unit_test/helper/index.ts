@@ -1,6 +1,6 @@
 import { program } from 'commander';
 import path from 'path';
-import initCommand from '../../dist/commands/Initialize/initializeCommand';
+import initCommand from '../../src/commands/Initialize/initializeCommand';
 import { DIR_BUILD_PATH } from '../constant';
 import authCommand from '../../src/commands/Auth/authCommand';
 
@@ -16,6 +16,26 @@ export async function initProject(buildDir: string, projectName: string) {
     'node',
     'dist',
     'init',
+    '--quick',
+    '--project-name',
+    projectName
+  ];
+  await program.parseAsync(process.argv);
+}
+
+export async function initProjectWithInstall(
+  buildDir: string,
+  projectName: string
+) {
+  process.chdir(path.join(buildDir));
+  global.currentDir = process.cwd();
+
+  initCommand(program);
+  process.argv = [
+    'node',
+    'dist',
+    'init',
+    '--install',
     '--quick',
     '--project-name',
     projectName
@@ -105,6 +125,15 @@ export async function createTemplate(buildDir: string, projectName: string) {
   await program.parseAsync(process.argv);
 }
 
+export async function createTemplateWithArgv(projectName: string, argv: any) {
+  process.chdir(DIR_BUILD_PATH + '/' + projectName);
+  global.currentDir = process.cwd();
+
+  initCommand(program);
+  process.argv = argv;
+  await program.parseAsync(process.argv);
+}
+
 export const authCommandImplement = async (authProgramInput, authProcess) => {
   const authProgram = authCommand(authProgramInput);
   const AUTH_OPTIONS = [
@@ -129,3 +158,50 @@ export const authCommandImplement = async (authProgramInput, authProcess) => {
 
   await authProgram.parseAsync(authProcess.argv);
 };
+
+export async function createTemplateNotQuick(projectName: string) {
+  process.chdir(DIR_BUILD_PATH + '/' + projectName);
+  global.currentDir = process.cwd();
+
+  initCommand(program);
+
+  process.argv = [
+    'node',
+    'dist',
+    'create-template',
+    '--type',
+    'Customization',
+    '--app-name',
+    'test-app',
+    '--app-id',
+    '100',
+    '--type',
+    'Customization',
+    '--set-auth',
+    'false',
+    '--domain',
+    'https://test.com',
+    '--username',
+    'user',
+    '--password',
+    'user',
+    '--proxy',
+    'false',
+    '--use-react',
+    'false',
+    '--use-typescript',
+    'true',
+    '--use-webpack',
+    'true',
+    '--entry',
+    'index.tsx',
+    '--use-cybozu-lint',
+    'true',
+    '--app-id',
+    '3',
+    '--scope',
+    'ALL'
+  ];
+
+  await program.parseAsync(process.argv);
+}
