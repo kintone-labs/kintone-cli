@@ -26,7 +26,7 @@ const initializeTestProject = async () => {
 };
 
 describe('Deploy Command', () => {
-  describe('domain', () => {
+  describe('Domain', () => {
     test('Should be set as "https://domain.kintone.com" when setting the domain to "https://domain.kintone.com"', async () => {
       const currentDir = await initializeTestProject();
       const mainProgram = deployCommand(program);
