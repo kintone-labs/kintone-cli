@@ -26,17 +26,19 @@ const initializeTestProject = async () => {
   return currentDir;
 };
 
-describe('webpack', () => {
-  test('Should be assigned as "webpack" when the content is "webpack"', async () => {
-    const currentDir = await initializeTestProject();
-    const webpackDir = `${currentDir}/webpack.config.js`;
-    const mainProgram = deployCommand(program);
-    process.argv = OPTIONS_DEPLOY;
+describe('Deploy command', () => {
+  describe('Webpack', () => {
+    test('Should be assigned as "webpack" when the content is "webpack"', async () => {
+      const currentDir = await initializeTestProject();
+      const webpackDir = `${currentDir}/webpack.config.js`;
+      const mainProgram = deployCommand(program);
+      process.argv = OPTIONS_DEPLOY;
 
-    writeFileSync(webpackDir, WEBPACK_CONTENT);
-    await mainProgram.parseAsync(process.argv);
-    const config = readFileSync(webpackDir);
+      writeFileSync(webpackDir, WEBPACK_CONTENT);
+      await mainProgram.parseAsync(process.argv);
+      const config = readFileSync(webpackDir);
 
-    expect(config).toBe(WEBPACK_CONTENT);
+      expect(config).toBe(WEBPACK_CONTENT);
+    });
   });
 });

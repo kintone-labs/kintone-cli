@@ -19,7 +19,7 @@ const initTestProject = async () => {
 
 describe('Deploy command', () => {
   describe('App name', () => {
-    test('Should be "test-app" when setting the value "test-app" to --app-name option', async () => {
+    test('Should be "test-app" when setting the value "test-app" to "--app-name" option', async () => {
       await initTestProject();
       const mainProgram = deployCommand(program);
       process.argv = ['node', 'deploy', '--app-name', 'test-app'];
@@ -28,7 +28,7 @@ describe('Deploy command', () => {
       expect(mainProgram.opts().appName).toEqual('test-app');
     });
 
-    test('Should be "" when setting the value "" to --app-name option', async () => {
+    test('Should be "" when setting the value "" to "--app-name" option', async () => {
       await initTestProject();
       const mainProgram = deployCommand(program);
       process.argv = ['node', 'deploy', '--app-name', ''];
