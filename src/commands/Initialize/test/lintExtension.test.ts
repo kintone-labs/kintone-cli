@@ -6,13 +6,13 @@ describe('Initialize command', () => {
   const appOption = { useReact: true, useTypescript: true } as AppOption;
 
   describe('Lint extension', () => {
-    test('Should be .tsx when using React with TypeScript', async () => {
+    test('Should be .tsx when using React and TypeScript', async () => {
       const fileExtension = getLintedExtension(appOption);
 
       expect(fileExtension).toBe('.tsx');
     });
 
-    test('Should be .jsx when using React without TypeScript', async () => {
+    test('Should be .jsx when using React but not using TypeScript', async () => {
       appOption.useTypescript = false;
       const fileExtension = getLintedExtension(appOption);
 
@@ -27,7 +27,7 @@ describe('Initialize command', () => {
       expect(fileExtension).toBe('.ts');
     });
 
-    test('Should be .js when not using React and not using TypeScript', async () => {
+    test('Should be .js when neither React nor TypeScript is used', async () => {
       appOption.useReact = false;
       appOption.useTypescript = false;
       const fileExtension = getLintedExtension(appOption);

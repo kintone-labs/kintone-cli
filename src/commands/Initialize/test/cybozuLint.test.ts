@@ -95,7 +95,7 @@ describe('Initialize command', () => {
   });
 
   describe('App Folder', () => {
-    test('A folder should be created when the app option is set correctly', async () => {
+    test('Should create a folder when the app option is set correctly', async () => {
       await initializeTestProject();
       appOption.setAuth = true;
       appOption.appName = 'test-app-1';
@@ -105,7 +105,7 @@ describe('Initialize command', () => {
       expect(creationSuccessful).toBe(false);
     });
 
-    test('Should be "App folder existed." when the app name already exists', async () => {
+    test('Should display "App folder existed." when the app name already exists', async () => {
       appOption.useCybozuLint = true;
       appOption.appName = 'test-app-1';
       const errorMessage = generateAppFolder(appOption);
