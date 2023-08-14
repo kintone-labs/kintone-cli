@@ -6,7 +6,7 @@ import validator from './validator';
 const spawnSync = spawn.sync;
 
 const lintCommand = (program: Command) => {
-  program
+  return program
     .command('lint')
     .description('Check/fix code using @cybozu/eslint-config')
     .option('--fix', 'Auto fix eslint errors')

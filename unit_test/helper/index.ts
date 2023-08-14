@@ -1,8 +1,8 @@
 import { program } from 'commander';
 import path from 'path';
-import initCommand from '../../dist/commands/Initialize/initializeCommand';
-import authCommand from '../../src/commands/Auth/authCommand';
+import initCommand from '../../src/commands/Initialize/initializeCommand';
 import { DIR_BUILD_PATH } from '../constant';
+import authCommand from '../../src/commands/Auth/authCommand';
 
 export const getRandomProjectName = () =>
   `${Math.random().toString(36).substring(2, 12)}`;
@@ -16,6 +16,26 @@ export async function initProject(buildDir: string, projectName: string) {
     'node',
     'dist',
     'init',
+    '--quick',
+    '--project-name',
+    projectName
+  ];
+  await program.parseAsync(process.argv);
+}
+
+export async function initProjectWithInstall(
+  buildDir: string,
+  projectName: string
+) {
+  process.chdir(path.join(buildDir));
+  global.currentDir = process.cwd();
+
+  initCommand(program);
+  process.argv = [
+    'node',
+    'dist',
+    'init',
+    '--install',
     '--quick',
     '--project-name',
     projectName
@@ -61,6 +81,15 @@ export async function createTemplate(buildDir: string, projectName: string) {
     '--app-id',
     '100'
   ];
+  await program.parseAsync(process.argv);
+}
+
+export async function createTemplateWithArgv(projectName: string, argv: any) {
+  process.chdir(DIR_BUILD_PATH + '/' + projectName);
+  global.currentDir = process.cwd();
+
+  initCommand(program);
+  process.argv = argv;
   await program.parseAsync(process.argv);
 }
 
