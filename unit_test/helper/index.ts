@@ -75,8 +75,6 @@ export async function createTemplateWithType(
       'test-app',
       '--app-id',
       '100',
-      '--type',
-      'Customization',
       '--set-auth',
       'false',
       '--domain',
