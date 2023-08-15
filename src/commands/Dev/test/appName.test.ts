@@ -35,7 +35,7 @@ const initializeTestProject = async () => {
 
 describe('Dev command', () => {
   describe('App name', () => {
-    test('Should be "test-app" when setting the value "test-app" to --app-name option', async () => {
+    test('Should be "test-app" when setting the value "test-app"', async () => {
       const options = ['node', 'dev', '--app-name', APP_NAME];
       const webpackDir = await initializeTestProject();
       authCommandImplement(program, process);
