@@ -13,8 +13,9 @@ import {
 } from './validator';
 import { MESSAGES } from '../../constant';
 import { authJSONAddProps, configJSONAddProps } from './helper';
+import { Command } from 'commander';
 
-const authCommand = (program: any) => {
+const authCommand = (program: Command) => {
   return program
     .command('auth')
     .description('Set authentication credentials')
