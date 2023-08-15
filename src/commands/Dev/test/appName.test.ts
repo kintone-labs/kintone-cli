@@ -47,7 +47,7 @@ describe('Dev command', () => {
       expect(mainProgram.opts().appName).toEqual('test-app');
     });
 
-    test('Should be "" when setting the value "" to --app-name option', async () => {
+    test('Should be "" when setting the value ""', async () => {
       const options = ['node', 'dev', '--app-name', ''];
       const webpackDir = await initializeTestProject();
       const mainProgram = devCommand(program);
