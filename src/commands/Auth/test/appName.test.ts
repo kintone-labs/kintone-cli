@@ -7,7 +7,7 @@ import {
   initProject
 } from '../../../../unit_test/helper';
 import authCommand from '../authCommand';
-import { authValidator } from '../validator';
+import validator from '../validator';
 
 const initializeTestProject = async (options) => {
   const projectName = getRandomProjectName();
@@ -47,14 +47,14 @@ describe('Auth command', () => {
   describe('App name', () => {
     test('Should not have an error when setting app name to a valid value', async () => {
       const params = { appName: APP_NAME };
-      const isError = authValidator(params);
+      const isError = validator.authValidator(params);
 
       expect(isError).toBe(false);
     });
 
     test('Should be "App name missing" when setting app name to a empty value', async () => {
       const params = {};
-      const isError = authValidator(params);
+      const isError = validator.authValidator(params);
 
       expect(isError).toEqual('App name missing');
     });
