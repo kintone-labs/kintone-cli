@@ -28,7 +28,7 @@ describe('Deploy command', () => {
       expect(mainProgram.opts().appName).toEqual('test-app');
     });
 
-    test('Should be "" when setting the value "" to "--app-name" option', async () => {
+    test('Should be "" when setting the value ""', async () => {
       await initTestProject();
       const mainProgram = deployCommand(program);
       process.argv = ['node', 'deploy', '--app-name', ''];
