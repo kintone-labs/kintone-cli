@@ -51,7 +51,7 @@ describe('Initialize command', () => {
       expect(errorMessage).toEqual('Invalid App Type');
     });
 
-    test('Should be use React template when the preset is set to React', async () => {
+    test('Should use React template when the preset is set to React', async () => {
       const argv = [
         'node',
         'dist',
