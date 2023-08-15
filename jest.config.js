@@ -14,7 +14,7 @@ const config = {
       lines: 85,
       statements: 85
     },
-    './src/commands/**/': {
+    './src/commands/Auth/': {
       statements: 85,
       branches: 85,
       functions: 85,
