@@ -23,7 +23,7 @@ export const initializeTestProject = async () => {
 
 describe('Lint command', () => {
   describe('App name', () => {
-    test('Should be "test-app" when setting the "--app-name" option to "test-app"', async () => {
+    test('Should be "test-app" when setting "test-app"', async () => {
       const initTest = await initializeTestProject();
 
       process.argv = ['node', 'lint', '--fix', '--app-name', APP_NAME];
