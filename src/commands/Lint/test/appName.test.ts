@@ -35,7 +35,7 @@ describe('Lint command', () => {
       expect(isLint).toEqual(true);
     });
 
-    test('Should be "test-app" when setting the "--app-name" to "test-app" without the "--fix" option', async () => {
+    test('Should be "test-app" when setting "test-app" without the "--fix" option', async () => {
       const initTest = await initializeTestProject();
       process.argv = ['node', 'lint', '--app-name', 'test-app'];
 
