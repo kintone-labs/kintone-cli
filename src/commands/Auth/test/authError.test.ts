@@ -6,7 +6,7 @@ import {
   passwordValidator,
   proxyValidator,
   usernameValidator
-} from '../../../src/commands/Auth/validator';
+} from '../validator';
 
 describe('auth command: validator', () => {
   test(`Should have authValidator as 'App name missing.'`, () => {
@@ -31,9 +31,9 @@ describe('auth command: validator', () => {
     expect(domainValidator(validDomain)).toBe(true);
   });
 
-  test(`Should have usernameValidator as "Username can't be empty."`, () => {
+  test(`Should have usernameValidator as "Username cannot be empty."`, () => {
     const emptyUsername = '';
-    expect(usernameValidator(emptyUsername)).toBe("Username can't be empty.");
+    expect(usernameValidator(emptyUsername)).toBe('Username cannot be empty.');
   });
 
   test(`Should have usernameValidator as true`, () => {
@@ -41,9 +41,9 @@ describe('auth command: validator', () => {
     expect(usernameValidator(validUsername)).toBe(true);
   });
 
-  test(`Should have passwordValidator as "Password can't be empty."`, () => {
+  test(`Should have passwordValidator as "Password cannot be empty."`, () => {
     const emptyPassword = '';
-    expect(passwordValidator(emptyPassword)).toBe("Password can't be empty.");
+    expect(passwordValidator(emptyPassword)).toBe('Password cannot be empty.');
   });
 
   test(`Should have passwordValidator as true`, () => {
@@ -51,9 +51,9 @@ describe('auth command: validator', () => {
     expect(passwordValidator(validPassword)).toBe(true);
   });
 
-  test(`Should have appIDValidator as "App ID can't be empty."`, () => {
+  test(`Should have appIDValidator as "App ID cannot be empty."`, () => {
     const emptyAppID = '';
-    expect(appIDValidator(emptyAppID)).toBe("App ID can't be empty.");
+    expect(appIDValidator(emptyAppID)).toBe('App ID cannot be empty.');
   });
 
   test(`Should have appIDValidator as 'App ID must be a number.'`, () => {
@@ -66,9 +66,9 @@ describe('auth command: validator', () => {
     expect(appIDValidator(validAppID)).toBe(true);
   });
 
-  test(`Should have proxyValidator as "Proxy URL can't be empty."`, () => {
+  test(`Should have proxyValidator as "Proxy URL cannot be empty."`, () => {
     const invalidProxy = '';
-    expect(proxyValidator(invalidProxy)).toBe("Proxy URL can't be empty.");
+    expect(proxyValidator(invalidProxy)).toBe('Proxy URL cannot be empty.');
   });
 
   test(`Should have proxyValidator as true`, () => {

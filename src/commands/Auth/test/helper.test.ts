@@ -1,8 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import {
-  authJSONAddProps,
-  configJSONAddProps
-} from '../../../src/commands/Auth/helper';
+import { authJSONAddProps, configJSONAddProps } from '../helper';
 
 describe('auth command: helper', () => {
   test(`Should have authJSONAddProps as cmd`, () => {
