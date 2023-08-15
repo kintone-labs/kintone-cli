@@ -421,4 +421,4 @@ const generateAppFolder = (option: AppOption): string | boolean => {
 export default {
   generateAppFolder
 };
-export { generateAppFolder };
+export { generateAppFolder, getLintedExtension, configureCybozuLint };

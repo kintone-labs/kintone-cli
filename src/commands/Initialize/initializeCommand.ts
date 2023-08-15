@@ -225,7 +225,7 @@ const getPromptsInit = (packageInfo) => {
   ];
 };
 
-const getAppSetting = (cmd, answer) => {
+export const getAppSetting = (cmd, answer) => {
   const appSetting = {
     setAuth: cmd.setAuth || answer.setAuth,
     useTypescript: cmd.useTypescript || answer.useTypescript,
@@ -410,7 +410,7 @@ const initializeCommand = (program: Command) => {
     });
 };
 
-const printAppDevelopmentInstructions = (appSetting) => {
+export const printAppDevelopmentInstructions = (appSetting) => {
   if (!appSetting.setAuth) {
     console.log(chalk.yellow(MESSAGES.SET_AUTH_INFO_MESSAGE));
     console.log('');

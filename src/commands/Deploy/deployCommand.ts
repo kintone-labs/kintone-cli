@@ -6,7 +6,7 @@ import { deployCustomization, deployPlugin } from './deployer';
 import { existsSync } from 'fs';
 
 const deployCommand = (program: Command) => {
-  program
+  return program
     .command('deploy')
     .description('Deploy customization/plugin for production')
     .option('--app-name <appName>', 'App name')

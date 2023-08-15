@@ -78,7 +78,9 @@ const buildPlugin = (option) => {
         const keyFileName = (0, fs_1.readdirSync)(`${option.appName}/dist`).filter((name) => {
             return /.ppk$/.test(name);
         });
-        (0, fs_1.renameSync)(`${option.appName}/dist/${keyFileName[0]}`, `${option.appName}/dist/private.ppk`);
+        keyFileName &&
+            keyFileName.length &&
+            (0, fs_1.renameSync)(`${option.appName}/dist/${keyFileName[0]}`, `${option.appName}/dist/private.ppk`);
     }
     (0, fs_1.unlinkSync)(`manifest.json`);
 };

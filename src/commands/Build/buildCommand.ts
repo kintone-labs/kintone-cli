@@ -1,12 +1,12 @@
-import { Command } from 'commander';
 import chalk from 'chalk';
+import { Command } from 'commander';
 import validator from './validator';
 import { readFileSync } from 'jsonfile';
 import { existsSync } from 'fs';
 import { buildUsingWebpack, buildVanillaJS, buildPlugin } from './builder';
 
 const buildCommand = (program: Command) => {
-  program
+  return program
     .command('build')
     .description('Build customization/plugin')
     .option('--app-name <appName>', 'App name')
@@ -28,6 +28,7 @@ const buildCommand = (program: Command) => {
           }
           buildVanillaJS(config);
         }
+
         if (config.type === 'Plugin') {
           buildPlugin(config);
         }
