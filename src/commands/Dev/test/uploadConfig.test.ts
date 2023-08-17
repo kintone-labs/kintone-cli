@@ -4,13 +4,8 @@ import spawn from 'cross-spawn';
 import { readFileSync, writeFileSync } from 'jsonfile';
 
 import devCommand, { devCommandHandle } from '../devCommand';
-import buildCommand from '../../Build/buildCommand';
 import { WRITE_FILE_OPTIONS } from '../../../constant';
-import {
-  APP_NAME,
-  DIR_BUILD_PATH,
-  WEBPACK_CONTENT
-} from '../../../../unit_test/constant';
+import { APP_NAME, DIR_BUILD_PATH } from '../../../../unit_test/constant';
 import {
   authCommandImplement,
   createTemplateWithType,
