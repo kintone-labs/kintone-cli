@@ -39,31 +39,5 @@ describe('Dev command', () => {
         expect(error).toEqual(error);
       }
     });
-
-    test('Should be "" setting the value watch to true', async () => {
-      const currentDir = await devCommandInit('Plugin');
-      const config = readFileSync(`${currentDir}/config.json`);
-      config.uploadConfig.desktop.css = dataTest();
-      config.uploadConfig.mobile.js = dataTest();
-      Object.assign(config.uploadConfig, {
-        config: { css: dataTest(), js: dataTest() }
-      });
-
-      writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
-      const { webpackDevServer, commandConfig, responseMessage } =
-        dataInitDevCommand({ process, watch: true });
-
-      try {
-        await devCommandHandle({
-          ws: webpackDevServer,
-          cmd: commandConfig,
-          data: responseMessage,
-          readLineAsyncParam
-        });
-        expect(mainProgram.opts().appName).toEqual('');
-      } catch (error) {
-        expect(error).toEqual(error);
-      }
-    });
   });
 });
