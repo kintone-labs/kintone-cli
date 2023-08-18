@@ -1,8 +1,4 @@
-export const authJSONAddProps = ({
-  authJSON,
-  cmd,
-  answer
-}: authJSONAddProps) => {
+export const updateAuthJSON = ({ authJSON, cmd, answer }: updateAuthJSON) => {
   authJSON.domain = cmd?.domain || answer.domain;
   authJSON.username = cmd?.username || answer.username;
   authJSON.password = cmd?.password || answer.password;

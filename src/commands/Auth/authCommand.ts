@@ -12,7 +12,7 @@ import {
   usernameValidator
 } from './validator';
 import { MESSAGES } from '../../constant';
-import { authJSONAddProps, configJSONAddProps } from './helper';
+import { updateAuthJSON, configJSONAddProps } from './helper';
 import { Command } from 'commander';
 
 const authCommand = (program: Command) => {
@@ -86,7 +86,7 @@ const authCommand = (program: Command) => {
         }
       ]);
 
-      authJSONAddProps({ authJSON, cmd, answer });
+      updateAuthJSON({ authJSON, cmd, answer });
 
       writeFileSync(`${cmd.appName}/auth.json`, authJSON, {
         spaces: 4,

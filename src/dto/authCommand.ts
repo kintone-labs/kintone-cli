@@ -1,9 +1,9 @@
-type authJSONAddProps = {
+type updateAuthJSON = {
   authJSON: any;
   cmd?: any;
   answer?: any;
 };
 
-type configJSONAddProps = Omit<authJSONAddProps, 'authJSON'> & {
+type configJSONAddProps = Omit<updateAuthJSON, 'authJSON'> & {
   configJSON: any;
 };
