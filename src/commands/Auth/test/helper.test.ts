@@ -1,9 +1,9 @@
 import { describe, expect, test } from '@jest/globals';
-import { authJSONAddProps, configJSONAddProps } from '../helper';
+import { updateAuthJSON, configJSONAddProps } from '../helper';
 
 describe('Auth command', () => {
   describe('Helper', () => {
-    describe('authJSONAddProps', () => {
+    describe('updateAuthJSON', () => {
       test(`Should be equivalent to cmd`, () => {
         const authJSON = {};
         const cmd = {
@@ -14,7 +14,7 @@ describe('Auth command', () => {
         };
 
         const authJSONResult = cmd;
-        expect(authJSONAddProps({ authJSON, cmd })).toEqual(authJSONResult);
+        expect(updateAuthJSON({ authJSON, cmd })).toEqual(authJSONResult);
       });
 
       test(`Should be equivalent to answer`, () => {
@@ -27,7 +27,7 @@ describe('Auth command', () => {
         };
 
         const authJSONResult = answer;
-        expect(authJSONAddProps({ authJSON, answer: answer })).toEqual(
+        expect(updateAuthJSON({ authJSON, answer: answer })).toEqual(
           authJSONResult
         );
       });
