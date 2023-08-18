@@ -8,71 +8,91 @@ import {
   usernameValidator
 } from '../validator';
 
-describe('auth command: validator', () => {
-  test(`Should have authValidator as 'App name missing.'`, () => {
-    const invalidAppName = '';
-    expect(authValidator(invalidAppName)).toBe('App name missing.');
-  });
+describe('Auth command', () => {
+  describe('Validator', () => {
+    describe('App Name', () => {
+      test(`Should return 'App name missing.' when setting an empty app name`, () => {
+        const invalidAppName = '';
+        expect(authValidator(invalidAppName)).toBe('App name missing.');
+      });
+    });
 
-  test(`Should have domainValidator as 'Domain has to start with https.'`, () => {
-    const invalidDomain = 'domain.kintone.com';
-    expect(domainValidator(invalidDomain)).toBe(
-      'Domain has to start with https.'
-    );
-  });
+    describe('Domain', () => {
+      test(`Should return 'Domain has to start with https.' when setting a domain without https`, () => {
+        const invalidDomain = 'domain.kintone.com';
+        expect(domainValidator(invalidDomain)).toBe(
+          'Domain has to start with https.'
+        );
+      });
 
-  test(`Should have domainValidator as 'Please enter a valid domain.'`, () => {
-    const invalidDomain = 'https://%*@(&#$#).k#intone.%com';
-    expect(domainValidator(invalidDomain)).toBe('Please enter a valid domain.');
-  });
+      test(`Should return 'Please enter a valid domain.' when setting an invalid domain`, () => {
+        const invalidDomain = 'https://%*@(&#$#).k#intone.%com';
+        expect(domainValidator(invalidDomain)).toBe(
+          'Please enter a valid domain.'
+        );
+      });
 
-  test(`Should have domainValidator as true`, () => {
-    const validDomain = 'https://domain.kintone.com';
-    expect(domainValidator(validDomain)).toBe(true);
-  });
+      test(`Should return true when setting a valid domain`, () => {
+        const validDomain = 'https://domain.kintone.com';
+        expect(domainValidator(validDomain)).toBe(true);
+      });
+    });
 
-  test(`Should have usernameValidator as "Username cannot be empty."`, () => {
-    const emptyUsername = '';
-    expect(usernameValidator(emptyUsername)).toBe('Username cannot be empty.');
-  });
+    describe('Username', () => {
+      test(`Should return 'Username cannot be empty.' when setting an empty username`, () => {
+        const emptyUsername = '';
+        expect(usernameValidator(emptyUsername)).toBe(
+          'Username cannot be empty.'
+        );
+      });
 
-  test(`Should have usernameValidator as true`, () => {
-    const validUsername = 'tester';
-    expect(usernameValidator(validUsername)).toBe(true);
-  });
+      test(`Should return true when setting a valid username`, () => {
+        const validUsername = 'username';
+        expect(usernameValidator(validUsername)).toBe(true);
+      });
+    });
 
-  test(`Should have passwordValidator as "Password cannot be empty."`, () => {
-    const emptyPassword = '';
-    expect(passwordValidator(emptyPassword)).toBe('Password cannot be empty.');
-  });
+    describe('Password', () => {
+      test(`Should return 'Password cannot be empty.' when setting an empty password`, () => {
+        const emptyPassword = '';
+        expect(passwordValidator(emptyPassword)).toBe(
+          'Password cannot be empty.'
+        );
+      });
 
-  test(`Should have passwordValidator as true`, () => {
-    const validPassword = 'passwordtest';
-    expect(passwordValidator(validPassword)).toBe(true);
-  });
+      test(`Should return true when setting a valid password`, () => {
+        const validPassword = 'password';
+        expect(passwordValidator(validPassword)).toBe(true);
+      });
+    });
 
-  test(`Should have appIDValidator as "App ID cannot be empty."`, () => {
-    const emptyAppID = '';
-    expect(appIDValidator(emptyAppID)).toBe('App ID cannot be empty.');
-  });
+    describe('App ID', () => {
+      test(`Should return 'App ID cannot be empty.' when setting an empty App ID`, () => {
+        const emptyAppID = '';
+        expect(appIDValidator(emptyAppID)).toBe('App ID cannot be empty.');
+      });
 
-  test(`Should have appIDValidator as 'App ID must be a number.'`, () => {
-    const invalidAppID = '%#$testttt';
-    expect(appIDValidator(invalidAppID)).toBe('App ID must be a number.');
-  });
+      test(`Should return 'App ID must be a number.' when setting an invalid App ID`, () => {
+        const invalidAppID = 'invalid app id';
+        expect(appIDValidator(invalidAppID)).toBe('App ID must be a number.');
+      });
 
-  test(`Should have appIDValidator as true`, () => {
-    const validAppID = '546';
-    expect(appIDValidator(validAppID)).toBe(true);
-  });
+      test(`Should return true when setting a valid App ID`, () => {
+        const validAppID = '123';
+        expect(appIDValidator(validAppID)).toBe(true);
+      });
+    });
 
-  test(`Should have proxyValidator as "Proxy URL cannot be empty."`, () => {
-    const invalidProxy = '';
-    expect(proxyValidator(invalidProxy)).toBe('Proxy URL cannot be empty.');
-  });
+    describe('Proxy URL', () => {
+      test(`Should return 'Proxy URL cannot be empty.' when setting an empty Proxy URL`, () => {
+        const invalidProxy = '';
+        expect(proxyValidator(invalidProxy)).toBe('Proxy URL cannot be empty.');
+      });
 
-  test(`Should have proxyValidator as true`, () => {
-    const validProxy = 'https://example.proxy.com';
-    expect(proxyValidator(validProxy)).toBe(true);
+      test(`Should return true when setting a valid Proxy URL`, () => {
+        const validProxy = 'https://example.proxy.com';
+        expect(proxyValidator(validProxy)).toBe(true);
+      });
+    });
   });
 });

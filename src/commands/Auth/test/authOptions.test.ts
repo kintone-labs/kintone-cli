@@ -38,38 +38,40 @@ const initializeTestProject = async (options) => {
   return mainProgram;
 };
 
-describe('auth command: options', () => {
+describe('Auth command', () => {
   let mainProgram: Command;
 
   beforeAll(async () => {
     mainProgram = await initializeTestProject(AUTH_OPTIONS);
   });
 
-  test('should have appName as "test-app"', async () => {
-    expect(mainProgram.opts().appName).toBe('test-app');
-  });
+  describe('Options', () => {
+    test('should have appName set to "test-app"', async () => {
+      expect(mainProgram.opts().appName).toBe('test-app');
+    });
 
-  test('should have domain as "https://domain.kintone.com"', async () => {
-    expect(mainProgram.opts().domain).toBe('https://domain.kintone.com');
-  });
+    test('should have domain set to "https://domain.kintone.com"', async () => {
+      expect(mainProgram.opts().domain).toBe('https://domain.kintone.com');
+    });
 
-  test('should have username as "user"', async () => {
-    expect(mainProgram.opts().username).toBe('user');
-  });
+    test('should have username set to "user"', async () => {
+      expect(mainProgram.opts().username).toBe('user');
+    });
 
-  test('should have password as "password"', async () => {
-    expect(mainProgram.opts().password).toBe('password');
-  });
+    test('should have password set to "password"', async () => {
+      expect(mainProgram.opts().password).toBe('password');
+    });
 
-  test('should have appId as "100"', async () => {
-    expect(mainProgram.opts().appId).toBe('100');
-  });
+    test('should have appId set to "100"', async () => {
+      expect(mainProgram.opts().appId).toBe('100');
+    });
 
-  test('should have userProxy as "true"', async () => {
-    expect(mainProgram.opts().useProxy).toBe(true);
-  });
+    test('should have userProxy set to "true"', async () => {
+      expect(mainProgram.opts().useProxy).toBe(true);
+    });
 
-  test('should have proxy as "http://localhost:8080"', async () => {
-    expect(mainProgram.opts().proxy).toBe('http://localhost:8080');
+    test('should have proxy set to "http://localhost:8080"', async () => {
+      expect(mainProgram.opts().proxy).toBe('http://localhost:8080');
+    });
   });
 });
