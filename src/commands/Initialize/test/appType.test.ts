@@ -1,6 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
 import {
-  authCommandImplement,
   createTemplateWithArgv,
   getRandomProjectName,
   initProject,
@@ -16,7 +15,6 @@ import {
   getAppSetting,
   printAppDevelopmentInstructions
 } from '../initializeCommand';
-import { program } from 'commander';
 import { WRITE_FILE_OPTIONS } from '../../../constant';
 import { writeFileSync } from 'jsonfile';
 
@@ -31,7 +29,7 @@ const initializeTestProject = async (
 };
 
 describe('Initialize command', () => {
-  describe('Validator App Type', () => {
+  describe('App Type', () => {
     test('Should use React template when the preset is set to React', async () => {
       const argv = [
         'node',

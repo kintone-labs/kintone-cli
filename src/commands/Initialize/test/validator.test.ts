@@ -2,7 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import validator from '../validator';
 
 describe('Initialize command', () => {
-  describe('validator', () => {
+  describe('Validator', () => {
     test('Should be "Invalid App Type" when setting invalid app type', async () => {
       const params = { type: 'invalid type' };
       const errorMessage = validator.appValidator(params) as string;

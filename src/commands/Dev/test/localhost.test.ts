@@ -38,7 +38,7 @@ const initTestProject = async () => {
 };
 
 describe('Dev command', () => {
-  describe('LoopBack address', () => {
+  describe('Localhost address', () => {
     test('Should be "" when setting the value to ""', async () => {
       await initTestProject();
       const resp = '';
