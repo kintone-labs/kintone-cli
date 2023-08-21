@@ -73,7 +73,6 @@ describe('Initialize command', () => {
         WEBPACK_CONTENT,
         WRITE_FILE_OPTIONS
       );
-      await authCommandImplement(program, process);
       const doesFileExist = existsSync(
         `${DIR_BUILD_PATH}/${projectName}/test-app/tsconfig.json`
       );
