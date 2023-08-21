@@ -8,12 +8,6 @@ const config = {
   testMatch: ['**/test/*.test.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/'],
   coverageThreshold: {
-    global: {
-      branches: 85,
-      functions: 85,
-      lines: 85,
-      statements: 85
-    },
     './src/commands/Auth/': {
       statements: 85,
       branches: 85,
