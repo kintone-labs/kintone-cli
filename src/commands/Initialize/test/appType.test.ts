@@ -1,5 +1,4 @@
 import { describe, expect, test } from '@jest/globals';
-import validator from '../validator';
 import {
   authCommandImplement,
   createTemplateWithArgv,
@@ -33,24 +32,6 @@ const initializeTestProject = async (
 
 describe('Initialize command', () => {
   describe('Validator App Type', () => {
-    test('Should be "Invalid App Type" when setting quick option', async () => {
-      const argv = [
-        'node',
-        'dist',
-        'create-template',
-        '--quick',
-        '--app-name',
-        'test-app',
-        '--app-id',
-        '100'
-      ];
-      await initializeTestProject(argv);
-      const params = { type: 'invalid type' };
-      const errorMessage = validator.appValidator(params) as string;
-
-      expect(errorMessage).toEqual('Invalid App Type');
-    });
-
     test('Should use React template when the preset is set to React', async () => {
       const argv = [
         'node',

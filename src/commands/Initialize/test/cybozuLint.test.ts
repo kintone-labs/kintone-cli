@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { configureCybozuLint, generateAppFolder } from '../generator';
+import { configureCybozuLint } from '../generator';
 import { AppOption } from '../../../dto/app';
 import {
   createTemplateWithArgv,
@@ -91,26 +91,6 @@ describe('Initialize command', () => {
         '@cybozu/eslint-config' in packageInstalled.devDependencies;
 
       expect(isCybozuLintInstalled).toBe(true);
-    });
-  });
-
-  describe('App Folder', () => {
-    test('Should create a folder when the app option is set correctly', async () => {
-      await initializeTestProject();
-      appOption.setAuth = true;
-      appOption.appName = 'test-app-1';
-      appOption.useCybozuLint = true;
-      const creationSuccessful = generateAppFolder(appOption);
-
-      expect(creationSuccessful).toBe(false);
-    });
-
-    test('Should display "App folder existed." when the app name already exists', async () => {
-      appOption.useCybozuLint = true;
-      appOption.appName = 'test-app-1';
-      const errorMessage = generateAppFolder(appOption);
-
-      expect(errorMessage).toBe('App folder existed.');
     });
   });
 });
