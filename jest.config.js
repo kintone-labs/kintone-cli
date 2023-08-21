@@ -7,6 +7,7 @@ const config = {
   roots: ['<rootDir>/src/'],
   testMatch: ['**/*.test.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/'],
+  coverageReporters: ['lcov'],
   coverageThreshold: {
     global: {
       branches: 85,
