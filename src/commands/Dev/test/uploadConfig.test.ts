@@ -93,5 +93,35 @@ describe('Dev command', () => {
         expect(error).toEqual(error);
       }
     });
+
+    test('Should be Plugin when setting type is Plugin', async () => {
+      const currentDir = await devCommandInit('Plugin');
+
+      const config = readFileSync(`${currentDir}/config.json`);
+      const uploadConfig = config.uploadConfig;
+      uploadConfig.desktop.js = ['https://exmaple-abc.com'];
+      uploadConfig.desktop.css = dataTest(uploadConfig.desktop.css);
+      uploadConfig.mobile.js = dataTest(uploadConfig.mobile.js);
+      uploadConfig.config.js = dataTest(uploadConfig.mobile.js);
+      uploadConfig.config.css = dataTest(uploadConfig.desktop.css);
+      writeFileSync(`${currentDir}/config.json`, config, WRITE_FILE_OPTIONS);
+
+      const { webpackDevServer, commandConfig, responseMessage } =
+        dataInitDevCommand({ process, watch: false });
+
+      try {
+        await devCommandHandle({
+          ws: webpackDevServer,
+          cmd: commandConfig,
+          data: responseMessage,
+          readLineAsyncParam
+        });
+        const configUpdated = readFileSync(`${currentDir}/config.json`);
+
+        expect(configUpdated.type).toEqual('Plugin');
+      } catch (error) {
+        expect(error).toEqual(error);
+      }
+    });
   });
 });
