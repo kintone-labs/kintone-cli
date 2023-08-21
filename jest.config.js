@@ -14,37 +14,7 @@ const config = {
       lines: 85,
       statements: 85
     },
-    './src/commands/Auth/': {
-      statements: 85,
-      branches: 85,
-      functions: 85,
-      lines: 85
-    },
-    './src/commands/Build/': {
-      statements: 85,
-      branches: 85,
-      functions: 85,
-      lines: 85
-    },
-    './src/commands/Deploy/': {
-      statements: 85,
-      branches: 85,
-      functions: 85,
-      lines: 85
-    },
-    './src/commands/Dev/': {
-      statements: 85,
-      branches: 85,
-      functions: 85,
-      lines: 85
-    },
-    './src/commands/Initialize/': {
-      statements: 85,
-      branches: 85,
-      functions: 85,
-      lines: 85
-    },
-    './src/commands/Lint/': {
+    './src/commands/**': {
       statements: 85,
       branches: 85,
       functions: 85,
