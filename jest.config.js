@@ -1,6 +1,8 @@
 /** @type {import('jest').Config} */
 const config = {
   clearMocks: true,
+  collectCoverage: true,
+  coverageReporters: ['json', 'html'],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   roots: ['<rootDir>/src/'],
