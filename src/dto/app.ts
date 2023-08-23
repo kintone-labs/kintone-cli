@@ -32,10 +32,24 @@ type EslintRcParams = {
 type AppType = 'Customization' | 'Plugin';
 type CustomizationScope = 'ALL' | 'ADMIN' | 'NONE';
 
+type updateAuthJSONType = {
+  authJSON: any;
+  cmd?: any;
+  answer?: any;
+};
+
+type configJSONAddPropsType = {
+  configJSON: any;
+  cmd?: any;
+  answer?: any;
+};
+
 export {
   AppOption,
   WebpackParams,
   EslintRcParams,
   AppType,
-  CustomizationScope
+  CustomizationScope,
+  updateAuthJSONType,
+  configJSONAddPropsType
 };

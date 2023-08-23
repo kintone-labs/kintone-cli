@@ -1,7 +1,4 @@
-import {
-  configJSONAddPropsType,
-  updateAuthJSONType
-} from '../../dto/authCommand';
+import { configJSONAddPropsType, updateAuthJSONType } from '../../dto/app';
 
 export const updateAuthJSON = ({
   authJSON,
