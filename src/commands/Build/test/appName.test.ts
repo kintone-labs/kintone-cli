@@ -16,7 +16,7 @@ const initTestProject = async () => {
   return buildCommand(program);
 };
 
-describe('build command', () => {
+describe('Build command', () => {
   describe('App name', () => {
     test('Should be "test-app" when setting "test-app"', async () => {
       const mainProgram = await initTestProject();

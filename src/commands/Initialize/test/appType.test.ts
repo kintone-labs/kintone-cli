@@ -17,6 +17,7 @@ import {
 } from '../initializeCommand';
 import { WRITE_FILE_OPTIONS } from '../../../constant';
 import { writeFileSync } from 'jsonfile';
+import validator from '../validator';
 
 const initializeTestProject = async (
   argv: any,
@@ -150,6 +151,13 @@ describe('Initialize command', () => {
       const setting = getAppSetting(cmd, answer);
       const isEqualValue = JSON.stringify(setting) === JSON.stringify(answer);
       expect(isEqualValue).toBe(true);
+    });
+
+    test('Should be "Invalid App Type" when setting invalid app type', async () => {
+      const params = { type: 'invalid type' };
+      const errorMessage = validator.appValidator(params) as string;
+
+      expect(errorMessage).toEqual('Invalid App Type');
     });
   });
 });

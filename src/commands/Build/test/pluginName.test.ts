@@ -36,7 +36,7 @@ const initTestProject = async (name: string) => {
   return currentDir;
 };
 
-describe('build command', () => {
+describe('Build command', () => {
   describe('Plugin name', () => {
     test('Should be "package test" when setting "package test"', async () => {
       const appDir = await initTestProject('package test');

@@ -28,7 +28,7 @@ const initTestProject = async (projectType: string) => {
   return `${DIR_BUILD_PATH}/${projectName}/${APP_NAME}`;
 };
 
-describe('build command', () => {
+describe('Build command', () => {
   describe('App type', () => {
     test('Should be "Plugin" when setting "Plugin"', async () => {
       const appDir = await initTestProject(PROJECT_TYPE.PLUGIN);

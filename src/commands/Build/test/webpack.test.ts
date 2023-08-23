@@ -30,7 +30,7 @@ const initTestProject = async () => {
   return webpackDir;
 };
 
-describe('build command', () => {
+describe('Build command', () => {
   describe('webpack', () => {
     test('Should be "webpack" when setting "webpack"', async () => {
       const appDir = await initTestProject();

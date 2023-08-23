@@ -36,7 +36,7 @@ const initTestProject = async (version: string) => {
   return currentDir;
 };
 
-describe('build command', () => {
+describe('Build command', () => {
   describe('Plugin version', () => {
     test('Should be "1.0.0" when setting "1.0.0"', async () => {
       const appDir = await initTestProject('1.0.0');

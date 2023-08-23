@@ -34,7 +34,7 @@ const initTestProject = async (description: string) => {
   return currentDir;
 };
 
-describe('build command', () => {
+describe('Build command', () => {
   describe('Plugin description', () => {
     test('Should be "metadata about this project" when setting "metadata about this project"', async () => {
       const appDir = await initTestProject('metadata about this project');

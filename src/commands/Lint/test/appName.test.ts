@@ -1,47 +1,34 @@
 import { describe, expect, test } from '@jest/globals';
-import { program } from 'commander';
-import { APP_NAME, DIR_BUILD_PATH } from '../../../../unit_test/constant';
-import {
-  createTemplateNotQuick,
-  getRandomProjectName,
-  initProject
-} from '../../../../unit_test/helper';
-import lintCommand from '../lintCommand';
-import { readFileSync } from 'jsonfile';
-
-export const initializeTestProject = async () => {
-  const projectName = getRandomProjectName();
-  const currentDir = `${DIR_BUILD_PATH}/${projectName}`;
-  await initProject(DIR_BUILD_PATH, projectName);
-  await createTemplateNotQuick(projectName);
-
-  return {
-    mainProgram: lintCommand(program),
-    currentDir
-  };
-};
+import { APP_NAME } from '../../../../unit_test/constant';
+import { rmSync } from 'fs';
+import validator from '../validator';
+import { initializeTestProject } from './fixOption.test';
 
 describe('Lint command', () => {
   describe('App name', () => {
-    test('Should be "test-app" when setting "test-app"', async () => {
+    test('Should display the message "App name missing" when the app name is set to be empty', async () => {
       const initTest = await initializeTestProject();
+      process.argv = ['node', 'lint', '--app-name', ''];
+      const params = {};
 
-      process.argv = ['node', 'lint', '--fix', '--app-name', APP_NAME];
       await initTest.mainProgram.parseAsync(process.argv);
+      const isValidAppName = validator.lintValidator(params);
 
-      const templateFile = readFileSync(`${initTest.currentDir}/package.json`);
-      const isLint = `lint-${APP_NAME}-fix` in templateFile.scripts;
-
-      expect(isLint).toEqual(true);
+      expect(isValidAppName).toEqual('App name missing');
     });
 
-    test('Should be "test-app" when setting "test-app" without the "--fix" option', async () => {
+    test('Should display the message "App not existed" when setting app name does not exist', async () => {
       const initTest = await initializeTestProject();
-      process.argv = ['node', 'lint', '--app-name', 'test-app'];
+      process.argv = ['node', 'lint', '--fix', '--app-name', 'test-app'];
+      rmSync(initTest.currentDir, { recursive: true, force: true });
+      const params = { appName: APP_NAME };
 
       await initTest.mainProgram.parseAsync(process.argv);
 
-      expect(initTest.mainProgram.opts().appName).toEqual('test-app');
+      process.argv = ['node', 'lint', '--app-name', 'test-app'];
+      const isValidAppName = validator.lintValidator(params);
+
+      expect(isValidAppName).toEqual('App not existed');
     });
   });
 });
