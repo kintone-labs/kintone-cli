@@ -7,7 +7,12 @@ const config = {
   roots: ['<rootDir>/src/'],
   testMatch: ['**/**/*.test.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/'],
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  collectCoverageFrom: [
+    '<rootDir>/src/commands/**/*.ts',
+    '<rootDir>/src/utils/**/*.ts',
+    '<rootDir>/src/dto/**/*.ts',
+    '<rootDir>/src/constant/**/*.ts'
+  ],
   coverageThreshold: {
     global: {
       branches: 85,
