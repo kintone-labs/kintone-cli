@@ -1,4 +1,13 @@
-export const updateAuthJSON = ({ authJSON, cmd, answer }: updateAuthJSON) => {
+import {
+  configJSONAddPropsType,
+  updateAuthJSONType
+} from '../../dto/authCommand';
+
+export const updateAuthJSON = ({
+  authJSON,
+  cmd,
+  answer
+}: updateAuthJSONType) => {
   authJSON.domain = cmd?.domain || answer.domain;
   authJSON.username = cmd?.username || answer.username;
   authJSON.password = cmd?.password || answer.password;
@@ -11,7 +20,7 @@ export const configJSONAddProps = ({
   configJSON,
   cmd,
   answer
-}: configJSONAddProps) => {
+}: configJSONAddPropsType) => {
   if (!configJSON.appID) configJSON.appID = cmd?.appID || answer.appID;
   return configJSON;
 };

@@ -1,11 +1,13 @@
-type updateAuthJSON = {
+type updateAuthJSONType = {
   authJSON: any;
   cmd?: any;
   answer?: any;
 };
 
-type configJSONAddProps = {
+type configJSONAddPropsType = {
   configJSON: any;
   cmd?: any;
   answer?: any;
 };
+
+export { updateAuthJSONType, configJSONAddPropsType };
