@@ -14,6 +14,7 @@ import {
   getRandomProjectName,
   initProject
 } from '../../../../unit_test/helper';
+import validator from '../validator';
 
 const initializeTestProject = async () => {
   const projectName = getRandomProjectName();
@@ -49,6 +50,20 @@ describe('Dev command', () => {
       await mainProgram.parseAsync(process.argv);
 
       expect(mainProgram.opts().appName).toEqual('');
+    });
+
+    test('Should be "App name missing" when setting ""', async () => {
+      const params = { appName: '' };
+      const isValidAppName = validator.devValidator(params);
+
+      expect(isValidAppName).toBe('App name missing');
+    });
+
+    test('Should display the message "App not existed" when setting app name does not exist', async () => {
+      const params = { appName: 'not-existed-app' };
+      const isValidAppName = validator.devValidator(params);
+
+      expect(isValidAppName).toEqual('App not existed');
     });
   });
 });

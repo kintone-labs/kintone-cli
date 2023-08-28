@@ -1,12 +1,17 @@
 import { describe, expect, test } from '@jest/globals';
 import { program } from 'commander';
-import { DIR_BUILD_PATH, OPTIONS_BUILD } from '../../../../unit_test/constant';
+import {
+  APP_NAME,
+  DIR_BUILD_PATH,
+  OPTIONS_BUILD
+} from '../../../../unit_test/constant';
 import {
   createTemplate,
   getRandomProjectName,
   initProject
 } from '../../../../unit_test/helper';
 import buildCommand from '../buildCommand';
+import validator from '../validator';
 
 const initTestProject = async () => {
   const projectName = getRandomProjectName();
@@ -26,13 +31,18 @@ describe('Build command', () => {
       expect(mainProgram.opts().appName).toBe('test-app');
     });
 
-    test('Should be "" when setting ""', async () => {
-      const OPTIONS_MISS_NAME = ['node', 'build', '--app-name', ''];
-      const mainProgram = await initTestProject();
-      process.argv = OPTIONS_MISS_NAME;
-      await mainProgram.parseAsync(process.argv);
+    test('Should be "App name missing" when setting ""', async () => {
+      const params = { appName: '' };
+      const isValidAppName = validator.buildValidator(params);
 
-      expect(mainProgram.opts().appName).toBe('');
+      expect(isValidAppName).toBe('App name missing');
+    });
+
+    test('Should display the message "App not existed" when setting app name does not exist', async () => {
+      const params = { appName: 'not-existed-app' };
+      const isValidAppName = validator.buildValidator(params);
+
+      expect(isValidAppName).toEqual('App not existed');
     });
   });
 });
