@@ -57,9 +57,7 @@ const generateSample = ({ useTypescript, useReact, useWebpack }): string => {
   const jsSampleInit = env === 'es6' ? jsSample : jsSampleUseStrict;
 
   if (useReact && useTypescript) return tsxSample;
-
   if (useReact) return jsxSample;
-
   if (useTypescript) return tsSample;
 
   return jsSampleInit;
