@@ -8,14 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = require("chalk");
-const validator_1 = require("./validator");
+const chalk_1 = __importDefault(require("chalk"));
+const validator_1 = __importDefault(require("./validator"));
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const builder_1 = require("./builder");
 const buildCommand = (program) => {
-    program
+    return program
         .command('build')
         .description('Build customization/plugin')
         .option('--app-name <appName>', 'App name')

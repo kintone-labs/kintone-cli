@@ -1,10 +1,33 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateAppFolder = void 0;
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const webpackTemplate_1 = require("./webpackTemplate");
-const spawn = require("cross-spawn");
+const spawn = __importStar(require("cross-spawn"));
 const eslintRcTemplate_1 = require("./eslintRcTemplate");
 const sampleCode_1 = require("./sampleCode");
 const constant_1 = require("../../constant");
@@ -256,7 +279,7 @@ function configureEntry(option) {
 }
 const generateAppFolder = (option) => {
     if (!(0, fs_1.existsSync)('package.json')) {
-        return constant_1.PACKAGE_JSON_NOT_FOUND;
+        return constant_1.ERRORS.PACKAGE_JSON_NOT_FOUND;
     }
     const packageJSON = (0, jsonfile_1.readFileSync)('package.json');
     const manifestJSON = {};
@@ -267,7 +290,7 @@ const generateAppFolder = (option) => {
     manifestJSON.type = option.type;
     manifestJSON.scope = option.scope;
     if ((0, fs_1.existsSync)(option.appName)) {
-        return constant_1.APP_FOLDER_EXISTED;
+        return constant_1.ERRORS.APP_FOLDER_EXISTED;
     }
     (0, fs_1.mkdirSync)(option.appName);
     (0, fs_1.mkdirSync)(`${option.appName}/source`);

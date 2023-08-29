@@ -8,9 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const validator_1 = require("./validator");
-const chalk_1 = require("chalk");
+const validator_1 = __importDefault(require("./validator"));
+const chalk_1 = __importDefault(require("chalk"));
 const jsonfile_1 = require("jsonfile");
 const inquirer_1 = require("inquirer");
 const string_1 = require("../../utils/string");
