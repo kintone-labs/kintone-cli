@@ -28,7 +28,7 @@
     "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
-    "@cybozu/eslint-config": "^18.0.3",
+    "@cybozu/eslint-config": "^22.0.1",
     "@types/cross-spawn": "^6.0.2",
     "@types/inquirer": "^8.2.5",
     "@types/jsonfile": "^6.1.0",
