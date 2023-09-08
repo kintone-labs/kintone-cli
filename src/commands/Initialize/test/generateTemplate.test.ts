@@ -23,7 +23,6 @@ describe('Initialize command', () => {
       const template = generateSample({
         useTypescript: false,
         useReact: true,
-        useWebpack: false
       }) as string;
 
       const templateWithoutSpaces = template.replace(/\s+/g, '');
@@ -53,7 +52,6 @@ describe('Initialize command', () => {
       const template = generateSample({
         useTypescript: true,
         useReact: true,
-        useWebpack: false
       }) as string;
 
       const templateWithoutSpaces = template.replace(/\s+/g, '');
@@ -74,7 +72,6 @@ describe('Initialize command', () => {
       const template = generateSample({
         useTypescript: true,
         useReact: false,
-        useWebpack: false
       }) as string;
 
       const templateWithoutSpaces = template.replace(/\s+/g, '');
@@ -95,7 +92,6 @@ describe('Initialize command', () => {
       const template = generateSample({
         useTypescript: false,
         useReact: false,
-        useWebpack: false
       }) as string;
       const templateWithoutSpaces = template.replace(/\s+/g, '');
       const jsSampleWithoutSpaces = jsSample.replace(/\s+/g, '');
