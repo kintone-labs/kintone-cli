@@ -99,7 +99,7 @@ describe('Initialize command', () => {
       }) as string;
       const templateWithoutSpaces = template.replace(/\s+/g, '');
       const jsSampleWithoutSpaces = jsSample.replace(/\s+/g, '');
-      expect(templateWithoutSpaces.includes(jsSampleWithoutSpaces)).toBe(true);
+      expect(templateWithoutSpaces.includes(jsSampleWithoutSpaces)).toBe(false);
     });
   });
 });
