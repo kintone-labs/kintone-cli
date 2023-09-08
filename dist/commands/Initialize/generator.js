@@ -215,7 +215,7 @@ function ensureDevDependenciesCybozuLint(packageJSON) {
 function createEslintRcFile(option, appName) {
     const eslintRcTemplate = (0, eslintRcTemplate_1.buildEslintRcTemplate)(option);
     (0, fs_1.writeFileSync)(`${appName}/.eslintrc.js`, eslintRcTemplate);
-    spawnSync('npx', ['prettier', '--write', `${appName}/.eslintrc.js`], {
+    spawnSync('npx', ['prettier', '--write', `${appName}/.eslintrc.js`, '--single-quote'], {
         stdio: 'inherit'
     });
 }

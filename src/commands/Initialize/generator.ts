@@ -254,9 +254,13 @@ function ensureDevDependenciesCybozuLint(packageJSON) {
 function createEslintRcFile(option: AppOption, appName) {
   const eslintRcTemplate = buildEslintRcTemplate(option as EslintRcParams);
   writeFileSyncFS(`${appName}/.eslintrc.js`, eslintRcTemplate);
-  spawnSync('npx', ['prettier', '--write', `${appName}/.eslintrc.js`], {
-    stdio: 'inherit'
-  });
+  spawnSync(
+    'npx',
+    ['prettier', '--write', `${appName}/.eslintrc.js`, '--single-quote'],
+    {
+      stdio: 'inherit'
+    }
+  );
 }
 
 function configureReact(packageJSON) {
