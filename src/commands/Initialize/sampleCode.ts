@@ -1,4 +1,4 @@
-const jsSampleUseStrict = `(function() {
+const jsSample = `(function() {
     'use strict';
     kintone.events.on('app.record.index.show', function(event) {
         console.log('Hello from kintone CLI');
@@ -6,15 +6,6 @@ const jsSampleUseStrict = `(function() {
     });
 })();
 `;
-
-const jsSample = `(function() {
-  kintone.events.on('app.record.index.show', function(event) {
-      console.log('Hello from kintone CLI');
-      return event;
-  });
-})();
-`;
-
 const jsxSample = `import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
@@ -52,15 +43,20 @@ const App = () => {
 })();
 `;
 
-const generateSample = ({ useTypescript, useReact, useWebpack }): string => {
-  const env = useTypescript || useWebpack || useReact ? 'es2017' : 'es6';
-  const jsSampleInit = env === 'es6' ? jsSample : jsSampleUseStrict;
+const generateSample = ({ useTypescript, useReact }): string => {
+  if (useReact) {
+    if (useTypescript) {
+      return tsxSample;
+    }
 
-  if (useReact && useTypescript) return tsxSample;
-  if (useReact) return jsxSample;
-  if (useTypescript) return tsSample;
+    return jsxSample;
+  }
 
-  return jsSampleInit;
+  if (useTypescript) {
+    return tsSample;
+  }
+
+  return jsSample;
 };
 export { generateSample };
 export default generateSample;
