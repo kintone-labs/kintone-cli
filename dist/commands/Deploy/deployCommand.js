@@ -18,7 +18,7 @@ const jsonfile_1 = require("jsonfile");
 const deployer_1 = require("./deployer");
 const fs_1 = require("fs");
 const deployCommand = (program) => {
-    program
+    return program
         .command('deploy')
         .description('Deploy customization/plugin for production')
         .option('--app-name <appName>', 'App name')

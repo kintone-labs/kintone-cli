@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateAppFolder = void 0;
+exports.configureCybozuLint = exports.getLintedExtension = exports.generateAppFolder = void 0;
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const webpackTemplate_1 = require("./webpackTemplate");
@@ -187,6 +187,7 @@ function getLintedExtension(option) {
     }
     return lintedExtension;
 }
+exports.getLintedExtension = getLintedExtension;
 function configureCybozuLint(option, packageJSON) {
     const lintedExtension = getLintedExtension(option);
     // add scripts to packageJSON for linting
@@ -202,6 +203,7 @@ function configureCybozuLint(option, packageJSON) {
     ensureDevDependenciesCybozuLint(packageJSON);
     createEslintRcFile(option, appName);
 }
+exports.configureCybozuLint = configureCybozuLint;
 function ensureDevDependenciesCybozuLint(packageJSON) {
     ensurePropertyExists(packageJSON, 'devDependencies');
     const devDependencies = packageJSON.devDependencies;

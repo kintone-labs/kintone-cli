@@ -9,7 +9,7 @@ exports.PLUGIN_CONFIG_HTML_TEMPLATE = `<span>Hello from kintone CLI</span>`;
 exports.DECLARE_KINTONE = 'declare let kintone: any;';
 exports.DEFAULT_PROJECT_VERSION = '1.0.0';
 exports.WRITE_FILE_OPTIONS = {
-    spaces: 4,
+    spaces: 2,
     EOL: '\r\n'
 };
 exports.DEPENDENCIES = {

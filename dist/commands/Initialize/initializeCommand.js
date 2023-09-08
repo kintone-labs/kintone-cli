@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.printAppDevelopmentInstructions = exports.getAppSetting = void 0;
 const chalk_1 = __importDefault(require("chalk"));
 const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const inquirer_1 = require("inquirer");
@@ -244,6 +245,7 @@ const getAppSetting = (cmd, answer) => {
         appSetting.proxy = '';
     return appSetting;
 };
+exports.getAppSetting = getAppSetting;
 const createProjectFolder = (packageInfo) => {
     const projectFolder = global.currentDir + '/' + packageInfo.name;
     if ((0, fs_1.existsSync)(projectFolder)) {
@@ -331,7 +333,7 @@ const initializeCommand = (program) => {
             const prompts = getPromptsCreateTemplate(cmd);
             answer = yield (0, inquirer_1.prompt)(prompts);
             // Config for appConfig.json
-            const appSetting = getAppSetting(cmd, answer);
+            const appSetting = (0, exports.getAppSetting)(cmd, answer);
             console.log(chalk_1.default.yellow(constant_1.MESSAGES.CREATE_APP_MESSAGE));
             const err = (0, generator_1.generateAppFolder)(appSetting);
             if (err && typeof err === 'string') {
@@ -341,7 +343,7 @@ const initializeCommand = (program) => {
             console.log(chalk_1.default.yellow(constant_1.MESSAGES.INSTALLING_DEPENDENCIES_MESSAGE));
             spawnSync('npm', ['install'], { stdio: 'inherit', windowsHide: true });
             console.log('');
-            printAppDevelopmentInstructions(appSetting);
+            (0, exports.printAppDevelopmentInstructions)(appSetting);
         }
         catch (err) {
             console.log(chalk_1.default.red(err));
@@ -411,6 +413,7 @@ const printAppDevelopmentInstructions = (appSetting) => {
         console.log('');
     }
 };
+exports.printAppDevelopmentInstructions = printAppDevelopmentInstructions;
 const printProjectCreationMessage = (packageInfo) => {
     console.log('');
     console.log(chalk_1.default.yellow(constant_1.MESSAGES.PROJECT_CREATED_MESSAGE));

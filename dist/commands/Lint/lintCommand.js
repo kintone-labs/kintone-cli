@@ -17,7 +17,7 @@ const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const validator_1 = __importDefault(require("./validator"));
 const spawnSync = cross_spawn_1.default.sync;
 const lintCommand = (program) => {
-    program
+    return program
         .command('lint')
         .description('Check/fix code using @cybozu/eslint-config')
         .option('--fix', 'Auto fix eslint errors')

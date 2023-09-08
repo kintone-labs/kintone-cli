@@ -89,14 +89,14 @@ const authCommand = (program: Command) => {
       updateAuthJSON({ authJSON, cmd, answer });
 
       writeFileSync(`${cmd.appName}/auth.json`, authJSON, {
-        spaces: 4,
+        spaces: 2,
         EOL: '\r\n'
       });
 
       configJSONAddProps({ configJSON, cmd, answer });
 
       writeFileSync(`${cmd.appName}/config.json`, configJSON, {
-        spaces: 4,
+        spaces: 2,
         EOL: '\r\n'
       });
 

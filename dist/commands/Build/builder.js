@@ -65,7 +65,7 @@ const buildPlugin = (option) => {
         if (!htmlContent)
             delete manifestJSON.config;
     }
-    (0, jsonfile_1.writeFileSync)(`manifest.json`, manifestJSON, { spaces: 4, EOL: '\r\n' });
+    (0, jsonfile_1.writeFileSync)(`manifest.json`, manifestJSON, { spaces: 2, EOL: '\r\n' });
     const paramArr = ['./', '--out', `${option.appName}/dist/plugin.zip`];
     if ((0, fs_1.existsSync)(`${option.appName}/dist/private.ppk`)) {
         paramArr.push('--ppk');
