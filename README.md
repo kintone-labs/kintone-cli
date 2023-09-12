@@ -41,9 +41,16 @@ After all the above info is inputted, cli will initialize the following folder s
     └── .gitignore
 ```
 
-If --install flag is specified, Kintone CLI will run npm install after initializing folder structure
+If --install flag is specified, Kintone CLI will run npm install after initializing folder structure.
 
-If --quick flag is specified, Kintone CLI will init a project with default parameters.
+If --quick flag is specified, Kintone CLI will init a project with the following default parameter:
+```
+--project-name: 'kintone-customization-project'
+```
+In addition, this boolean option will be set to ``true``:
+```
+--install
+```
 
 Ask if user wants to create-template after finishing init project.
 ### 2. Create customization / plugin template
@@ -61,6 +68,7 @@ kintone-cli create-template
     [--username <username>]
     [--password <password>]
     [--type Customization|Plugin]
+    [--scope ALL|ADMIN|NONE]
     [--use-typescript]
     [--use-webpack]
     [--use-react]
@@ -68,10 +76,35 @@ kintone-cli create-template
     [--app-name <appName>]
     [--app-id <App ID (for Customization) >]
 ```
-If the flag --quick existed, CLI will use all default variable for other flags. You can override some by setting its flag like:
-``
-kintone-cli create-template --quick --type Plugin
-``
+
+The --scope flag is for setting the scope of customization; therefore, setting the value of --scope when creating a plugin template will have no effect on the app.
+
+If the flag --quick is present, CLI will set default values for the following options:
+```
+--type: 'Customization'
+--app-name: `kintone-${Date.now()}`
+--scope: 'ALL'
+``` 
+
+In addition, the below boolean options will be set to ``false``:
+```
+--set-auth
+--use-typescript
+--use-webpack
+--use-cybozu-lint
+--use-react
+```
+
+You can override some options even when the --quick flag is present:
+```
+--type
+--app-name
+--scope
+```
+Below is an example of overriding some of the --quick default values:
+```
+kintone-cli create-template --quick --app-name Sample-App --scope ADMIN
+```
 
 If value is set for flag --preset, CLI will use preset variable to create folder. If both flag --preset and --quick is set, the config will be merge from both --quick config and --preset config.
 

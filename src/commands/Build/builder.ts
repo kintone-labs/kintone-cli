@@ -54,7 +54,7 @@ const buildPlugin = (option: any) => {
     if (!htmlContent) delete manifestJSON.config;
   }
 
-  writeFileSync(`manifest.json`, manifestJSON, { spaces: 4, EOL: '\r\n' });
+  writeFileSync(`manifest.json`, manifestJSON, { spaces: 2, EOL: '\r\n' });
 
   const paramArr = ['./', '--out', `${option.appName}/dist/plugin.zip`];
   if (existsSync(`${option.appName}/dist/private.ppk`)) {
@@ -72,10 +72,13 @@ const buildPlugin = (option: any) => {
         return /.ppk$/.test(name);
       }
     );
-    renameSync(
-      `${option.appName}/dist/${keyFileName[0]}`,
-      `${option.appName}/dist/private.ppk`
-    );
+
+    keyFileName &&
+      keyFileName.length &&
+      renameSync(
+        `${option.appName}/dist/${keyFileName[0]}`,
+        `${option.appName}/dist/private.ppk`
+      );
   }
 
   unlinkSync(`manifest.json`);

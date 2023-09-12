@@ -8,26 +8,284 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = require("chalk");
-const spawn = require("cross-spawn");
+exports.printAppDevelopmentInstructions = exports.getAppSetting = void 0;
+const chalk_1 = __importDefault(require("chalk"));
+const cross_spawn_1 = __importDefault(require("cross-spawn"));
 const inquirer_1 = require("inquirer");
-const validator_1 = require("./validator");
+const validator_1 = __importDefault(require("./validator"));
 const jsonfile_1 = require("jsonfile");
 const fs_1 = require("fs");
 const generator_1 = require("./generator");
+const constant_1 = require("../../constant");
 const string_1 = require("../../utils/string");
-const spawnSync = spawn.sync;
+const getPromptsCreateTemplate = (cmd) => {
+    const appTypes = ['Customization', 'Plugin'];
+    const customizationScope = ['ALL', 'ADMIN', 'NONE'];
+    return [
+        {
+            type: 'list',
+            name: 'type',
+            message: constant_1.MESSAGES.TYPE_OF_APP_PROMPT,
+            choices: appTypes,
+            when: cmd.type === undefined
+        },
+        {
+            type: 'confirm',
+            name: 'setAuth',
+            message: constant_1.MESSAGES.AUTHENTICATION_CREDENTIALS_PROMPT,
+            when: cmd.setAuth === undefined
+        },
+        {
+            type: 'input',
+            name: 'domain',
+            message: constant_1.MESSAGES.KINTONE_DOMAIN_PROMPT,
+            when: (curAnswers) => {
+                return (cmd.setAuth || curAnswers.setAuth) && !cmd.domain;
+            },
+            validate: (input, curAnswer) => {
+                if (!input.startsWith('https://'))
+                    return constant_1.ERRORS.DOMAIN_STARTS_WITH_HTTPS;
+                if (!(0, string_1.isDomain)(input)) {
+                    return constant_1.ERRORS.VALID_DOMAIN;
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'username',
+            message: constant_1.MESSAGES.KINTONE_USERNAME_PROMPT,
+            when: (curAnswers) => {
+                return (cmd.setAuth || curAnswers.setAuth) && !cmd.username;
+            }
+        },
+        {
+            type: 'password',
+            name: 'password',
+            message: constant_1.MESSAGES.KINTONE_PASSWORD_PROMPT,
+            when: (curAnswers) => {
+                return (cmd.setAuth || curAnswers.setAuth) && !cmd.password;
+            }
+        },
+        {
+            type: 'confirm',
+            name: 'useProxy',
+            message: constant_1.MESSAGES.USE_PROXY_PROMPT,
+            default: false,
+            when: (curAnswers) => {
+                return (cmd.setAuth || curAnswers.setAuth) && !cmd.proxy;
+            }
+        },
+        {
+            type: 'input',
+            name: 'proxy',
+            message: constant_1.MESSAGES.PROXY_URL_PROMPT,
+            when: (curAnswers) => {
+                return curAnswers.useProxy && !cmd.proxy;
+            }
+        },
+        {
+            type: 'confirm',
+            name: 'useReact',
+            message: constant_1.MESSAGES.USE_REACT_PROMPT,
+            when: cmd.useReact === undefined
+        },
+        {
+            type: 'confirm',
+            name: 'useTypescript',
+            message: constant_1.MESSAGES.USE_TYPESCRIPT_PROMPT,
+            when: cmd.useTypescript === undefined
+        },
+        {
+            type: 'confirm',
+            name: 'useWebpack',
+            message: constant_1.MESSAGES.USE_WEBPACK_PROMPT,
+            when: cmd.useWebpack === undefined
+        },
+        {
+            type: 'input',
+            name: 'entry',
+            message: constant_1.MESSAGES.WEBPACK_ENTRY_PROMPT,
+            default: (curAnswers) => {
+                let ext = '.js';
+                const tempOption = Object.assign(Object.assign({}, cmd), curAnswers);
+                if (tempOption.useReact && tempOption.useTypescript) {
+                    ext = '.tsx';
+                }
+                else if (tempOption.useReact) {
+                    ext = '.jsx';
+                }
+                else if (tempOption.useTypescript) {
+                    ext = '.ts';
+                }
+                return `index${ext}`;
+            },
+            when: (curAnswers) => {
+                return (cmd.useWebpack || curAnswers.useWebpack) && !cmd.entry;
+            }
+        },
+        {
+            type: 'confirm',
+            name: 'useCybozuLint',
+            message: constant_1.MESSAGES.USE_ESLINT_CONFIG_PROMPT,
+            when: cmd.useCybozuLint === undefined
+        },
+        {
+            type: 'input',
+            name: 'appName',
+            message: constant_1.MESSAGES.APP_NAME_PROMPT,
+            when: cmd.appName === undefined,
+            validate: (input) => {
+                if (!input) {
+                    return constant_1.ERRORS.MISSING_APP_NAME;
+                }
+                return true;
+            }
+        },
+        {
+            type: 'number',
+            name: 'appID',
+            message: constant_1.MESSAGES.APP_ID_PROMPT,
+            when: (curAnswers) => {
+                return ((cmd.setAuth || curAnswers.setAuth) &&
+                    !cmd.appID &&
+                    (cmd.type === 'Customization' || curAnswers.type === 'Customization'));
+            }
+        },
+        {
+            type: 'list',
+            name: 'scope',
+            message: constant_1.MESSAGES.CUSTOMIZATION_SCOPE_PROMPT,
+            choices: customizationScope,
+            when: (curAnswers) => {
+                return ((cmd.type === 'Customization' ||
+                    curAnswers.type === 'Customization') &&
+                    !cmd.scope);
+            }
+        }
+    ];
+};
+const getPromptsInit = (packageInfo) => {
+    return [
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Project name',
+            default: 'kintone-customization-project',
+            when: !packageInfo.name
+        },
+        {
+            type: 'input',
+            name: 'version',
+            message: 'Version',
+            default: constant_1.DEFAULT_PROJECT_VERSION,
+            when: !packageInfo.version
+        },
+        {
+            type: 'input',
+            name: 'description',
+            message: 'Description',
+            default: 'kintone customization project',
+            when: !packageInfo.description
+        },
+        {
+            type: 'input',
+            name: 'author',
+            message: 'Author',
+            default: '',
+            when: packageInfo.author === undefined
+        },
+        {
+            type: 'input',
+            name: 'license',
+            message: 'License',
+            default: 'MIT',
+            when: !packageInfo.license
+        },
+        {
+            type: 'confirm',
+            name: 'dependencies.@kintone/kintone-ui-component',
+            message: constant_1.MESSAGES.USE_KINTONE_UI_COMPONENT_PROMPT,
+            default: true,
+            when: packageInfo.dependencies &&
+                packageInfo.dependencies['@kintone/kintone-ui-component'] === undefined
+        },
+        {
+            type: 'confirm',
+            name: 'dependencies.@kintone/rest-api-client',
+            message: constant_1.MESSAGES.USE_REST_API_CLIENT_PROMPT,
+            default: true,
+            when: packageInfo.dependencies &&
+                packageInfo.dependencies['@kintone/rest-api-client'] === undefined
+        }
+    ];
+};
+const getAppSetting = (cmd, answer) => {
+    const appSetting = {
+        setAuth: cmd.setAuth || answer.setAuth,
+        useTypescript: cmd.useTypescript || answer.useTypescript,
+        useWebpack: cmd.useWebpack || answer.useWebpack,
+        entry: cmd.entry || answer.entry,
+        useReact: cmd.useReact || answer.useReact,
+        appName: (cmd.appName || answer.appName).replace(' ', '-'),
+        domain: cmd.domain || answer.domain,
+        username: cmd.username || answer.username,
+        password: cmd.password || answer.password,
+        type: cmd.type || answer.type,
+        appID: cmd.appID || answer.appID,
+        useCybozuLint: cmd.useCybozuLint || answer.useCybozuLint,
+        scope: cmd.scope || answer.scope,
+        proxy: cmd.proxy || answer.proxy
+    };
+    if (answer.proxy === 'null')
+        appSetting.proxy = '';
+    return appSetting;
+};
+exports.getAppSetting = getAppSetting;
+const createProjectFolder = (packageInfo) => {
+    const projectFolder = global.currentDir + '/' + packageInfo.name;
+    if ((0, fs_1.existsSync)(projectFolder)) {
+        console.error(chalk_1.default.red(constant_1.ERRORS.PROJECT_FOLDER_EXISTS));
+        process.exit(-1);
+    }
+    (0, fs_1.mkdirSync)(projectFolder);
+    return projectFolder;
+};
+function processProjectInfo(packageInfo) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const prompts = getPromptsInit(packageInfo);
+        const answers = yield (0, inquirer_1.prompt)(prompts);
+        const updatedPackageInfo = Object.assign(Object.assign({}, packageInfo), answers);
+        if (updatedPackageInfo.dependencies['@kintone/kintone-ui-component']) {
+            updatedPackageInfo.dependencies['@kintone/kintone-ui-component'] =
+                constant_1.DEPENDENCIES['@kintone/kintone-ui-component'];
+        }
+        else {
+            delete updatedPackageInfo.dependencies['@kintone/kintone-ui-component'];
+        }
+        if (updatedPackageInfo.dependencies['@kintone/rest-api-client']) {
+            updatedPackageInfo.dependencies['@kintone/rest-api-client'] =
+                constant_1.DEPENDENCIES['@kintone/rest-api-client'];
+        }
+        else {
+            delete updatedPackageInfo.dependencies['@kintone/rest-api-client'];
+        }
+        return updatedPackageInfo;
+    });
+}
+const spawnSync = cross_spawn_1.default.sync;
 const initializeCommand = (program) => {
-    const latestUIComponentVersion = '^0.9.3';
-    const latestKintoneRestApiClientVersion = '^3.3.9';
-    const defaultProjectVersion = '1.0.0';
     program
         .command('create-template')
+        .description('Create customization/plugin template')
         .option('-q, --quick', 'Use default template')
-        .option('--yes', 'Use default template')
         .option('--preset <preset>', 'Preset for generating template')
         .option('-t, --type <type>', 'Set app type')
+        .option('--scope <scope>', 'Set scope of customization')
         .option('-a, --set-auth', 'Set authentication credentials')
         .option('-d, --domain <domain>', 'Set kintone domain')
         .option('-u, --username <username>', 'Set username')
@@ -49,7 +307,7 @@ const initializeCommand = (program) => {
         }
         try {
             let answer = {};
-            if (cmd.quick || cmd.yes) {
+            if (cmd.quick) {
                 cmd.setAuth = false;
                 cmd.useProxy = false;
                 cmd.useTypescript = false;
@@ -63,205 +321,29 @@ const initializeCommand = (program) => {
             if (cmd.preset) {
                 switch (cmd.preset) {
                     case 'React':
-                        cmd.useTypescript = false;
-                        cmd.useWebpack = true;
-                        cmd.useReact = true;
-                        cmd.entry = 'index.jsx';
+                        applyReactPreset(cmd);
                         break;
                     case 'ReactTS':
-                        cmd.useTypescript = true;
-                        cmd.useWebpack = true;
-                        cmd.useReact = true;
-                        cmd.entry = 'index.tsx';
+                        applyReactTSPreset(cmd);
                         break;
                     default:
                         break;
                 }
             }
-            answer = yield (0, inquirer_1.prompt)([
-                {
-                    type: 'list',
-                    name: 'type',
-                    message: 'What type of app you want to create ?',
-                    choices: ['Customization', 'Plugin'],
-                    when: cmd.type === undefined
-                },
-                {
-                    type: 'confirm',
-                    name: 'setAuth',
-                    message: 'Do you want to set authentication credentials ?',
-                    when: cmd.setAuth === undefined
-                },
-                {
-                    type: 'input',
-                    name: 'domain',
-                    message: 'What is your kintone domain ?',
-                    when: (curAnswers) => {
-                        return (cmd.setAuth || curAnswers.setAuth) && !cmd.domain;
-                    },
-                    validate: (input, curAnswer) => {
-                        if (!input.startsWith('https://'))
-                            return 'Domain has to start with https';
-                        if (!(0, string_1.isDomain)(input)) {
-                            return 'Please enter a valid domain';
-                        }
-                        return true;
-                    }
-                },
-                {
-                    type: 'input',
-                    name: 'username',
-                    message: 'What is your kintone username ?',
-                    when: (curAnswers) => {
-                        return (cmd.setAuth || curAnswers.setAuth) && !cmd.username;
-                    }
-                },
-                {
-                    type: 'password',
-                    name: 'password',
-                    message: 'What is your kintone password ?',
-                    when: (curAnswers) => {
-                        return (cmd.setAuth || curAnswers.setAuth) && !cmd.password;
-                    }
-                },
-                {
-                    type: 'confirm',
-                    name: 'useProxy',
-                    message: 'Do you use proxy ?',
-                    default: false,
-                    when: (curAnswers) => {
-                        return (cmd.setAuth || curAnswers.setAuth) && !cmd.proxy;
-                    }
-                },
-                {
-                    type: 'input',
-                    name: 'proxy',
-                    message: 'Specify your proxy full URL, including port number:',
-                    when: (curAnswers) => {
-                        return curAnswers.useProxy && !cmd.proxy;
-                    }
-                },
-                {
-                    type: 'confirm',
-                    name: 'useReact',
-                    message: 'Do you want to use React ?',
-                    when: cmd.useReact === undefined
-                },
-                {
-                    type: 'confirm',
-                    name: 'useTypescript',
-                    message: 'Do you want to use TypeScript ?',
-                    when: cmd.useTypescript === undefined
-                },
-                {
-                    type: 'confirm',
-                    name: 'useWebpack',
-                    message: 'Do you want to use webpack ?',
-                    when: cmd.useWebpack === undefined
-                },
-                {
-                    type: 'input',
-                    name: 'entry',
-                    message: 'What is the entry for webpack ?',
-                    default: (curAnswers) => {
-                        let ext = '.js';
-                        const tempOption = Object.assign(Object.assign({}, cmd), curAnswers);
-                        if (tempOption.useReact && tempOption.useTypescript) {
-                            ext = '.tsx';
-                        }
-                        else if (tempOption.useReact) {
-                            ext = '.jsx';
-                        }
-                        else if (tempOption.useTypescript) {
-                            ext = '.ts';
-                        }
-                        return `index${ext}`;
-                    },
-                    when: (curAnswers) => {
-                        return (cmd.useWebpack || curAnswers.useWebpack) && !cmd.entry;
-                    }
-                },
-                {
-                    type: 'confirm',
-                    name: 'useCybozuLint',
-                    message: 'Do you want to use @cybozu/eslint-config for syntax checking ?',
-                    when: cmd.useCybozuLint === undefined
-                },
-                {
-                    type: 'input',
-                    name: 'appName',
-                    message: 'What is the app name ?',
-                    when: cmd.appName === undefined,
-                    validate: (input) => {
-                        if (!input) {
-                            return 'Missing app name';
-                        }
-                        return true;
-                    }
-                },
-                {
-                    type: 'number',
-                    name: 'appID',
-                    message: 'What is the app ID ?',
-                    when: (curAnswers) => {
-                        return ((cmd.setAuth || curAnswers.setAuth) &&
-                            !cmd.appID &&
-                            (cmd.type === 'Customization' ||
-                                curAnswers.type === 'Customization'));
-                    }
-                },
-                {
-                    type: 'list',
-                    name: 'scope',
-                    message: 'What is the scope of customization ?',
-                    choices: ['ALL', 'ADMIN', 'NONE'],
-                    when: (curAnswers) => {
-                        return ((cmd.type === 'Customization' ||
-                            curAnswers.type === 'Customization') &&
-                            !cmd.scope);
-                    }
-                }
-            ]);
+            const prompts = getPromptsCreateTemplate(cmd);
+            answer = yield (0, inquirer_1.prompt)(prompts);
             // Config for appConfig.json
-            const appSetting = {
-                setAuth: cmd.setAuth || answer.setAuth,
-                useTypescript: cmd.useTypescript || answer.useTypescript,
-                useWebpack: cmd.useWebpack || answer.useWebpack,
-                entry: cmd.entry || answer.entry,
-                useReact: cmd.useReact || answer.useReact,
-                appName: (cmd.appName || answer.appName).replace(' ', '-'),
-                domain: cmd.domain || answer.domain,
-                username: cmd.username || answer.username,
-                password: cmd.password || answer.password,
-                type: cmd.type || answer.type,
-                appID: cmd.appID || answer.appID,
-                useCybozuLint: cmd.useCybozuLint || answer.useCybozuLint,
-                scope: cmd.scope || answer.scope,
-                proxy: cmd.proxy || answer.proxy
-            };
-            if (answer.proxy === 'null')
-                appSetting.proxy = '';
-            console.log(chalk_1.default.yellow('Creating app...'));
+            const appSetting = (0, exports.getAppSetting)(cmd, answer);
+            console.log(chalk_1.default.yellow(constant_1.MESSAGES.CREATE_APP_MESSAGE));
             const err = (0, generator_1.generateAppFolder)(appSetting);
             if (err && typeof err === 'string') {
                 console.log(chalk_1.default.red(err));
                 return;
             }
-            console.log(chalk_1.default.yellow('Installing dependencies...'));
+            console.log(chalk_1.default.yellow(constant_1.MESSAGES.INSTALLING_DEPENDENCIES_MESSAGE));
             spawnSync('npm', ['install'], { stdio: 'inherit', windowsHide: true });
             console.log('');
-            if (!appSetting.setAuth) {
-                console.log(chalk_1.default.yellow('To set auth info, use:'));
-                console.log('');
-                console.log(chalk_1.default.greenBright(`     kintone-cli auth --app-name ${appSetting.appName}`));
-                console.log('');
-            }
-            else {
-                console.log(chalk_1.default.yellow('To start developing app, use:'));
-                console.log('');
-                console.log(chalk_1.default.greenBright(`     kintone-cli dev --app-name ${appSetting.appName} --watch`));
-                console.log('');
-            }
+            (0, exports.printAppDevelopmentInstructions)(appSetting);
         }
         catch (err) {
             console.log(chalk_1.default.red(err));
@@ -273,12 +355,11 @@ const initializeCommand = (program) => {
         .option('--install', 'Install dependencies or not')
         .option('--quick', 'Quickly create a kintone project')
         .option('-p, --project-name <projectName>', 'Project name')
-        // eslint-disable-next-line max-statements
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         let packageInfo = {};
         if (cmd.quick) {
             packageInfo.name = 'kintone-customization-project';
-            packageInfo.version = defaultProjectVersion;
+            packageInfo.version = constant_1.DEFAULT_PROJECT_VERSION;
             packageInfo.description = 'kintone customization project';
             packageInfo.author = '';
             packageInfo.license = 'MIT';
@@ -287,85 +368,15 @@ const initializeCommand = (program) => {
             packageInfo.dependencies['@kintone/rest-api-client'] = true;
         }
         else {
-            console.log(chalk_1.default.yellow('Welcome to kintone-cli!'));
-            console.log(chalk_1.default.yellow('Please, input below information so we can get started!'));
+            console.log(chalk_1.default.yellow(constant_1.MESSAGES.WELCOME_MESSAGE));
+            console.log(chalk_1.default.yellow(constant_1.MESSAGES.GET_STARTED_MESSAGE));
         }
         if (cmd.projectName) {
             packageInfo.name = cmd.projectName;
         }
         // ask info about project
-        const answer = yield (0, inquirer_1.prompt)([
-            {
-                type: 'input',
-                name: 'name',
-                message: 'Project name',
-                default: 'kintone-customization-project',
-                when: !packageInfo.name
-            },
-            {
-                type: 'input',
-                name: 'version',
-                message: 'Version',
-                default: defaultProjectVersion,
-                when: !packageInfo.version
-            },
-            {
-                type: 'input',
-                name: 'description',
-                message: 'Description',
-                default: 'kintone customization project',
-                when: !packageInfo.description
-            },
-            {
-                type: 'input',
-                name: 'author',
-                message: 'Author',
-                default: '',
-                when: packageInfo.author === undefined
-            },
-            {
-                type: 'input',
-                name: 'license',
-                message: 'License',
-                default: 'MIT',
-                when: !packageInfo.license
-            },
-            {
-                type: 'confirm',
-                name: 'dependencies.@kintone/kintone-ui-component',
-                message: 'Do you want to use @kintone/kintone-ui-component?',
-                default: true,
-                when: packageInfo.dependencies &&
-                    packageInfo.dependencies['@kintone/kintone-ui-component'] ===
-                        undefined
-            },
-            {
-                type: 'confirm',
-                name: 'dependencies.@kintone/rest-api-client',
-                message: 'Do you want to use @kintone/rest-api-client?',
-                default: true,
-                when: packageInfo.dependencies &&
-                    packageInfo.dependencies['@kintone/rest-api-client'] === undefined
-            }
-        ]);
-        packageInfo = Object.assign(Object.assign({}, packageInfo), answer);
-        if (packageInfo.dependencies['@kintone/kintone-ui-component'])
-            packageInfo.dependencies['@kintone/kintone-ui-component'] =
-                latestUIComponentVersion;
-        else
-            delete packageInfo.dependencies['@kintone/kintone-ui-component'];
-        if (packageInfo.dependencies['@kintone/rest-api-client'])
-            packageInfo.dependencies['@kintone/rest-api-client'] =
-                latestKintoneRestApiClientVersion;
-        else
-            delete packageInfo.dependencies['@kintone/rest-api-client'];
-        // create project folder
-        const projectFolder = global.currentDir + '/' + packageInfo.name;
-        if ((0, fs_1.existsSync)(projectFolder)) {
-            console.error(chalk_1.default.red('Project folder already exists! Please, run the cli again and choose another project name.'));
-            process.exit(-1);
-        }
-        (0, fs_1.mkdirSync)(projectFolder);
+        packageInfo = yield processProjectInfo(packageInfo);
+        const projectFolder = createProjectFolder(packageInfo);
         // write project info object to package.json
         if (!packageInfo.devDependencies) {
             packageInfo.devDependencies = {};
@@ -382,18 +393,48 @@ const initializeCommand = (program) => {
         (0, fs_1.writeFileSync)(`${projectFolder}/.gitignore`, 'node_modules');
         // if install is specified run npm install
         if (cmd.install) {
-            console.log(chalk_1.default.yellow('Installing dependencies...'));
+            console.log(chalk_1.default.yellow(constant_1.MESSAGES.INSTALLING_DEPENDENCIES_MESSAGE));
             spawnSync('npm', ['i'], { stdio: 'inherit', windowsHide: true });
         }
-        console.log('');
-        console.log(chalk_1.default.yellow('Project created!'));
-        console.log(chalk_1.default.yellow('To create new app, use:'));
-        console.log('');
-        console.log(chalk_1.default.green(`   cd ${packageInfo.name}`));
-        console.log('');
-        console.log(chalk_1.default.green('   kintone-cli create-template'));
-        console.log('');
+        printProjectCreationMessage(packageInfo);
     }));
+};
+const printAppDevelopmentInstructions = (appSetting) => {
+    if (!appSetting.setAuth) {
+        console.log(chalk_1.default.yellow(constant_1.MESSAGES.SET_AUTH_INFO_MESSAGE));
+        console.log('');
+        console.log(chalk_1.default.greenBright(`     kintone-cli auth --app-name ${appSetting.appName}`));
+        console.log('');
+    }
+    else {
+        console.log(chalk_1.default.yellow(constant_1.MESSAGES.START_DEVELOPING_APP_MESSAGE));
+        console.log('');
+        console.log(chalk_1.default.greenBright(`     kintone-cli dev --app-name ${appSetting.appName} --watch`));
+        console.log('');
+    }
+};
+exports.printAppDevelopmentInstructions = printAppDevelopmentInstructions;
+const printProjectCreationMessage = (packageInfo) => {
+    console.log('');
+    console.log(chalk_1.default.yellow(constant_1.MESSAGES.PROJECT_CREATED_MESSAGE));
+    console.log(chalk_1.default.yellow(constant_1.MESSAGES.CREATE_NEW_APP_MESSAGE));
+    console.log('');
+    console.log(chalk_1.default.green(`   cd ${packageInfo.name}`));
+    console.log('');
+    console.log(chalk_1.default.green('   kintone-cli create-template'));
+    console.log('');
+};
+const applyReactPreset = (cmd) => {
+    cmd.useTypescript = false;
+    cmd.useWebpack = true;
+    cmd.useReact = true;
+    cmd.entry = 'index.jsx';
+};
+const applyReactTSPreset = (cmd) => {
+    cmd.useTypescript = true;
+    cmd.useWebpack = true;
+    cmd.useReact = true;
+    cmd.entry = 'index.tsx';
 };
 exports.default = initializeCommand;
 //# sourceMappingURL=initializeCommand.js.map

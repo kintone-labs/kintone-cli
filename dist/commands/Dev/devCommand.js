@@ -8,17 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = require("chalk");
+exports.devCommandHandle = exports.getLoopBackAddress = void 0;
+const chalk_1 = __importDefault(require("chalk"));
 const jsonfile_1 = require("jsonfile");
-const spawn = require("cross-spawn");
-const strip_ansi_1 = require("strip-ansi");
+const cross_spawn_1 = __importDefault(require("cross-spawn"));
+const strip_ansi_1 = __importDefault(require("strip-ansi"));
 const fs_1 = require("fs");
 const inquirer_1 = require("inquirer");
 const devGenerator_1 = require("./devGenerator");
-const validator_1 = require("./validator");
+const validator_1 = __importDefault(require("./validator"));
 const readline = require('readline');
-const spawnSync = spawn.sync;
+const spawnSync = cross_spawn_1.default.sync;
 const isURL = (str) => {
     const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -63,6 +67,7 @@ const getLoopBackAddress = (resp, localhost) => __awaiter(void 0, void 0, void 0
     ]);
     return answer.localAddress;
 });
+exports.getLoopBackAddress = getLoopBackAddress;
 const readLineAsync = () => {
     const rl = readline.createInterface({
         input: process.stdin
@@ -76,10 +81,11 @@ const readLineAsync = () => {
     });
 };
 const devCommand = (program) => {
-    program
+    return program
         .command('dev')
+        .description('Deploy customization/plugin for development')
         .option('--watch', 'Watch for changes in source code')
-        .option('--app-name <appName>', 'Watch for changes in source code')
+        .option('--app-name <appName>', 'App name')
         .option('--localhost', 'Use localhost as link')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         const error = validator_1.default.devValidator(cmd);
@@ -90,64 +96,73 @@ const devCommand = (program) => {
         process.on('SIGINT', () => {
             process.exit();
         });
-        let watching = false;
         // build the first time and upload link to kintone
         if ((0, fs_1.existsSync)(`${cmd.appName}/webpack.config.js`)) {
             console.log(chalk_1.default.yellow('Building distributed file...'));
             spawnSync('npm', ['run', `build-${cmd.appName}`, '--', '--mode', 'development'], { stdio: ['ignore', 'ignore', process.stderr] });
         }
         console.log(chalk_1.default.yellow('Starting local webserver...'));
-        const ws = spawn('npm', ['run', 'dev', '--', '--https']);
+        const ws = (0, cross_spawn_1.default)('npm', ['run', 'dev', '--', '--https']);
         ws.stderr.on('data', (data) => __awaiter(void 0, void 0, void 0, function* () {
-            const resp = data.toString();
-            const serverAddr = yield getLoopBackAddress(resp, cmd.localhost);
-            const config = (0, jsonfile_1.readFileSync)(`${cmd.appName}/config.json`);
-            config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item) => {
-                if (!isURL(item))
-                    return `${serverAddr}/${item}`;
-                return item;
+            yield (0, exports.devCommandHandle)({
+                ws,
+                cmd,
+                data,
+                readLineAsyncParam: readLineAsync
             });
-            config.uploadConfig.mobile.js = config.uploadConfig.mobile.js.map((item) => {
-                if (!isURL(item))
-                    return `${serverAddr}/${item}`;
-                return item;
-            });
-            config.uploadConfig.desktop.css = config.uploadConfig.desktop.css.map((item) => {
-                if (!isURL(item))
-                    return `${serverAddr}/${item}`;
-                return item;
-            });
-            if (config.type !== 'Customization') {
-                config.uploadConfig.config.js = config.uploadConfig.config.js.map((item) => {
-                    if (!isURL(item))
-                        return `${serverAddr}/${item}`;
-                    return item;
-                });
-                config.uploadConfig.config.css = config.uploadConfig.config.css.map((item) => {
-                    if (!isURL(item))
-                        return `${serverAddr}/${item}`;
-                    return item;
-                });
-            }
-            config.watch = cmd.watch;
-            console.log('');
-            console.log(chalk_1.default.yellow(`Please open this link in your browser to trust kintone ${config.type} files:`));
-            console.log('');
-            console.log(`   ${chalk_1.default.green(`${serverAddr}`)}`);
-            console.log('');
-            console.log(chalk_1.default.yellow('Then, press any key to continue:'));
-            yield readLineAsync();
-            if (!watching) {
-                watching = true;
-                if (config.type === 'Customization') {
-                    (0, devGenerator_1.devCustomize)(ws, config);
-                }
-                else if (config.type === 'Plugin') {
-                    (0, devGenerator_1.devPlugin)(ws, config);
-                }
-            }
         }));
     }));
 };
+const devCommandHandle = ({ ws, cmd, data, readLineAsyncParam }) => __awaiter(void 0, void 0, void 0, function* () {
+    let watching = false;
+    const resp = data.toString();
+    const serverAddr = yield (0, exports.getLoopBackAddress)(resp, cmd.localhost);
+    const config = (0, jsonfile_1.readFileSync)(`${cmd.appName}/config.json`);
+    config.uploadConfig.desktop.js = config.uploadConfig.desktop.js.map((item) => {
+        if (!isURL(item))
+            return `${serverAddr}/${item}`;
+        return item;
+    });
+    config.uploadConfig.mobile.js = config.uploadConfig.mobile.js.map((item) => {
+        if (!isURL(item))
+            return `${serverAddr}/${item}`;
+        return item;
+    });
+    config.uploadConfig.desktop.css = config.uploadConfig.desktop.css.map((item) => {
+        if (!isURL(item))
+            return `${serverAddr}/${item}`;
+        return item;
+    });
+    if (config.type !== 'Customization') {
+        config.uploadConfig.config.js = config.uploadConfig.config.js.map((item) => {
+            if (!isURL(item))
+                return `${serverAddr}/${item}`;
+            return item;
+        });
+        config.uploadConfig.config.css = config.uploadConfig.config.css.map((item) => {
+            if (!isURL(item))
+                return `${serverAddr}/${item}`;
+            return item;
+        });
+    }
+    config.watch = cmd.watch;
+    console.log('');
+    console.log(chalk_1.default.yellow(`Please open this link in your browser to trust kintone ${config.type} files:`));
+    console.log('');
+    console.log(`   ${chalk_1.default.green(`${serverAddr}`)}`);
+    console.log('');
+    console.log(chalk_1.default.yellow('Then, press any key to continue:'));
+    yield readLineAsyncParam();
+    if (!watching) {
+        watching = true;
+        if (config.type === 'Customization') {
+            (0, devGenerator_1.devCustomize)(ws, config);
+        }
+        else if (config.type === 'Plugin') {
+            (0, devGenerator_1.devPlugin)(ws, config);
+        }
+    }
+});
+exports.devCommandHandle = devCommandHandle;
 exports.default = devCommand;
 //# sourceMappingURL=devCommand.js.map

@@ -1,13 +1,14 @@
-import { CommanderStatic } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import validator from './validator';
 import { readFileSync } from 'jsonfile';
 import { deployCustomization, deployPlugin } from './deployer';
 import { existsSync } from 'fs';
 
-const deployCommand = (program: CommanderStatic) => {
-  program
+const deployCommand = (program: Command) => {
+  return program
     .command('deploy')
+    .description('Deploy customization/plugin for production')
     .option('--app-name <appName>', 'App name')
     .action(async (cmd) => {
       const error = validator.deployValidator(cmd);

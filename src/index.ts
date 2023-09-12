@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import * as program from 'commander';
+import { Command } from 'commander';
 import initializeCommand from './commands/Initialize/initializeCommand';
 import buildCommand from './commands/Build/buildCommand';
 import deployCommand from './commands/Deploy/deployCommand';
@@ -10,7 +10,8 @@ import * as path from 'path';
 global.cliRoot = path.resolve(path.dirname(require.main.filename) + '/../');
 global.currentDir = process.cwd();
 
-program.version('0.4.3').description('kintone Node CLI');
+const program = new Command();
+program.version('0.5.0').description('kintone Node CLI');
 
 initializeCommand(program);
 buildCommand(program);

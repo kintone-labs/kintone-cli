@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const scopes = ['ALL', 'ADMIN', 'NONE'];
 exports.default = {
     appValidator: (params) => {
         if (params.type &&
@@ -12,17 +13,8 @@ exports.default = {
             params.preset !== 'ReactTS') {
             return 'Invalid Preset';
         }
-        /* if (params['domain']) {
-                try {
-                    let result = url.parse(params['domain']);
-                    console.log(url.parse('https://google.com.vn'))
-                    if (!result.host) {
-                        return 'Invalid Domain'
-                    }
-                } catch (error) {
-                    return 'Invalid Domain'
-                }
-            } */
+        if (params.scope && scopes.indexOf(params.scope) === -1)
+            return 'Invalid Scope';
         return false;
     }
 };

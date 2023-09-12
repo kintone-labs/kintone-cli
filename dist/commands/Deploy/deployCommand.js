@@ -8,15 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = require("chalk");
-const validator_1 = require("./validator");
+const chalk_1 = __importDefault(require("chalk"));
+const validator_1 = __importDefault(require("./validator"));
 const jsonfile_1 = require("jsonfile");
 const deployer_1 = require("./deployer");
 const fs_1 = require("fs");
 const deployCommand = (program) => {
-    program
+    return program
         .command('deploy')
+        .description('Deploy customization/plugin for production')
         .option('--app-name <appName>', 'App name')
         .action((cmd) => __awaiter(void 0, void 0, void 0, function* () {
         const error = validator_1.default.deployValidator(cmd);

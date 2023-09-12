@@ -1,13 +1,14 @@
-import { CommanderStatic } from 'commander';
 import chalk from 'chalk';
+import { Command } from 'commander';
 import validator from './validator';
 import { readFileSync } from 'jsonfile';
 import { existsSync } from 'fs';
 import { buildUsingWebpack, buildVanillaJS, buildPlugin } from './builder';
 
-const buildCommand = (program: CommanderStatic) => {
-  program
+const buildCommand = (program: Command) => {
+  return program
     .command('build')
+    .description('Build customization/plugin')
     .option('--app-name <appName>', 'App name')
     .action(async (cmd) => {
       const error = validator.buildValidator(cmd);
@@ -27,6 +28,7 @@ const buildCommand = (program: CommanderStatic) => {
           }
           buildVanillaJS(config);
         }
+
         if (config.type === 'Plugin') {
           buildPlugin(config);
         }

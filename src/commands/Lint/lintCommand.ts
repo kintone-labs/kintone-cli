@@ -1,13 +1,14 @@
-import { CommanderStatic } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
-import * as spawn from 'cross-spawn';
+import spawn from 'cross-spawn';
 import validator from './validator';
 
 const spawnSync = spawn.sync;
 
-const lintCommand = (program: CommanderStatic) => {
-  program
+const lintCommand = (program: Command) => {
+  return program
     .command('lint')
+    .description('Check/fix code using @cybozu/eslint-config')
     .option('--fix', 'Auto fix eslint errors')
     .option('--app-name <appName>', 'Name of template folder to run eslint')
     .action(async (cmd) => {
