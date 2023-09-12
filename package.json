@@ -24,7 +24,7 @@
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
     "cross-spawn": "^7.0.3",
-    "inquirer": "^8.2.5",
+    "inquirer": "^9.2.11",
     "jsonfile": "^6.1.0",
     "strip-ansi": "^6.0.1"
   },
@@ -35,7 +35,7 @@
     "@cybozu/eslint-config": "^22.0.1",
     "@jest/globals": "^29.6.4",
     "@types/cross-spawn": "^6.0.3",
-    "@types/inquirer": "^8.2.5",
+    "@types/inquirer": "^9.0.3",
     "@types/jsonfile": "^6.1.1",
     "@types/node": "^20.5.9",
     "babel-jest": "^29.6.4",
