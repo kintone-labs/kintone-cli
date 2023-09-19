@@ -6,12 +6,16 @@ A tool to quickly start developing with kintone
 
 ## Installation
 ```
-npm install -g git://github.com/kintone-labs/kintone-cli.git
- or
-yarn global add git://github.com/kintone-labs/kintone-cli.git
+npm install -g https://github.com/kintone-labs/kintone-cli.git
+or
+yarn global add https://github.com/kintone-labs/kintone-cli.git
 ```
+Sometimes depending on the npm version, the error message "command not found" will be displayed.
+In that case, please try with the `yarn` command instead.
+
 ## Quickstart
 To quickly start with a minimum project, follow the instruction [here](./quickstart.md)
+
 ## Usage
 When working with kintone, developers usually follow this flow:
 1. Initialize Project
@@ -53,6 +57,7 @@ In addition, this boolean option will be set to ``true``:
 ```
 
 Ask if user wants to create-template after finishing init project.
+
 ### 2. Create customization / plugin template
 Go to the project forder.
 ```
@@ -84,7 +89,7 @@ If the flag --quick is present, CLI will set default values for the following op
 --type: 'Customization'
 --app-name: `kintone-${Date.now()}`
 --scope: 'ALL'
-``` 
+```
 
 In addition, the below boolean options will be set to ``false``:
 ```
