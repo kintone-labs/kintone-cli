@@ -33,7 +33,7 @@
     "@babel/preset-env": "^7.22.15",
     "@babel/preset-typescript": "^7.22.15",
     "@cybozu/eslint-config": "^22.0.1",
-    "@jest/globals": "^29.6.4",
+    "@jest/globals": "^29.7.0",
     "@types/cross-spawn": "^6.0.3",
     "@types/inquirer": "^8.2.5",
     "@types/jsonfile": "^6.1.1",
