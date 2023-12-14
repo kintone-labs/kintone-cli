@@ -1,8 +1,6 @@
 name: Perform traffic logs
 on:
-  schedule:
-    #every 9:00 UTC+0（18:00 JP Time） 
-    - cron: '0 9 * * *'
+  push:
 jobs:
   check:
     name: Run traffic logs
@@ -27,4 +25,5 @@ jobs:
           GITHUB_APP_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           node traffic-logs-kintone-cli.min.js --config ./config.json
+          cat ./log/system_20231214.log
         working-directory: traffic-logs
