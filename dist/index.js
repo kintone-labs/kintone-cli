@@ -38,7 +38,7 @@ const path = __importStar(require("path"));
 global.cliRoot = path.resolve(path.dirname(require.main.filename) + '/../');
 global.currentDir = process.cwd();
 const program = new commander_1.Command();
-program.version('0.5.0').description('kintone Node CLI');
+program.version('0.5.1').description('kintone Node CLI');
 (0, initializeCommand_1.default)(program);
 (0, buildCommand_1.default)(program);
 (0, deployCommand_1.default)(program);

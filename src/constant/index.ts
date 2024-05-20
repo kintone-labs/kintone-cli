@@ -31,7 +31,7 @@ export const DEPENDENCIES = {
   react: '^17.0.2',
   'react-dom': '^17.0.2',
   '@kintone/plugin-packer': '^7.0.4',
-  '@kintone/plugin-uploader': '8.0.0',
+  '@kintone/plugin-uploader': '9.1.1',
   '@kintone/customize-uploader': '^7.0.3',
   '@kintone/kintone-ui-component': '^0.9.4',
   '@kintone/rest-api-client': '^4.0.3'
