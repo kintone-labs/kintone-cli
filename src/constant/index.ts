@@ -17,7 +17,7 @@ export const DEPENDENCIES = {
   'css-loader': '^6.8.1',
   'core-js': '^3.31.1',
   'regenerator-runtime': '^0.13.11',
-  '@babel/core': '^7.22.9',
+  '@babel/core': '^7.24.5',
   '@babel/preset-env': '^7.22.9',
   '@babel/plugin-proposal-class-properties': '^7.18.6',
   '@babel/plugin-syntax-dynamic-import': '^7.8.3',
