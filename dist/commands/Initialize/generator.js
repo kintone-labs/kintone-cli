@@ -51,10 +51,7 @@ const ensurePropertyExists = (obj, property) => {
 };
 function configureWebpack(option, packageJSON, manifestJSON) {
     const babelJSON = {
-        plugins: [
-            '@babel/plugin-proposal-class-properties',
-            '@babel/plugin-syntax-dynamic-import'
-        ],
+        plugins: ['@babel/plugin-transform-class-properties'],
         presets: [
             [
                 '@babel/preset-env',
@@ -81,10 +78,8 @@ function configureWebpack(option, packageJSON, manifestJSON) {
     devDependencies['regenerator-runtime'] = constant_1.DEPENDENCIES['regenerator-runtime'];
     devDependencies['@babel/core'] = constant_1.DEPENDENCIES['@babel/core'];
     devDependencies['@babel/preset-env'] = constant_1.DEPENDENCIES['@babel/preset-env'];
-    devDependencies['@babel/plugin-proposal-class-properties'] =
-        constant_1.DEPENDENCIES['@babel/plugin-proposal-class-properties'];
-    devDependencies['@babel/plugin-syntax-dynamic-import'] =
-        constant_1.DEPENDENCIES['@babel/plugin-syntax-dynamic-import'];
+    devDependencies['@babel/plugin-transform-class-properties'] =
+        constant_1.DEPENDENCIES['@babel/plugin-transform-class-properties'];
     ensurePropertyExists(packageJSON, 'scripts');
     const scripts = packageJSON.scripts;
     if (option.useTypescript) {
