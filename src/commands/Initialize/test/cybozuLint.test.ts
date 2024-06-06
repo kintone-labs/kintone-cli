@@ -52,7 +52,7 @@ describe('Initialize command', () => {
         devDependencies: {
           'local-web-server': '^2.6.1',
           '@kintone/plugin-packer': '^7.0.4',
-          '@kintone/plugin-uploader': '8.0.0'
+          '@kintone/plugin-uploader': '9.1.1'
         },
         scripts: {
           dev: 'ws'
