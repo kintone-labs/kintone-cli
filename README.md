@@ -5,7 +5,7 @@ A tool to quickly start developing with kintone
 ```
 
 > [!WARNING]
-> The maintenance of kintone CLI will end on 31 December 2024. For more details, please refer to [this announcement]().
+> The maintenance of kintone CLI will end on 31 December 2024. For more details, please refer to [this announcement](https://github.com/kintone-labs/kintone-cli/issues/206).
 
 ## Installation
 ```
